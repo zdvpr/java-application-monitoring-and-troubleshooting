@@ -1,57 +1,132 @@
-Java Application Monitoring and Troubleshooting
-===============================================
-
-_4. Java Application as a Runtime White Box: App running, JVM and applicaition monitoring, troubleshooting, faults analysing and tuning._ 24 hrs / 3 days.
+Java Application Monitoring and Troubleshooting Basics
+======================================================
+_4. Java Application as a Runtime White Box: App running, JVM and application monitoring, troubleshooting, faults analysing and tuning._ 24 hrs / 3 days.
 
 # Training Objectives
 - [ ] Understanding modern application architecture and defect hotspots
 - [ ] Understanding JVM classes, memory and threading architecture
-- [ ] Hands-on skill of monitoring memory-intensive applications
+- [ ] Hands-on skill of monitoring modern applications
 - [ ] Understanding modern IO architecture and its pitfalls
 - [ ] Hands-on skill of monitoring persistent data-driven applications
-- [ ] Hands-on skill of monitoring applications caching
+
+# Prerequisites
+## Hardware
+- [ ] RAM ≥ 8Гб
+- [ ] Wi-Fi with Internet access
+## Software
+- [ ] [git](https://git-scm.com/downloads)
+- [ ] [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- [ ] [Jetbrains IDEA](https://www.jetbrains.com/idea/download/)
+## Network Access
+- [ ] github.org :443 :80
+- [ ] repo1.maven.org :443 :80
+- [ ] jcenter.bintray.com :443 :80
 
 # Agenda
-Starred items are optional.
+_* starred items are optional_
 
----
-
-## Training introducing and focusing (0.5 hrs)
+## Training introducing and focusing (30m)
 - [ ] Schedule
 - [ ] Trainer
 - [ ] Training overview
 - [ ] Rules
-### Hands-on: teams and their demand
+
+## Hands-on: Teams and their demand (15m)
 - [ ] Pairs forming and introduction
 - [ ] Attendees prerequisites check
 - [ ] Topics focus demand from attendees
 - [ ] Additional topics demand form attendees
 
-## Java Platform crash course (2)
-### Designnig application data
+## Java Platform crash course (2hr)
+<!--- TODO Rosetta stone visuals: concept - metaphor - code -->
+### Why Java?
+- [ ] Platform Goals
+- [ ] JVM
+- [ ] JRE
+- [ ] JDK
+### What do any application doing?
+- [ ] Data input
+- [ ] Data processing
+- [ ] Data storing
+- [ ] Data output
+### How we do model the data?
 - [ ] Primitive Types
 - [ ] Structures with class and enum
-### Desigining application behavior
+### How we do model the behavior?
 - [ ] OOAD overview
 - [ ] Types: class, abstract class, interface
-### Implementing application
+- [ ] Methods and call stack
+### How do we implement application? Key concepts
+- [ ] Working with _class_: dynamic classloading
 - [ ] Working with _instance and its reference_: create and GC
 - [ ] Working with _thread_: Thread API, states, pooling
-### Building application
+### Where data is stored? Core data scopes
+- [ ] Local/method/stack variables
+- [ ] Object properties/state: request, thread-local, session, singleton/application
+- [ ] Persistent: file, embedded/local database
+- [ ] Integration: remote filesystem, remote database, remote system procedure call, remote message queue
+### [Teamwork](#teamwork-nfrs-and-metrics-checklist)
+### How do we build an application?
+- [ ] Phisical point ov view for java application
+- [ ] Classes, packages and JARs
+- [ ] classpath x2
 - [ ] Build cycle raw
 - [ ] Build cycle with Maven
-### Running application
+### How do we run an application?
 - [ ] Run with JVM
-- [ ] What Quality Attributes does JVM provide for application?
-### Monitoring application
-- [ ] JMX overview
-### Teamwork
-- [ ] Start *checklist* by tier: JVM metrics
-### Hands-on
-- [ ] Simple memory-intensive threaded application loading and monitoring
+- [ ] Ways for application run-time parameterization: jvm parameters, program arguments, sys/app properties
+- [ ] Key JVM parameters for memory setup
+### How do we monitor a java application internals?
+- [ ] JMX simple tooling demo: JVisualVM
+- [ ] JMX architecture overview
+### [Hands-on](hands-on-simple-application-building-running-and-monitoring)
+
+## Teamwork: NFRs and metrics checklist (15m)
+- [ ] What Quality Attributes/NFRs does JVM provide for application?
+- [ ] What Quality Attributes/NFRs does we satisfy with application monitoring?
+- [ ] Start metrics [checklist](METRICS-CHECKLIST.md) by tier: JVM metrics
+
+## Hands-on: Simple application building, running and monitoring (30m)
+### Given
+- [ ] Satisfied [prerequisites](#Prerequisites) 
+- [ ] Forked simple project [codebase](https://github.com/eugene-krivosheyev/java-application-monitoring-and-troubleshooting)
+- [ ] Cloned simple project
+```shell script
+cd
+git clone https://github.com/YOUR_ACCOUNT/java-application-monitoring-and-troubleshooting
+cd java-application-monitoring-and-troubleshooting
+git checkout <group_branch, e.g. 2020-06-raiffeisen>
+```
+### When
+- [ ] Project application built locally with maven
+```shell script
+mvn clean verify
+```
+- [ ] Project application ran locally with CLI
+```shell script
+java -cp 
+```
+- [ ] JVisualVM profiler connected to running app
+```shell script
+$JAVA_HOME/bin/jvisualvm
+```
+- [ ] OS-specific monitoring tool shows application process details
+```shell script
+linux$ top [-pid jvmpid]
+windows> taskmgr
+```
+### Then
+- [ ] What is the default encoding for I/O?
+- [ ] What is the default heap size for app running?
+- [ ] How many java threads is active within JVM? 
+- [ ] How many OS threads is active within OS JVM process? 
+- [ ] What is the minimal possible heap size for app running?
+
+---
 
 ## Modern applications architecture and deployment (2)
-### Tiers to monitor and control overvirew
+<!--- TODO jps and cli staff -->
+### Tiers to monitor and control overview
 - Docker Containers
 - Application Layers: UI, API, BL, DAL 
 - Application Frameworks
@@ -332,3 +407,5 @@ Starred items are optional.
 - [ ] Analyse DB schema
 - [ ] Analyse requests profiles
 - [ ] Make issue hypothesis report and resolving plan
+
+## Typical CI/CD [pipeline overview](https://paper.dropbox.com/doc/Delivery-Pipeline-ci-cd-devops--A1GO2JqCDUodW3pUl3K0fsRxAQ-OBLCVRSkMek24U7IXIHbq)
