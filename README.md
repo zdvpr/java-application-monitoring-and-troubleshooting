@@ -65,7 +65,7 @@ _* starred items are optional_
 - [ ] Object properties/state: request, thread-local, session, singleton/application
 - [ ] Persistent: file, embedded/local database
 - [ ] Integration: remote filesystem, remote database, remote system procedure call, remote message queue
-### [Teamwork](#teamwork-nfrs-and-metrics-checklist)
+### [Teamwork](#teamwork-nfrs-and-metrics-checklist-15m)
 ### How do we build an application?
 - [ ] Phisical point ov view for java application
 - [ ] Classes, packages and JARs
@@ -79,7 +79,7 @@ _* starred items are optional_
 ### How do we monitor a java application internals?
 - [ ] JMX simple tooling demo: JVisualVM
 - [ ] JMX architecture overview
-### [Hands-on](hands-on-simple-application-building-running-and-monitoring)
+### [Hands-on](#hands-on-simple-application-building-running-and-monitoring-30m)
 
 ## Teamwork: NFRs and metrics checklist (15m)
 - [ ] What Quality Attributes/NFRs does JVM provide for application?
