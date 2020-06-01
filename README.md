@@ -25,7 +25,7 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 # Agenda
 _* starred items are optional_
 
-## Training introducing and focusing (30m)
+## Training introducing and focusing (15m)
 - [ ] Schedule
 - [ ] Trainer
 - [ ] Training overview
@@ -37,7 +37,7 @@ _* starred items are optional_
 - [ ] Topics focus demand from attendees
 - [ ] Additional topics demand form attendees
 
-## Java Platform crash course (2hr)
+## Java Platform crash course (2h)
 <!--- TODO Rosetta stone visuals: concept - metaphor - code -->
 ### Why Java?
 - [ ] Platform Goals
@@ -83,7 +83,7 @@ _* starred items are optional_
 
 ## Teamwork: NFRs and metrics checklist (15m)
 - [ ] What Quality Attributes/NFRs does JVM provide for application?
-- [ ] What Quality Attributes/NFRs does we satisfy with application monitoring?
+- [ ] What Quality Attributes/NFRs do we satisfy with application monitoring?
 - [ ] Start metrics [checklist](METRICS-CHECKLIST.md) by tier: JVM metrics
 
 ## Hands-on: Simple application building, running and monitoring (30m)
@@ -124,12 +124,12 @@ windows> taskmgr
 
 ---
 
-## Modern applications architecture and deployment (2)
+## Modern applications architecture and deployment (2h)
 <!--- TODO jps and cli staff -->
 ### Tiers to monitor and control overview
 - Docker Containers
-- Application Layers: UI, API, BL, DAL 
-- Application Frameworks
+- Application Layers: UI/P, API/C, BL/S, DAL/R 
+- Application Frameworks: Spring Core, MVC, Boot
 - Application caches
 - Thread Pools
 - JPA subsystem
@@ -145,6 +145,8 @@ windows> taskmgr
 - [ ] Name monitoring and logging APIs/protocols for tires
 ### How to monitor tiers
 - [ ] Monitoring and logging APIs/protocols for tires overview
+
+---
 
 ## Typical JVM memory issues (3)
 ### JVM memory architecture
@@ -180,6 +182,8 @@ windows> taskmgr
 - [ ] Analyse GC statistics with Prometheus
 - [ ] Make issue hypothesis report and resolving plan
 
+---
+
 ## Typical JVM threading issues (3)
 ### JVM threading architecture
 - [ ] Threads
@@ -208,6 +212,8 @@ windows> taskmgr
 - [ ] Given workload
 - [ ] Analyse thread statistics with Prometheus
 - [ ] Make issue hypothesis report and resolving plan
+
+---
 
 ## Typical JVM IO issues (3)
 ### Blocking IO architecture
@@ -242,6 +248,8 @@ windows> taskmgr
 - [ ] Analyse IO operations with Prometheus and logs
 - [ ] Make issue hypothesis report and resolving plan
 
+---
+
 ## Typical data storage issues (3)
 ### JDBC architecture
 - [ ] JDBC API
@@ -275,7 +283,16 @@ windows> taskmgr
 - [ ] Analyse DB operations
 - [ ] Make issue hypothesis report and resolving plan
 
-## Typical JVM containerization issues (1)
+---
+
+## Final retro (0.5)
+- [ ] Value taken
+- [ ] Process Improvement Actions 
+- [ ] Training Improvement Actions
+
+---
+
+## Typical JVM containerization issues (1)*
 ### Containerization architectue
 - [ ] Docker overview
 - [ ] Docker containers
@@ -295,13 +312,6 @@ windows> taskmgr
 - [ ] Modify container configuration with K8s сonfig
 - [ ] Analyse system metrics with Prometheus
 - [ ] Make issue hypothesis report and resolving plan
-
-## Final retro (0.5)
-- [ ] Value taken
-- [ ] Process Improvement Actions 
-- [ ] Training Improvement Actions
-
----
 
 ## Typical caching issues (1.5)*
 ### Caching concept
@@ -408,4 +418,4 @@ windows> taskmgr
 - [ ] Analyse requests profiles
 - [ ] Make issue hypothesis report and resolving plan
 
-## Typical CI/CD [pipeline overview](https://paper.dropbox.com/doc/Delivery-Pipeline-ci-cd-devops--A1GO2JqCDUodW3pUl3K0fsRxAQ-OBLCVRSkMek24U7IXIHbq)
+## Typical CI/CD [pipeline overview](https://paper.dropbox.com/doc/Delivery-Pipeline-ci-cd-devops--A1GO2JqCDUodW3pUl3K0fsRxAQ-OBLCVRSkMek24U7IXIHbq) (1.5)*
