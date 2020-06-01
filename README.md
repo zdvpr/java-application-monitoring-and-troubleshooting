@@ -95,7 +95,7 @@ _* starred items are optional_
 cd
 git clone https://github.com/YOUR_ACCOUNT/java-application-monitoring-and-troubleshooting
 cd java-application-monitoring-and-troubleshooting
-git checkout <group_branch, e.g. 2020-06-raiffeisen>
+git checkout <group_custom_branch, e.g. 2020-06-raiffeisen>
 ```
 ### When
 - [ ] Project application built locally with maven
@@ -104,7 +104,7 @@ mvn clean verify
 ```
 - [ ] Project application ran locally with CLI
 ```shell script
-java -cp 
+java -cp target/dbo-1.0-SNAPSHOT.jar com.acme.dbo.Presentation
 ```
 - [ ] JVisualVM profiler connected to running app
 ```shell script
