@@ -17,10 +17,12 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] [git](https://git-scm.com/downloads)
 - [ ] [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [ ] [Jetbrains IDEA](https://www.jetbrains.com/idea/download/)
+- [ ] [Docker](https://www.docker.com/products/docker-desktop)
 ## Network Access
 - [ ] github.org :443 :80
 - [ ] repo1.maven.org :443 :80
 - [ ] jcenter.bintray.com :443 :80
+- [ ] hub.docker.com :443 :80
 
 # Agenda
 _* starred items are optional_
@@ -86,7 +88,7 @@ _* starred items are optional_
 - [ ] What Quality Attributes/NFRs do we satisfy with application monitoring?
 - [ ] Start metrics [checklist](METRICS-CHECKLIST.md) by tier: JVM metrics
 
-## Hands-on: Simple application building, running and monitoring (30m)
+## Hands-on: Simple application _local_ building, running and monitoring (30m)
 ### Given
 - [ ] Satisfied [prerequisites](#Prerequisites) 
 - [ ] Forked simple project [codebase](https://github.com/eugene-krivosheyev/java-application-monitoring-and-troubleshooting)
@@ -104,7 +106,7 @@ mvn clean verify
 ```
 - [ ] Project application ran locally with CLI
 ```shell script
-java -cp target/dbo-1.0-SNAPSHOT.jar com.acme.dbo.Presentation
+java -Xms128m -Xmx256m -cp target/dbo-1.0-SNAPSHOT.jar -Dapp.property=value com.acme.dbo.Presentation program arguments
 ```
 - [ ] JVisualVM profiler connected to running app
 ```shell script
@@ -115,37 +117,146 @@ $JAVA_HOME/bin/jvisualvm
 linux$ top [-pid jvmpid]
 windows> taskmgr
 ```
-### Then
+### Then answered and reviewed at debrief
 - [ ] What is the default encoding for I/O?
 - [ ] What is the default heap size for app running?
 - [ ] How many java threads is active within JVM? 
 - [ ] How many OS threads is active within OS JVM process? 
 - [ ] What is the minimal possible heap size for app running?
+- [x] What is the difference for profiler times: Self time/Total time, CPU time? (optional) 
 
 ---
 
-## Modern applications architecture and deployment (2h)
-<!--- TODO jps and cli staff -->
-### Tiers to monitor and control overview
-- Docker Containers
-- Application Layers: UI/P, API/C, BL/S, DAL/R 
-- Application Frameworks: Spring Core, MVC, Boot
-- Application caches
-- Thread Pools
-- JPA subsystem
-- JPA caches
-- JDBC subsystem
-- Connection Pools 
-- JVM: threads, in- and off-memory, GC, IO/NIO
-- Message queues
-- DBMS
-- OS
-- Hardware
-### Hands-on
-- [ ] Name monitoring and logging APIs/protocols for tires
-### How to monitor tiers
-- [ ] Monitoring and logging APIs/protocols for tires overview
+## Modern applications architecture and deployment: What tiers do we monitor? (1h)
+| Tier 
+|------
+| Application Layers: UI/P, API/C, BL/S, DAL/R
+| Application caching 
+| Thread Pool 
+| JPA Caching
+| JPA subsystem 
+| Connection Pools
+| JDBC subsystem 
+| Framework configuration with profiles
+| Framework for Spring modules management  
+| Framework for Web/SOAP/REST application expose
+| Framework for Application
+| Application Server/Servlet Container 
+| JVM: application debug API
+| JVM: application profiling API
+| JVM: universal monitoring API
+| JVM: threads, IO
+| JVM: memory, GC
+| JVM: process 
+| Container
+| Message queues
+| DBMS
+| OS 
+| Hardware
 
+## Teamwork: What metrics do we monitor for production app? (30m)
+- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) by tiers
+
+## Monitoring architecture overview (15m)
+<!--- TODO Rosetta stone visuals: concept - metaphor - code -->
+
+## Modern applications architecture and deployment: How do we monitor tiers? (1h)
+<!--- TODO Rosetta stone visuals: concept - metaphor - code -->
+| Tier | Implementation | Tools
+|------|----------------|------
+| Application Layers | PWA or Server-side Template Engine, Spring @Controllers, @Services, Spring Data JPA @Repositories | [Spring Metrics for Counters, Timers, Long Task Timers, Statistics](https://docs.spring.io/spring-metrics/docs/current/public)
+| Application caching | spring-boot-starter-cache module + built-in default Simple cache provider | [Spring Metrics for Caches](https://docs.spring.io/spring-metrics/docs/current/public/prometheus#caches)
+| Thread Pool | Java built-in ExecutorService | [Spring Metrics for DataSources](https://docs.spring.io/spring-metrics/docs/current/public/prometheus#executor-services)
+| JPA subsystem and JPA Caching | Hibernate | [service:jmx://](https://vladmihalcea.com/hibernate-statistics-jmx/) [Hibernate built-in statistics](https://vladmihalcea.com/hibernate-statistics/)
+| JDBC subsystem and Connection Pools | Derby JDBC driver + HikariCP | [service:jmx://com.zaxxer.hikari](https://github.com/brettwooldridge/HikariCP/wiki/MBean-(JMX)-Monitoring-and-Management), [Spring Metrics for DataSources](https://docs.spring.io/spring-metrics/docs/current/public/prometheus#data-sources)
+| Framework for modules management | Spring Boot | [spring-boot-actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html) + Built-in Micrometer + [Prometheus Adapter](https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-prometheus) 
+| Framework for Application | Spring Core + Spring MVC (spring-boot-starter-web) | [Spring Metrics for Web Instrumentation](https://docs.spring.io/spring-metrics/docs/current/public/prometheus#web) [for Prometheus], Core [Micrometer](http://micrometer.io) [for Prometheus]
+| Application Server/Servlet Container | spring-boot-starter-tomcat | 
+| JVM: application debug API | JPDA | [jsadebugd](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jsadebugd.html)
+| JVM: application profiling API | JVMTI | [hprof](https://docs.oracle.com/javase/8/docs/technotes/samples/hprof.html)
+| JVM: threads, IO | JVM scheduler, JNI | [jstack](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstack.html)
+| JVM: memory, GC | Built-in Garbage Collectors | [jstat](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstat.html), [jstatd](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstatd.html), [jmap](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jmap.html), [jhat](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jinfo.html)
+| JVM: universal monitoring API | [JMX](https://docs.oracle.com/javase/tutorial/jmx/index.html) | [jvisualvm](https://docs.oracle.com/javase/8/docs/technotes/guides/visualvm/index.html) 
+| JVM: process | Oracle/OpenJDK JRE | [jps](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jps.html), [jcmd](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr006.html), [jinfo](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jinfo.html)
+| Containers | Docker | [docker cli](https://docs.docker.com/config/containers/runmetrics/), [docker api for Prometheus](https://docs.docker.com/config/daemon/prometheus/), [Prometheus cAdvisor](https://prometheus.io/docs/guides/cadvisor/)
+| Message queues | n/u | vendor tools, prometheus exporters
+| DBMS | Apache Derby / Postgresql | vendor tools, [Prometheus pg_exporter](https://github.com/wrouesnel/postgres_exporter), [pg explain](https://postgrespro.ru/docs/postgresql/9.6/sql-explain), [pg analyse](https://postgrespro.ru/docs/postgresql/9.6/sql-analyze)
+| OS | Linux | [ps](https://www.geeksforgeeks.org/ps-command-in-linux-with-examples/), [top](https://www.geeksforgeeks.org/top-command-in-linux-with-examples/)
+| Hardware | x86 | `df`, `free`, [SNMP](https://docs.oracle.com/javase/8/docs/technotes/guides/management/snmp.html), [Prometheus Node Exporter](https://prometheus.io/docs/guides/node-exporter/)
+
+## Hands-on: Modern application _remote_ building, running and monitoring (30m)
+### Given
+- [ ] Network access to {{ prod_host }} :22 :8080 
+- [ ] Network access to {{ prometheus_host }} :22 :9090
+
+- [ ] Remote `ssh` power user session to {{ prod_host }}
+- [ ] Running Node Exporter at {{ prod_host }}
+- [ ] Running Prometheus service at {{ prometheus_host }}
+- [ ] Installed java build and run environment at {{ prod_host }}
+```shell script
+sudo apt install git
+sudo apt install openjdk-8-jdk-headless
+sudo apt install maven
+``` 
+- [ ] [Application codebase](https://github.com/eugene-krivosheyev/agile-practices-application) **forked** to student's account
+- [ ] Application built at {{ prod_host }}
+```shell script
+cd /opt
+git clone --branch master --depth 1 https://github.com/<STUDENT_ACCOUNT>/agile-practices-application
+cd agile-practices-application
+mvn clean verify -DskipTests
+```
+- [ ] Given rights for application folder to developer user
+
+### When
+- [ ] Student makes remote `ssh` developer user session to {{ prod_host }}
+- [ ] Application ran
+```shell script
+cd /opt/agile-practices-application
+java -Xms128m -Xmx128m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=heapdump.hprof -Dderby.stream.error.file=log/derby.log -jar target/dbo-1.0-SNAPSHOT.jar --spring.profiles.active=qa
+```
+- [ ] CLI tools used
+```shell script
+df -ah
+free -m
+
+docker images -a
+docker ps -a
+
+ps aux
+jps [-lvm]
+top -p <pid>
+
+jcmd <pid> help
+jcmd <pid> VM.uptime
+jcmd <pid> VM.system_properties
+jcmd <pid> VM.flags
+```
+- [ ] Web applications used
+```
+http://{{ prod_host }}:8080/dbo/actuator
+http://{{ prometheus_host }}:9090/prometheus
+```
+
+### Finally
+- [ ] Application gracefully stopped
+```shell script
+curl --request POST http://<prod_host>:8080/dbo/actuator/shutdown
+```
+
+### Then answered and reviewed at debrief
+- [ ] Free HDD space? Free RAM?
+- [ ] How many JVMs running?
+- [ ] What DBMS used for application?
+- [ ] What JVM version used for application? What are the parameters, properties and arguments used?
+- [ ] How many Docker containers are running? What images used?
+- [ ] What are the `health` indicator for application?
+- [ ] What is the application uptime?
+- [ ] What is the CPU usage for application?
+- [ ] How many http requests servlet container handled?
+- [ ] How many http sessions are active?
+- [ ] What is the current `system load average`?
+  
 ---
 
 ## Typical JVM memory issues (3)
@@ -181,6 +292,10 @@ windows> taskmgr
 - [ ] Analyse GC settings
 - [ ] Analyse GC statistics with Prometheus
 - [ ] Make issue hypothesis report and resolving plan
+```
+jcmd <pid> GC.heap_dump /tmp/dump.hprof
+jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
+```
 
 ---
 
@@ -293,7 +408,7 @@ windows> taskmgr
 ---
 
 ## Typical JVM containerization issues (1)*
-### Containerization architectue
+### Containerization architecture
 - [ ] Docker overview
 - [ ] Docker containers
 - [ ] Docker images

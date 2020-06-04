@@ -10,6 +10,20 @@ public class Presentation {
     private static final Path datafilePath = get("target/clients-qa.data");
 
     public static void main(String[] args) throws ReadClientsException, CreateClientException, IOException {
+        if (args.length > 0) {
+            System.out.println("Application called with program arguments:");
+            for (String programArgument: args) {
+                System.out.println(programArgument);
+            }
+        }
+
+        System.out.println("Application called with custom application properties:");
+        System.getProperties().keySet().stream()
+                .map(Object::toString)
+                .filter(key -> key.contains("app"))
+                .forEach(System.out::println);
+
+
         final Controller applicationController = new Controller(new Service(new ClientRepository(datafilePath)));
 
         final Scanner console = new Scanner(System.in);

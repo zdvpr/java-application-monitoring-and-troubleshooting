@@ -1,7 +1,13 @@
 TIERED METRICS CHECKLIST
 ========================
 
-HOST
-----
+Hardware
+--------
 - [ ] Total RAM
+- [ ] Total HDD
+
+OS
+--
 - [ ] RAM available for Application
+- [ ] Free HDD
+
