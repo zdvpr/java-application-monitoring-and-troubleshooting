@@ -17,6 +17,7 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] [git](https://git-scm.com/downloads)
 - [ ] [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [ ] [Jetbrains IDEA](https://www.jetbrains.com/idea/download/)
+- [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
 - [ ] [Docker](https://www.docker.com/products/docker-desktop)
 ## Network Access
 - [ ] github.org :443 :80
@@ -288,7 +289,7 @@ curl --request POST http://<prod_host>:8080/dbo/actuator/shutdown
 ### Teamwork
 - [ ] New metrics to *checklist* by tier: JVM
 ### Hands-on
-- [ ] Given workload
+- [ ] Given workload tool and test plan
 - [ ] Analyse GC settings
 - [ ] Analyse GC statistics with Prometheus
 - [ ] Make issue hypothesis report and resolving plan
