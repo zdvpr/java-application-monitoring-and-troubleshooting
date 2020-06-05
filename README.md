@@ -16,10 +16,13 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 ## Software
 - [ ] [git](https://git-scm.com/downloads)
 - [ ] [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-- [ ] [Jetbrains IDEA](https://www.jetbrains.com/idea/download/)
-- [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
 - [ ] [Docker](https://www.docker.com/products/docker-desktop)
-## Network Access
+- [ ] [Ansible for *nix](https://docs.ansible.com/ansible/latest/installation_guide/index.html) or [Ansible for Windows](https://geekflare.com/ansible-installation-windows/)
+- [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
+## Network access from student stations _to_ emulation of **prod** host
+- [ ] prod:[hosts.yml#all/hosts/prod/ansible_host](/iaac/inventories/production/hosts.yml) accessible
+- [ ] Ports at {{ prod }} opened: [_:ports_needed](/iaac/inventories/test/test-env-docker-compose.yml)
+## Network Access from student stations _and_ {{ prod }} host
 - [ ] github.org :443 :80
 - [ ] repo1.maven.org :443 :80
 - [ ] jcenter.bintray.com :443 :80
@@ -82,7 +85,7 @@ _* starred items are optional_
 ### How do we monitor a java application internals?
 - [ ] JMX simple tooling demo: JVisualVM
 - [ ] JMX architecture overview
-### [Hands-on](#hands-on-simple-application-building-running-and-monitoring-30m)
+### [Hands-on](#hands-on-simple-application-local-building-running-and-monitoring-30m)
 
 ## Teamwork: NFRs and metrics checklist (15m)
 - [ ] What Quality Attributes/NFRs does JVM provide for application?
@@ -92,22 +95,27 @@ _* starred items are optional_
 ## Hands-on: Simple application _local_ building, running and monitoring (30m)
 ### Given
 - [ ] Satisfied [prerequisites](#Prerequisites) 
-- [ ] Forked simple project [codebase](https://github.com/eugene-krivosheyev/java-application-monitoring-and-troubleshooting)
+- [ ] Forked simple project [codebase](/src)
 - [ ] Cloned simple project
 ```shell script
 cd
 git clone https://github.com/YOUR_ACCOUNT/java-application-monitoring-and-troubleshooting
 cd java-application-monitoring-and-troubleshooting
-git checkout <group_custom_branch, e.g. 2020-06-raiffeisen>
+git checkout {{ group_custom_branch }}
 ```
 ### When
 - [ ] Project application built locally with maven
 ```shell script
-mvn clean verify
+mvn clean verify [-DskipTests]
 ```
 - [ ] Project application ran locally with CLI
 ```shell script
-java -Xms128m -Xmx256m -cp target/dbo-1.0-SNAPSHOT.jar -Dapp.property=value com.acme.dbo.Presentation program arguments
+java \
+  -Xms128m -Xmx256m \
+  -cp target/dbo-1.0-SNAPSHOT.jar \
+  -Dapp.property=value \
+  com.acme.dbo.Presentation \
+  program arguments
 ```
 - [ ] JVisualVM profiler connected to running app
 ```shell script
@@ -187,34 +195,34 @@ windows> taskmgr
 
 ## Hands-on: Modern application _remote_ building, running and monitoring (30m)
 ### Given
-- [ ] Network access to {{ prod_host }} :22 :8080 
-- [ ] Network access to {{ prometheus_host }} :22 :9090
-
-- [ ] Remote `ssh` power user session to {{ prod_host }}
-- [ ] Running Node Exporter at {{ prod_host }}
-- [ ] Running Prometheus service at {{ prometheus_host }}
-- [ ] Installed java build and run environment at {{ prod_host }}
+- [x] Given rights for application folder to developer user
+- [ ] **Forked** [application codebase](https://github.com/eugene-krivosheyev/agile-practices-application) to student's account
+- [ ] `ssh` session to {{ prod }}:[ansible_ssh_port](/iaac/inventories/production/hosts.yml)
 ```shell script
-sudo apt install git
-sudo apt install openjdk-8-jdk-headless
-sudo apt install maven
-``` 
-- [ ] [Application codebase](https://github.com/eugene-krivosheyev/agile-practices-application) **forked** to student's account
-- [ ] Application built at {{ prod_host }}
+ssh -p {{ ansible_ssh_port }} root@{{ prod }}
+```
+- [ ] Application built at {{ prod }}
 ```shell script
 cd /opt
-git clone --branch master --depth 1 https://github.com/<STUDENT_ACCOUNT>/agile-practices-application
+git clone --branch master --depth 1 https://github.com/{{ STUDENT_ACCOUNT }}/agile-practices-application
 cd agile-practices-application
-mvn clean verify -DskipTests
+mvn clean verify [-DskipTests]
 ```
-- [ ] Given rights for application folder to developer user
 
 ### When
-- [ ] Student makes remote `ssh` developer user session to {{ prod_host }}
 - [ ] Application ran
 ```shell script
 cd /opt/agile-practices-application
-java -Xms128m -Xmx128m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=heapdump.hprof -Dderby.stream.error.file=log/derby.log -jar target/dbo-1.0-SNAPSHOT.jar --spring.profiles.active=qa
+nohup \
+  java \
+    -Xms128m -Xmx128m \
+    -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=heapdump.hprof \
+    -Dderby.stream.error.file=log/derby.log \
+    -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=0.0.0.0 \
+    -jar target/dbo-1.0-SNAPSHOT.jar \
+      --spring.profiles.active=qa \
+      --server.port=8080 \
+  &
 ```
 - [ ] CLI tools used
 ```shell script
@@ -236,7 +244,7 @@ jcmd <pid> VM.flags
 - [ ] Web applications used
 ```
 http://{{ prod_host }}:8080/dbo/actuator
-http://{{ prometheus_host }}:9090/prometheus
+http://{{ prometheus_host }}:9090/alerts
 ```
 
 ### Finally
