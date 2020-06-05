@@ -20,9 +20,9 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] [Ansible for *nix](https://docs.ansible.com/ansible/latest/installation_guide/index.html) or [Ansible for Windows](https://geekflare.com/ansible-installation-windows/)
 - [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
 ## Network access from student stations _to_ emulation of **prod** host
-- [ ] prod:[hosts.yml#all/hosts/prod/ansible_host](/iaac/inventories/production/hosts.yml) accessible
-- [ ] Ports at {{ prod }} opened: [_:ports_needed](/iaac/inventories/test/test-env-docker-compose.yml)
-## Network Access from student stations _and_ {{ prod }} host
+- [ ] **prod**:[hosts.yml#ansible_host](/iaac/inventories/production/hosts.yml) accessible
+- [ ] Ports at {{ prod }}[:ports_needed](/iaac/inventories/test/test-env-docker-compose.yml) accessible
+## Network Access from student stations _and_ prod host
 - [ ] github.org :443 :80
 - [ ] repo1.maven.org :443 :80
 - [ ] jcenter.bintray.com :443 :80
@@ -132,7 +132,7 @@ windows> taskmgr
 - [ ] How many java threads is active within JVM? 
 - [ ] How many OS threads is active within OS JVM process? 
 - [ ] What is the minimal possible heap size for app running?
-- [x] What is the difference for profiler times: Self time/Total time, CPU time? (optional) 
+- [x] What is the difference for profiler times: Self time/Total time, CPU time?
 
 ---
 
@@ -197,9 +197,9 @@ windows> taskmgr
 ### Given
 - [x] Given rights for application folder to developer user
 - [ ] **Forked** [application codebase](https://github.com/eugene-krivosheyev/agile-practices-application) to student's account
-- [ ] `ssh` session to {{ prod }}:[ansible_ssh_port](/iaac/inventories/production/hosts.yml)
+- [ ] `ssh` session to {{ prod }}:[ansible_port](/iaac/inventories/production/hosts.yml)
 ```shell script
-ssh -p {{ ansible_ssh_port }} root@{{ prod }}
+ssh -p {{ ansible_port }} {{ ansible_user }}@{{ prod }}
 ```
 - [ ] Application built at {{ prod }}
 ```shell script
@@ -243,14 +243,14 @@ jcmd <pid> VM.flags
 ```
 - [ ] Web applications used
 ```
-http://{{ prod_host }}:8080/dbo/actuator
-http://{{ prometheus_host }}:9090/alerts
+http://{{ prod }}:8080/dbo/actuator
+http://{{ prod }}:9090/alerts
 ```
 
 ### Finally
 - [ ] Application gracefully stopped
 ```shell script
-curl --request POST http://<prod_host>:8080/dbo/actuator/shutdown
+curl --request POST http://{{ prod }}:8080/dbo/actuator/shutdown
 ```
 
 ### Then answered and reviewed at debrief
