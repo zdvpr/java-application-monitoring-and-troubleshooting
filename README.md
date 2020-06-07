@@ -16,11 +16,11 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 ## Software at student's developer station
 - [ ] [git](https://git-scm.com/downloads)
 - [ ] [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-- [ ] [Docker](https://www.docker.com/products/docker-desktop)
 - [ ] [Ansible for *nix](https://docs.ansible.com/ansible/latest/installation_guide/index.html) or [Ansible for Windows](https://geekflare.com/ansible-installation-windows/)
 - [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
+- [x] [Docker](https://www.docker.com/products/docker-desktop)
 ## Network access from student stations _to_ emulation of **prod** host
-- [ ] **prod**:[hosts.yml#ansible_host](/iaac/inventories/production/hosts.yml) accessible
+- [ ] [prod](/iaac/inventories/production/hosts.yml) accessible
 - [ ] Ports at {{ prod }}[:ports_needed](/iaac/inventories/test/test-env-docker-compose.yml) accessible
 ## Network Access from student stations _and_ prod host
 - [ ] github.org :443 :80
@@ -29,7 +29,7 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] hub.docker.com :443 :80
 
 # Agenda
-_* starred items are optional_
+_* starred items and checked checklist items are **optional**_
 
 ## Training introducing and focusing (15m)
 - [ ] Schedule
@@ -95,11 +95,11 @@ _* starred items are optional_
 ## Hands-on: Simple application _local_ building, running and monitoring (30m)
 ### Given
 - [ ] Satisfied [prerequisites](#Prerequisites) 
-- [ ] Forked simple project [codebase](/src)
-- [ ] Cloned simple project
+- [ ] **Forked** simple project [codebase](https://github.com/eugene-krivosheyev/java-application-monitoring-and-troubleshooting) 
+- [ ] Cloned fork locally
 ```shell script
 cd
-git clone https://github.com/YOUR_ACCOUNT/java-application-monitoring-and-troubleshooting
+git clone https://github.com/{{ STUDENT_ACCOUNT }}/java-application-monitoring-and-troubleshooting
 cd java-application-monitoring-and-troubleshooting
 git checkout {{ group_custom_branch }}
 ```
@@ -161,13 +161,11 @@ windows> taskmgr
 | Container: Core
 | Message queues
 | DBMS
-| OS: Thread
-| OS: Process
-| OS: Networking
-| OS: Core
+| OS: Threads
+| OS: Processes
 | Hardware: HDD/SSD
 | Hardware: RAM
-| Hardware: CPU, registers, L1 + L2 + L3 caches
+| Hardware: CPU
 
 ## Teamwork: What metrics do we monitor for production app? (30m)
 - [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) by tiers
@@ -193,7 +191,7 @@ cd iaac
 
 ### Then
 - [ ] Prometheus UI up and running at `http://{{ prod }}:9090/alerts`
-- [ ] (optional if using remote agent not load from dev station) JMeter can connect agent deployed at {{ prod }}:
+- [x] JMeter can connect agent deployed at {{ prod }}:
 ```shell script
 jmeter -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true
 
