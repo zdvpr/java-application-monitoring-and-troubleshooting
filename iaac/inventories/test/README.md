@@ -31,14 +31,14 @@ Smoke test Ansible connections
 ansible -i inventories/test -m shell -a 'uname -a' all
 ```
 
-Dry run
--------
+Dry run [if ansible scripts've changed]
+---------------------------------------
 ```bash
 ansible-playbook site.yml -i inventories/test --check
 ```
 
-Attach to running container `prod`
----------------------------------
+Attach to running container `prod` [when needed]
+------------------------------------------------
 ```bash
 ssh -p 2222 root@localhost
 docker exec -it prod /bin/bash
@@ -48,6 +48,7 @@ Run playbook against docker test environment hosts inventory
 ------------------------------------------------------------
 ```bash
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES #for MacOSX
+
 ansible-playbook site.yml -i inventories/test
 ```
 

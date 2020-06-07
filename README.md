@@ -13,7 +13,7 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 ## Hardware
 - [ ] RAM ≥ 8Гб
 - [ ] Wi-Fi with Internet access
-## Software
+## Software at student's developer station
 - [ ] [git](https://git-scm.com/downloads)
 - [ ] [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [ ] [Docker](https://www.docker.com/products/docker-desktop)
@@ -157,17 +157,50 @@ windows> taskmgr
 | JVM: threads, IO
 | JVM: memory, GC
 | JVM: process 
-| Container
+| Container: Networking
+| Container: Core
 | Message queues
 | DBMS
-| OS 
-| Hardware
+| OS: Thread
+| OS: Process
+| OS: Networking
+| OS: Core
+| Hardware: HDD/SSD
+| Hardware: RAM
+| Hardware: CPU, registers, L1 + L2 + L3 caches
 
 ## Teamwork: What metrics do we monitor for production app? (30m)
 - [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) by tiers
 
-## Monitoring architecture overview (15m)
+## Monitoring architecture overview (30m)
 <!--- TODO Rosetta stone visuals: concept - metaphor - code -->
+### Monitoring overview and tools
+### Load generation architecture overview
+- [ ] Types of performance testing except stress testing?
+- [ ] While monitoring: What type should we use? What performance metrics do we test?
+- [ ] Testing vs Monitoring
+
+## Hands-on: Prod host and monitoring provisioning (15m)
+### Given
+- [ ] Ansible provisioning [scripts and assets](/iaac) 
+```shell script
+cd iaac
+``` 
+- [ ] Provisioning [documentation](/iaac/README.md)
+
+### When
+- [ ] Steps executed according Provisioning documentation
+
+### Then
+- [ ] Prometheus UI up and running at `http://{{ prod }}:9090/alerts`
+- [ ] (optional if using remote agent not load from dev station) JMeter can connect agent deployed at {{ prod }}:
+```shell script
+jmeter -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true
+
+JMeter → Options → Log Viewer
+JMeter → Run → Remote Start → 127.0.0.1
+```
+
 
 ## Modern applications architecture and deployment: How do we monitor tiers? (1h)
 <!--- TODO Rosetta stone visuals: concept - metaphor - code -->
@@ -223,6 +256,8 @@ nohup \
       --spring.profiles.active=qa \
       --server.port=8080 \
   &
+
+cat nohup.log
 ```
 - [ ] CLI tools used
 ```shell script
@@ -232,10 +267,16 @@ free -m
 docker images -a
 docker ps -a
 
-ps aux
-jps [-lvm]
-top -p <pid>
+ps -ef
+ps -eaux --forest
+ps -eT | grep <pid>
 
+top
+top + 'f'
+top -p <pid>
+top -H -p <pid>
+
+jps [-lvm]
 jcmd <pid> help
 jcmd <pid> VM.uptime
 jcmd <pid> VM.system_properties
@@ -243,6 +284,7 @@ jcmd <pid> VM.flags
 ```
 - [ ] Web applications used
 ```
+http://{{ prod }}:8080/dbo/actuator/health
 http://{{ prod }}:8080/dbo/actuator
 http://{{ prod }}:9090/alerts
 ```

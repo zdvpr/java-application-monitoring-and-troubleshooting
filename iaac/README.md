@@ -1,8 +1,8 @@
 Playbook for production hosts
 =============================
 
-Install host dependencies for MacOs
------------------------------------
+Install host dependencies [for MacOs only]
+------------------------------------------
 ```bash
 brew install gnu-tar
 ```
@@ -13,8 +13,8 @@ Update dependency roles
 ansible-galaxy install -r requirements.yml
 ```
 
-Reset ssh keys
---------------
+Reset ssh keys [if target host've changed]
+------------------------------------------
 ```bash
 ssh-keygen -R {{ ansible_ssh_host }}
 ```
@@ -25,8 +25,8 @@ Smoke test Ansible connections
 ansible -i inventories/production -m shell -a 'uname -a' all
 ```
 
-Dry run
--------
+Dry run [if IaaC have changed]
+------------------------------
 ```bash
 ansible-playbook site.yml -i inventories/production --check
 ```

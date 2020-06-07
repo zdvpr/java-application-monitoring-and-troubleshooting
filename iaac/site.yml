@@ -50,3 +50,9 @@
             - targets: ['localhost:8080']
               labels:
                 env: prod
+
+  post_tasks:
+    - name: Start JMeter remote agent
+      shell: "nohup jmeter-server -Dserver.rmi.ssl.disable=true -Djava.rmi.server.hostname={{ ansible_host }} -Dserver.rmi.localport=42129 &"
+      args:
+        chdir: "{{ lookup('env','JMETER_HOME') }}"
