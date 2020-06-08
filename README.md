@@ -171,25 +171,54 @@ windows> taskmgr
 - [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) by tiers
 
 ## Monitoring architecture overview (30m)
-<!--- TODO Rosetta stone visuals: concept - metaphor - code -->
-![Inrastructure overview](http://www.plantuml.com/plantuml/png/LOv12W8n34NtESLdzhs2u3d4HSOMfrYRqaH1PEvkAwNY9l1VteUVnGSiFZoXnXObBs15ooFYJJWTiyOr1PJ4hrNaTkuE3zZ-gXiir7lCdFfl1fgMUnHt-F6TY2yc5L8Kr8-hyRfPSqRZ7yuYVGUNAhule_q3)
+![Inrastructure overview](http://www.plantuml.com/plantuml/svg/NP9BRiCW48Rtd6AKLJU-GfGRz01HP64pZMbj1Z6aRLJbxXqUrA4BIyptp-CVy8cZ3l6shSgHGJWO_0H1qP8xW6QGk8Rme-3Cl434i5cdrqlIMo2QTcod5S6l-ZuHVMIzGf6dG5-CuIB7zmrZEgacmt3SEpsKqdEa0A-UKmlohEI3GP9gVelteWRgbB-uZ59bEn_8v3KA1Nr55xFD0iOCHC_P-Eqf2Cq9YOoDYF6PDazEicLlxrSxvpkwfEvmtiXPMS2wAw0pdcoTKhc2Hzz1VCdy1MzS6XWTzQGPGMYmCu-BPQcxby8zEs_OcdRy-Dzmjs7IdrohFbdKV5DIP9t4Rtf6I99gis1uAK3ij1U0ePNL9wYWUNh2_V1iBEF-5KxeZFoNlm00)
 <details>
-<summary>puml</summary>
+<summary>pUML source</summary>
 
 ```puml
+@startuml
 node "dev station" as devstation {
- [Ansible playbook] as ansible 
  [ssh terminal] as terminal
- ansible -up-> terminal
+ [ansible playbook] as ansible
+ [browser]
+ [jmeter]
+
+ ansible -> terminal
 }
 
-actor ops 
-ops -right-> ansible
-ops -right-> terminal
+actor Ops as ops
+ops --> ansible
+ops --> terminal
+ops --> browser
+ops --> jmeter
 
 node prod {
- 
+ [jmeter agent] as jmeter_agent
+ [node exporter] as node_exporter
+
+ component [application] {
+  [monitoring endpoint] as monitor
+ }
+
+ component [prometheus] {
+  database metrics_history
+ }
+
+ prometheus --> monitor
+ prometheus -> node_exporter
+
+ jmeter_agent -> application
+ node_exporter -> prod
+
+ interface port
+ monitor -( port
 }
+
+terminal --> prod
+browser --> prometheus
+browser --> application
+jmeter --> jmeter_agent
+@enduml
 ```
 
 </details>
