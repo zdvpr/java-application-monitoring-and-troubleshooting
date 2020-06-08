@@ -669,3 +669,27 @@ jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
 - [ ] Make issue hypothesis report and resolving plan
 
 ## Typical CI/CD [pipeline overview](https://paper.dropbox.com/doc/Delivery-Pipeline-ci-cd-devops--A1GO2JqCDUodW3pUl3K0fsRxAQ-OBLCVRSkMek24U7IXIHbq) (1.5)*
+
+## How to deal with typical distributed system issues? (2.5)*
+### First Law of Distributed Objects
+- [ ] Distributed systems: Seasons in the abbys
+- [ ] CAP thesis
+- [ ] Data storage architectures overview in CAP terms
+### Microservices architecture patterns and trade-offs
+- [ ] Why microservices?
+- [ ] Data encapsulation
+- [ ] Gateway
+- [ ] Services discovery
+- [ ] Data duplication
+- [ ] Distributed transactions
+### Monitoring and tracing
+- [ ] Monitoring patterns
+- [ ] Tracing patterns
+### Demo
+- [ ] Business operation in microservices environment tracing
+### Hands-on
+- [ ] Given workload
+- [ ] Analyse distributed architecture
+- [ ] Analyse call trace
+- [ ] Play "hell monkey"
+- [ ] Make issue hypothesis report and resolving plan
