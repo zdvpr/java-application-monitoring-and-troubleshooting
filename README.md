@@ -227,11 +227,11 @@ JMeter → Run → Remote Start → 127.0.0.1
 ## Hands-on: Modern application _remote_ building, running and monitoring (30m)
 ### Given
 - [x] Given rights for application folder to developer user
-- [ ] **Forked** [application codebase](https://github.com/eugene-krivosheyev/agile-practices-application) to student's account
 - [ ] `ssh` session to {{ prod }}:[ansible_port](/iaac/inventories/production/hosts.yml)
 ```shell script
 ssh -p {{ ansible_port }} {{ ansible_user }}@{{ prod }}
 ```
+- [ ] **Forked** [application codebase](https://github.com/eugene-krivosheyev/agile-practices-application) to student's account
 - [ ] Application built at {{ prod }}
 ```shell script
 cd /opt
@@ -244,6 +244,7 @@ mvn clean verify [-DskipTests]
 - [ ] Application ran
 ```shell script
 cd /opt/agile-practices-application
+rm -rf dbo-db
 nohup \
   java \
     -Xms128m -Xmx128m \
@@ -253,9 +254,7 @@ nohup \
     -jar target/dbo-1.0-SNAPSHOT.jar \
       --spring.profiles.active=qa \
       --server.port=8080 \
-  &
-
-cat nohup.log
+> /dev/null 2>&1 &
 ```
 - [ ] CLI tools used
 ```shell script
@@ -282,6 +281,7 @@ jcmd <pid> VM.flags
 ```
 - [ ] Web applications used
 ```
+http://{{ prod }}:8080/dbo/swagger-ui.html
 http://{{ prod }}:8080/dbo/actuator/health
 http://{{ prod }}:8080/dbo/actuator
 http://{{ prod }}:9090/alerts
@@ -291,6 +291,7 @@ http://{{ prod }}:9090/alerts
 - [ ] Application gracefully stopped
 ```shell script
 curl --request POST http://{{ prod }}:8080/dbo/actuator/shutdown
+rm -rf dbo-db
 ```
 
 ### Then answered and reviewed at debrief

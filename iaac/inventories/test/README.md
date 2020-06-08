@@ -1,8 +1,8 @@
 Testing playbook with Docker test hosts
 =======================================
 
-Install host dependencies for MacOs
------------------------------------
+Install host dependencies [for MacOS host only]
+-----------------------------------------------
 ```bash
 brew install gnu-tar
 ```
@@ -28,13 +28,19 @@ docker-compose --file inventories/test/test-env-docker-compose.yml up --detach
 Smoke test Ansible connections
 ------------------------------
 ```bash
-ansible -i inventories/test -m shell -a 'uname -a' all
+echo yes | ansible -i inventories/test -m shell -a 'uname -a' all
 ```
 
 Dry run [if ansible scripts've changed]
 ---------------------------------------
 ```bash
 ansible-playbook site.yml -i inventories/test --check
+```
+
+Show running containers [when needed]
+-------------------------------------
+```bash
+docker ps -a
 ```
 
 Attach to running container `prod` [when needed]
@@ -54,6 +60,18 @@ ansible-playbook site.yml -i inventories/test
 
 Stop docker test environment hosts inventory
 --------------------------------------------
+```bash
+docker-compose --file inventories/test/test-env-docker-compose.yml stop
+```
+
+Start docker test environment hosts inventory
+---------------------------------------------
+```bash
+docker-compose --file inventories/test/test-env-docker-compose.yml start
+```
+
+Remove docker test environment hosts inventory
+----------------------------------------------
 ```bash
 docker-compose --file inventories/test/test-env-docker-compose.yml down
 ```
