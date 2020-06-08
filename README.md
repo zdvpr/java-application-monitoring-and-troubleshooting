@@ -44,47 +44,71 @@ _* starred items and checked checklist items are **optional**_
 - [ ] Additional topics demand form attendees
 
 ## Java Platform crash course (2h)
-<!--- TODO Rosetta stone visuals: concept - metaphor - code -->
-### Why Java?
-- [ ] Platform Goals
-- [ ] JVM
-- [ ] JRE
-- [ ] JDK
 ### What do any application doing?
-- [ ] Data input
-- [ ] Data processing
-- [ ] Data storing
-- [ ] Data output
+[System as Public service Metaphor](/visuals/restoran-as-system-metaphor.jpg)
+
+| Concept | Metaphor | Code
+|---------|----------|-----
+| Thread | **Worker man** | Thread created by runtime: `java MyApplication` 
+| Data input | **Visitor's wishes** | [Console user input](/src/main/java/com/acme/dbo/Presentation.java#L31)
+| Data processing | **Meal recipes, conversation scripts, labor instructions** | [Code as instructions](/src/main/java/com/acme/dbo/Controller.java) 
+| Data storing | **Persistent production store** | [Files as persistent store](/src/main/java/com/acme/dbo/ClientRepository.java)
+| Data output | **Giving away to Visitor his meals** | [Console output](/src/main/java/com/acme/dbo/Presentation.java#L33)
+
 ### How we do model the data?
-- [ ] Primitive Types
-- [ ] Structures with class and enum
+| Concept | Metaphor | Code
+|---------|----------|-----
+| Primitive Types | People can think and communicate only with **numbers and strings** | [String restaurant menu](/src/main/java/com/acme/dbo/Presentation.java#L32)
+| Structures | People can think with composite entities, **concepts** | [Domain class and enum](/src/main/java/com/acme/dbo/Client.java)
+| Object of structure | **Instance** of concept, with its own state differs from other instance | [Dealing with particular object while processing request](/src/main/java/com/acme/dbo/Service.java) 
+
 ### How we do model the behavior?
-- [ ] OOAD overview
-- [ ] Types: class, abstract class, interface
-- [ ] Methods and call stack
-### How do we implement application? Key concepts
-- [ ] Working with _class_: dynamic classloading
-- [ ] Working with _instance and its reference_: create and GC
-- [ ] Working with _thread_: Thread API, states, pooling
+| Concept | Metaphor | Code
+|---------|----------|-----
+| Procedure | Meal **recipe** or conversation **script** | [Setting behavior with methods](/src/main/java/com/acme/dbo/Presentation.java#L30)
+| Call stack | **Chain of actions** workers call at others  | [Calling method from method](/src/main/java/com/acme/dbo/Presentation.java#L12)
+| Class | **Role**: Chief or Waiter, state + bunch of procedures dealing with it | Today we likely divide state and behavior to [domain entities](/src/main/java/com/acme/dbo/Client.java) and [services](/src/main/java/com/acme/dbo/Service.java)
+| Object of class | **Johnny the Chief** and **Maggy the chief** differs with its state but have same behavior |  
+| Application logic | Scenario how to behave all the workers in any case | [Workers takes responsibilities on them to rule at their level](/src/main/java/com/acme/dbo/Controller.java)
+
 ### Where data is stored? Core data scopes
-- [ ] Local/method/stack variables
-- [ ] Object properties/state: request, thread-local, session, singleton/application
-- [ ] Persistent: file, embedded/local database
-- [ ] Integration: remote filesystem, remote database, remote system procedure call, remote message queue
+| Concept | Metaphor | Implementation
+|---------|----------|---------------
+| Local/method/stack variables | Short-term memory: Chief remember sugar doze only when doing sugaring | Call Stack   
+| Parameters | Details when asking others to do some work: waiter asks johnnyChief.makeMeal(whatMeals?) | Call Stack 
+| Object state | State of worker or structure: its current properties values | Heap object space
+| - Request scope | Some object state accessible to all the workers in call chain handling request: sticky note or voice message given each worker to next, "not spicy" | Parameters, framework support, ThreadLocal  
+| - Session scope | Some object state accessible to all the workers handling all requests from the same Visitor: "its for table 13" | Framework support
+| - Singleton/application scope | Some object state accessible to all the workers | Framework support, Language support for static variables
+| Persistent | Long-term data store surviving system restarts | File, embedded/local database, remote filesystem, remote database
+| Integration | Data stored and processed by external system | Remote system procedure call, message queue
+
+### How do we implement application with Java
+| Concept | Metaphor | Reality
+|---------|----------|--------
+| Runtime | If Developer is CEO setting application logic, Runtime is your vice | JVM API and system library API
+| Working with _thread_: Thread API, states, pooling | We can create work force on demand to execute our instructions | But we have some RAM memory and performance cost 
+| Working with _class_: dynamic classloading | Instructions what to do workers get just in time not ahead but worker remember it till die | But we have run-time latency costs
+| Working with _instance_: create and GC | We ask our vice to hire and retire workers | Objects state costs us RAM memory. When object's no longer needed it purged from RAM
+
 ### [Teamwork](#teamwork-nfrs-and-metrics-checklist-15m)
-### How do we build an application?
+
+### How do we build Java application?
+- [ ] JVM vs JRE vs JDK
 - [ ] Phisical point ov view for java application
 - [ ] Classes, packages and JARs
 - [ ] classpath x2
 - [ ] Build cycle raw
 - [ ] Build cycle with Maven
-### How do we run an application?
+### How do we run Java application?
+- [ ] JVM vs JRE vs JDK
 - [ ] Run with JVM
 - [ ] Ways for application run-time parameterization: jvm parameters, program arguments, sys/app properties
 - [ ] Key JVM parameters for memory setup
-### How do we monitor a java application internals?
+### How do we monitor Java application internals?
 - [ ] JMX simple tooling demo: JVisualVM
 - [ ] JMX architecture overview
+
 ### [Hands-on](#hands-on-simple-application-local-building-running-and-monitoring-30m)
 
 ## Teamwork: NFRs and metrics checklist (15m)
