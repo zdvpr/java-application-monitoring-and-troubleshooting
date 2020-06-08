@@ -309,11 +309,11 @@ rm -rf dbo-db
 - [ ] How many JVMs running?
 - [ ] What DBMS used for application?
 - [ ] What JVM version used for application? What are the parameters, properties and arguments used?
-- [ ] How many Docker containers are running? What images used?
+- [x] How many Docker containers are running? What images used?
 - [ ] What are the `health` indicator for application?
 - [ ] What is the application uptime?
 - [ ] What is the CPU usage for application?
-- [ ] How many http requests servlet container handled?
+- [ ] How many http requests servlet container handled by different URLs? 
 - [ ] How many http sessions are active?
 - [ ] What is the current `system load average`?
   
