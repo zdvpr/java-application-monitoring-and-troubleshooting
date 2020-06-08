@@ -241,7 +241,7 @@ mvn clean verify [-DskipTests]
 ```
 
 ### When
-- [ ] Application ran
+- [ ] Application ran at {{ prod }}
 ```shell script
 cd /opt/agile-practices-application
 rm -rf dbo-db
@@ -256,7 +256,11 @@ nohup \
       --server.port=8080 \
 > /dev/null 2>&1 &
 ```
-- [ ] CLI tools used
+- [ ] Load emulation ran at dev station
+```shell script
+jmeter -n -t load.jmx -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true
+```
+- [ ] CLI tools used at {{ prod }}
 ```shell script
 df -ah
 free -m
@@ -279,16 +283,22 @@ jcmd <pid> VM.uptime
 jcmd <pid> VM.system_properties
 jcmd <pid> VM.flags
 ```
-- [ ] Web applications used
+- [ ] Web applications used from dev station
 ```
 http://{{ prod }}:8080/dbo/swagger-ui.html
+
 http://{{ prod }}:8080/dbo/actuator/health
 http://{{ prod }}:8080/dbo/actuator
+http://{{ prod }}:8080/dbo/actuator/prometheus
+
 http://{{ prod }}:9090/alerts
+http://{{ prod }}:9090/graph
+http://{{ prod }}:9090/graph?g0.range_input=15m&g0.tab=0&g0.expr=http_server_requests_seconds_count
 ```
 
 ### Finally
-- [ ] Application gracefully stopped
+- [ ] JMeter load emulation stopped at dev station
+- [ ] Application gracefully stopped at {{ prod }}
 ```shell script
 curl --request POST http://{{ prod }}:8080/dbo/actuator/shutdown
 rm -rf dbo-db
