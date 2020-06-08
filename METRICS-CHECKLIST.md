@@ -3,11 +3,10 @@ TIERED METRICS CHECKLIST
 
 Hardware
 --------
-- [ ] Total RAM
-- [ ] Total HDD
+- [ ] Total RAM:
+- [ ] Total HDD:
 
 OS
 --
-- [ ] RAM available for Application
-- [ ] Free HDD
-
+- [ ] RAM available for Application:
+- [ ] Free HDD:

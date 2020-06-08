@@ -172,6 +172,28 @@ windows> taskmgr
 
 ## Monitoring architecture overview (30m)
 <!--- TODO Rosetta stone visuals: concept - metaphor - code -->
+![Inrastructure overview](http://www.plantuml.com/plantuml/png/LOv12W8n34NtESLdzhs2u3d4HSOMfrYRqaH1PEvkAwNY9l1VteUVnGSiFZoXnXObBs15ooFYJJWTiyOr1PJ4hrNaTkuE3zZ-gXiir7lCdFfl1fgMUnHt-F6TY2yc5L8Kr8-hyRfPSqRZ7yuYVGUNAhule_q3)
+<details>
+<summary>puml</summary>
+
+```puml
+node "dev station" as devstation {
+ [Ansible playbook] as ansible 
+ [ssh terminal] as terminal
+ ansible -up-> terminal
+}
+
+actor ops 
+ops -right-> ansible
+ops -right-> terminal
+
+node prod {
+ 
+}
+```
+
+</details>
+
 ### Monitoring overview and tools
 ### Load generation architecture overview
 - [ ] Types of performance testing except stress testing?
