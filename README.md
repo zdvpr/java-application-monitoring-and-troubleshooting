@@ -2,6 +2,9 @@ Java Application Monitoring and Troubleshooting Basics
 ======================================================
 _4. Java Application as a Runtime White Box: App running, JVM and application monitoring, troubleshooting, faults analysing and tuning._ 24 hrs / 3 days.
 
+# Webinar recordings
+- [09.06.2020](https://us02web.zoom.us/rec/share/wuByc-7r-ntOTJXmtXrufJ4HO9rIeaa82yNMrPcJy0iNB8XirR1aXECwTcmAhGcZ)
+
 # Training Objectives
 - [ ] Understanding modern application architecture and defect hotspots
 - [ ] Understanding JVM classes, memory and threading architecture
