@@ -162,7 +162,37 @@ windows> taskmgr
 ---
 
 ## Modern applications architecture and deployment: What tiers do we monitor? (1h)
-[Tiers and components to monitor](http://www.plantuml.com/plantuml/svg/jPRTRzis4C3V_LUmxju6M_ju6uQYGJfi0ResIDQdrGXEv5bcGf4SISdr1l_l8oMvD2T5OrF4JvBkutxtSQHVMmV6DRLOl62uvHB9rUNxTnzktfATSzh-L1G6zkkAkrrJDXODLTAXT6kgwi8r6fZviT02P72nubwwsdgDbTM6ExH5-yFw-_Lt1SCsoEpY1PTKD0mR8qw12geOhFKvmktrpTKVlzpcKHWeKQ1aKD0k_eacCWI2uIK1Y64AxxD5Cr1CgmWkcq-p6apHX_znSWyjp2euLLDmiofKLRryiV3vQoLHEhBy-Pi-XrSVvGuCsuF19G5BJY_afU3LpbK63kIV1V6_Fo-lFspwfvkBtuUdtzwy6PxUNhpRBBh794fN1X_a_MtdNbdoSh_Z3WUddMbe3t29XjX6QsNSXaIXDegYjQG62HNMtkqc2jtE8B1fsPOBj0Vhi2QyK6S2YMwlp4FuEX2FgFlMUEpFQ1rz11rLP-IzvSOr8FZVuBYIcrGf9EcfjUQo-ez8jMY4TxkrgO21Wn8iaYNZriFNFkDbef6y9Ec4CVB9tBSr6ShPfHFUHzs8NH5WBH4AM80SoskibJcSrPvyItwzZ8evJNgaMGGqJvIIqiver4fofum79XVNLnCAsYWVwd4vQyfca4NXL4dxnVD53Miaq95qKlPOtcLCIwmHrS63H1gcXNoKi-NgJC9H5zhf55KYMEn0if3Q8_eUYO3MWbCunH1yY_H01JvY4kOcfcrpJ8PcQwM4JTCOAZfJrNjMqlCg12VftjrH7IiumHiSCCDRDDDuntc6hhDKiR0iMmCrTkDMAzO8jEUJtezgnsPr6BUxKYatBDCSuTXhHgixoxHreIHRNZMc_n0AX9_SPC5p4puFy1dpF4Mgfgw57E2KTdvMyttqkupsT6la-uhvvzK_NbHrxQqjLHg_pBAnQ5RztnL6HZkIwqMegl95osppUByq48t6Skl2kpQgvGpDSdPkKm9MTXSHeK1tWIIVFdlPGUlvDSzV-V7wpqkZE7DdzbWMLe4k35etlJLrI_FhEpxKupKrPsRmhoOG6DMui5LvWJ87UUQM3QOecLOypc5-2Qlqr3brF_kCINQxcyl0CupcUKhd7hCSPYbfe0y-0bbsaO5IjFqL2OVXNm03aTlxf9bQsL3WmoRBwFXbj6LZkGoeGbMSfi3bKtWjcfPJV1POq3mbf4yX3DUZKKAWUHP8RT2YTDqGfxJwARGjntqkPvRQq22oUaNYRENDUAnSi1uSPLc6B89DzF3LntE-PFhhSRpRKUaO1E73SV4Q9MjgyIy0)
+| Tier 
+|------
+| Application logic layers: UI/P, API/C, BL/S, DAL/R
+| Application caching 
+| Thread Pool 
+| JPA Caching
+| JPA subsystem 
+| Connection Pools
+| JDBC subsystem 
+| Framework configuration with profiles
+| Framework for Spring modules management  
+| Framework for Web/SOAP/REST application expose
+| Framework for Application
+| Application Server/Servlet Container 
+| JVM: application debug API
+| JVM: application profiling API
+| JVM: universal monitoring API
+| JVM: threads, IO
+| JVM: memory, GC
+| JVM: process 
+| Container: Networking
+| Container: Core
+| Message queues
+| DBMS
+| OS: Threads
+| OS: Processes
+| Hardware: HDD/SSD
+| Hardware: RAM
+| Hardware: CPU
+
+[Tiers and components to monitor diagram](http://www.plantuml.com/plantuml/svg/jPRTRzis4C3V_LUmxju6M_ju6uQYGJfi0ResIDQdrGXEv5bcGf4SISdr1l_l8oMvD2T5OrF4JvBkutxtSQHVMmV6DRLOl62uvHB9rUNxTnzktfATSzh-L1G6zkkAkrrJDXODLTAXT6kgwi8r6fZviT02P72nubwwsdgDbTM6ExH5-yFw-_Lt1SCsoEpY1PTKD0mR8qw12geOhFKvmktrpTKVlzpcKHWeKQ1aKD0k_eacCWI2uIK1Y64AxxD5Cr1CgmWkcq-p6apHX_znSWyjp2euLLDmiofKLRryiV3vQoLHEhBy-Pi-XrSVvGuCsuF19G5BJY_afU3LpbK63kIV1V6_Fo-lFspwfvkBtuUdtzwy6PxUNhpRBBh794fN1X_a_MtdNbdoSh_Z3WUddMbe3t29XjX6QsNSXaIXDegYjQG62HNMtkqc2jtE8B1fsPOBj0Vhi2QyK6S2YMwlp4FuEX2FgFlMUEpFQ1rz11rLP-IzvSOr8FZVuBYIcrGf9EcfjUQo-ez8jMY4TxkrgO21Wn8iaYNZriFNFkDbef6y9Ec4CVB9tBSr6ShPfHFUHzs8NH5WBH4AM80SoskibJcSrPvyItwzZ8evJNgaMGGqJvIIqiver4fofum79XVNLnCAsYWVwd4vQyfca4NXL4dxnVD53Miaq95qKlPOtcLCIwmHrS63H1gcXNoKi-NgJC9H5zhf55KYMEn0if3Q8_eUYO3MWbCunH1yY_H01JvY4kOcfcrpJ8PcQwM4JTCOAZfJrNjMqlCg12VftjrH7IiumHiSCCDRDDDuntc6hhDKiR0iMmCrTkDMAzO8jEUJtezgnsPr6BUxKYatBDCSuTXhHgixoxHreIHRNZMc_n0AX9_SPC5p4puFy1dpF4Mgfgw57E2KTdvMyttqkupsT6la-uhvvzK_NbHrxQqjLHg_pBAnQ5RztnL6HZkIwqMegl95osppUByq48t6Skl2kpQgvGpDSdPkKm9MTXSHeK1tWIIVFdlPGUlvDSzV-V7wpqkZE7DdzbWMLe4k35etlJLrI_FhEpxKupKrPsRmhoOG6DMui5LvWJ87UUQM3QOecLOypc5-2Qlqr3brF_kCINQxcyl0CupcUKhd7hCSPYbfe0y-0bbsaO5IjFqL2OVXNm03aTlxf9bQsL3WmoRBwFXbj6LZkGoeGbMSfi3bKtWjcfPJV1POq3mbf4yX3DUZKKAWUHP8RT2YTDqGfxJwARGjntqkPvRQq22oUaNYRENDUAnSi1uSPLc6B89DzF3LntE-PFhhSRpRKUaO1E73SV4Q9MjgyIy0)
 <details>
 <summary>puml</summary>
 
@@ -275,36 +305,6 @@ component "<$server>\nhardware" as hardware #lightgray {
 @enduml
 ```
 </details>
-
-| Tier 
-|------
-| Application logic layers: UI/P, API/C, BL/S, DAL/R
-| Application caching 
-| Thread Pool 
-| JPA Caching
-| JPA subsystem 
-| Connection Pools
-| JDBC subsystem 
-| Framework configuration with profiles
-| Framework for Spring modules management  
-| Framework for Web/SOAP/REST application expose
-| Framework for Application
-| Application Server/Servlet Container 
-| JVM: application debug API
-| JVM: application profiling API
-| JVM: universal monitoring API
-| JVM: threads, IO
-| JVM: memory, GC
-| JVM: process 
-| Container: Networking
-| Container: Core
-| Message queues
-| DBMS
-| OS: Threads
-| OS: Processes
-| Hardware: HDD/SSD
-| Hardware: RAM
-| Hardware: CPU
 
 ## Teamwork: What metrics do we monitor for production app? (30m)
 - [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) by tiers
