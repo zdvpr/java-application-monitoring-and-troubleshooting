@@ -50,7 +50,7 @@ _* starred items and checked checklist items are **optional**_
 | Concept | Metaphor | Code
 |---------|----------|-----
 | Thread | **Worker man** | Thread created by runtime: `java MyApplication` 
-| Thread Pool | 
+| Thread Pool | [Workers **Team**](/visuals/restaurant-with-thread-pools.jpg) often the same Role | Typical architecture: pool managed by container, async arch: some pools managed by framework/application   
 | Data input | **Visitor's wishes** | [Console user input](/src/main/java/com/acme/dbo/Presentation.java#L31)
 | Data processing | **Meal recipes, conversation scripts, labor instructions** | [Code as instructions](/src/main/java/com/acme/dbo/Controller.java) 
 | Data storing | **Persistent production store** | [Files as persistent store](/src/main/java/com/acme/dbo/ClientRepository.java)
