@@ -45,11 +45,12 @@ _* starred items and checked checklist items are **optional**_
 
 ## Java Platform crash course (2h)
 ### What do any application doing?
-[System as Public service Metaphor](/visuals/restoran-as-system-metaphor.jpg)
+![System as Public service](/visuals/restaurant-as-system-metaphor.jpg "System as Public service")
 
 | Concept | Metaphor | Code
 |---------|----------|-----
 | Thread | **Worker man** | Thread created by runtime: `java MyApplication` 
+| Thread Pool | 
 | Data input | **Visitor's wishes** | [Console user input](/src/main/java/com/acme/dbo/Presentation.java#L31)
 | Data processing | **Meal recipes, conversation scripts, labor instructions** | [Code as instructions](/src/main/java/com/acme/dbo/Controller.java) 
 | Data storing | **Persistent production store** | [Files as persistent store](/src/main/java/com/acme/dbo/ClientRepository.java)
