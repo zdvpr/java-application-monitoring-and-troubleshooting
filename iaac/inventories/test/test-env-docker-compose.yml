@@ -4,7 +4,7 @@ services:
   prod:
     container_name: prod
     build: .
-    image: dev.ekr.iaac.edu.monitoring.test/prod
+    image: ekr26/dev.ekr.iaac.edu.monitoring.prod:clear
     restart: always
     ports:
       - "2222:22"

@@ -422,7 +422,7 @@ JMeter → Run → Remote Start → 127.0.0.1
 - [x] Given rights for application folder to developer user
 - [ ] `ssh` session to {{ prod }}:[ansible_port](/iaac/inventories/production/hosts.yml)
 ```shell script
-ssh -p {{ ansible_port }} {{ ansible_user }}@{{ prod }}
+ssh -p 2222 root@localhost
 ```
 - [ ] **Forked** [application codebase](https://github.com/eugene-krivosheyev/agile-practices-application) to student's account
 - [ ] Application built at {{ prod }}
