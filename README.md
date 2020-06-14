@@ -2,6 +2,9 @@ Java Application Monitoring and Troubleshooting Basics
 ======================================================
 _4. Java Application as a Runtime White Box: App running, JVM and application monitoring, troubleshooting, faults analysing and tuning._ 24 hrs / 3 days.
 
+> You have Java application running at prod server, Prometheus and ssh terminal.
+> Let's start monitoring!
+
 # Webinar recordings
 - [09.06.2020](https://us02web.zoom.us/rec/share/wuByc-7r-ntOTJXmtXrufJ4HO9rIeaa82yNMrPcJy0iNB8XirR1aXECwTcmAhGcZ)
 - [11.06.2020](https://us02web.zoom.us/rec/share/7uZJFbXS9UVIeqvw1UHHQO17GLa0T6a8gSkbq_VfnxwTgmdUrWhXBOGNNv3yKVs3)
@@ -393,7 +396,6 @@ JMeter → Options → Log Viewer
 JMeter → Run → Remote Start → 127.0.0.1
 ```
 
-
 ## Modern applications architecture and deployment: How do we monitor tiers? (1h)
 <!--- TODO Rosetta stone visuals: concept - metaphor - code -->
 | Tier | Implementation | Tools
@@ -514,10 +516,11 @@ rm -rf dbo-db
 ---
 
 ## Typical JVM memory issues (3)
+[JVM memory overview](visuals/jvm-memory-overview.png)
 ### JVM memory architecture
 - [ ] On-heap and off-heap architectures
-- [ ] GC algorithms
 - [ ] Memory structures for typical GCs
+- [ ] GC algorithms
 ### Heap dumps and key memory metrics
 - [ ] Creating
 - [ ] Analysing
@@ -526,17 +529,15 @@ rm -rf dbo-db
 - [ ] Analyse metrics with Prometheus
 - [ ] Heap dump analysing
 ### Hands-on
-- [ ] Add new metrics to *checklist* by tier: JVM
 - [ ] Given workload
 - [ ] Analyse metrics with Prometheus
 - [ ] Analyse remote heap dump
-- [ ] Make issue hypothesis report and resolving plan
 ### Typical issues and resolution
 - [ ] Leaks
 - [ ] OOME for different generations
 ### GC issues
 - [ ] stop-the-world problem
-- [ ] GC trade-off for latency and thoughput
+- [ ] GC trade-off for latency and throughput
 ### Demo
 - [ ] GC statistics monitoring
 ### Teamwork
@@ -545,7 +546,6 @@ rm -rf dbo-db
 - [ ] Given workload tool and test plan
 - [ ] Analyse GC settings
 - [ ] Analyse GC statistics with Prometheus
-- [ ] Make issue hypothesis report and resolving plan
 ```
 jcmd <pid> GC.heap_dump /tmp/dump.hprof
 jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
@@ -554,26 +554,27 @@ jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
 ---
 
 ## Typical JVM threading issues (3)
+[JVM threads overview](visuals/jvm-threads-overview.png)
 ### JVM threading architecture
 - [ ] Threads
-- [ ] Sheduler and preemtive concurrency
-- [ ] Sheduling overhead
+- [ ] Scheduler and preemptive concurrency
+- [ ] Scheduling overhead
 - [ ] Green and native threads
 - [ ] Thread states
 - [ ] Types of blocking/waiting
 ### Demo
+- [ ] Monitoring threads online with local JMX Profiler
 - [ ] Making thread dump and analysing with IDE
 - [ ] Making thread dump and analysing with Profiler
-- [ ] Monitoring threads online with local JMX Profiler
 - [ ] Analyse thread statistics with Prometheus
 ### Application threading architecture
 - [ ] Thread pooling patterns
 - [ ] Threading patterns for connections
 - [ ] Threading patterns for logic processing
 - [ ] Data access concurrency architectures
-- [ ] Cooperative concurrency application arhitecture
+- [ ] Cooperative concurrency application architecture
 ### Typical issues and resolution
-- [ ] Paralllism issues and patterns
+- [ ] Parallelism issues and patterns
 - [ ] Concurrency issues and patterns
 ### Teamwork
 - [ ] New metrics to *checklist* by tier: JVM
@@ -586,7 +587,7 @@ jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
 
 ## Typical JVM IO issues (3)
 ### Blocking IO architecture
-- [ ] Syncronous IO concept
+- [ ] Synchronous IO concept
 - [ ] Building blocks
 ### Demo
 - [ ] Sync remote call implementation
@@ -602,8 +603,8 @@ jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
 - [ ] Analyse IO operations with Prometheus and logs
 - [ ] Make issue hypothesis report and resolving plan
 ### Non-blocking IO architecture
-- [ ] Asyncronous IO concept
-- [ ] NIO building blocks
+- [ ] Asynchronous IO concept
+- [ ] NIO overview
 ### Demo
 - [ ] Async remote call implementation
 ### Typical issues
@@ -623,28 +624,28 @@ jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
 ### JDBC architecture
 - [ ] JDBC API
 - [ ] Driver types
-- [ ] Prefetching tuning
+- [ ] Pre-fetching
 - [ ] Prepared statements
-- [ ] Batch operattions
+- [ ] Batch operations
 - [ ] Transactions
 - [ ] Isolation levels
 - [ ] Connection pools
 ### Demo
-- [ ] Database CRUD implementaion with low-level JDBC API
-- [ ] Database CRUD implementaion with Spring JDBC Template
+- [ ] Database CRUD implementation with low-level JDBC API
+- [ ] Database CRUD implementation with Spring JDBC Template
 ### Hands-on
 - [ ] Given workload
 - [ ] Analyse DB operations
 - [ ] Make issue hypothesis report and resolving plan
 ### JPA architecture
 - [ ] JPA API
-- [ ] Caching levels
+- [ ] [Caching levels](/visuals/jpa-cache-overview.jpg)
 - [ ] JPA transactions architecture
 ### Spring JPA architecture
 - [ ] Spring Data JPA
 - [ ] Transaction management
 ### Demo
-- [ ] Database CRUD implementaion with Spring Data JPA
+- [ ] Database CRUD implementation with Spring Data JPA
 ### Teamwork
 - [ ] New metrics to *checklist* by tier: JPA, JVM
 ### Hands-on
@@ -669,7 +670,7 @@ jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
 - [ ] Image provisioning and repositories
 ### Demo
 - [ ] Application containerization
-- [ ] Configurating container and resource limits
+- [ ] Container configuration and resource limits
 - [ ] Running and monitoring container
 ### Containerization issues
 - [ ] Memory issues and patterns
@@ -703,29 +704,6 @@ jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
 - [ ] Analyse application caches configuration
 - [ ] Analyse caches statisitcs
 - [ ] Make issue hypothesis report and resolving plan
-
-## Generating application workload (1.5)*
-### Load test design
-- [ ] Black-box approach
-- [ ] Load test structure
-- [ ] Load tests suite
-- [ ] Metrics to analyse
-### Load test types
-- [ ] Load
-- [ ] Stress
-- [ ] Spike
-- [ ] Redundancy
-### Demo with JMeter tool
-- [ ] Agent architecture
-- [ ] Test plan
-- [ ] Configuring reports
-- [ ] Running workload
-- [ ] Report analysis
-### Hands-on
-- [ ] Congiuring workload plan
-- [ ] Running workload
-- [ ] Analysing reports
-- [ ] Issue hypothesis
 
 ## Distributed logging (1.5)*
 ### Intro to Java logging solutions
@@ -787,7 +765,31 @@ jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
 - [ ] Analyse requests profiles
 - [ ] Make issue hypothesis report and resolving plan
 
-## Typical CI/CD [pipeline overview](https://paper.dropbox.com/doc/Delivery-Pipeline-ci-cd-devops--A1GO2JqCDUodW3pUl3K0fsRxAQ-OBLCVRSkMek24U7IXIHbq) (1.5)*
+## Generating application workload (1.5)*
+### Load test design
+- [ ] Black-box approach
+- [ ] Load test structure
+- [ ] Load tests suite
+- [ ] Metrics to analyse
+### Load test types
+- [ ] Load
+- [ ] Stress
+- [ ] Spike
+- [ ] Redundancy
+### Demo with JMeter tool
+- [ ] Agent architecture
+- [ ] Test plan
+- [ ] Configuring reports
+- [ ] Running workload
+- [ ] Report analysis
+### Hands-on
+- [ ] Congiuring workload plan
+- [ ] Running workload
+- [ ] Analysing reports
+- [ ] Issue hypothesis
+
+## Typical CI/CD pipeline overview
+- [ ] [CI/CD Pipeline]((https://paper.dropbox.com/doc/Delivery-Pipeline-ci-cd-devops--A1GO2JqCDUodW3pUl3K0fsRxAQ-OBLCVRSkMek24U7IXIHbq) (1.5)*)
 
 ## How to deal with typical distributed system issues? (2.5)*
 ### First Law of Distributed Objects
