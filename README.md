@@ -789,7 +789,7 @@ jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
 - [ ] Issue hypothesis
 
 ## Typical CI/CD pipeline overview
-- [ ] [CI/CD Pipeline]((https://paper.dropbox.com/doc/Delivery-Pipeline-ci-cd-devops--A1GO2JqCDUodW3pUl3K0fsRxAQ-OBLCVRSkMek24U7IXIHbq) (1.5)*)
+- [ ] [CI/CD Pipeline](https://paper.dropbox.com/doc/Delivery-Pipeline-ci-cd-devops--A1GO2JqCDUodW3pUl3K0fsRxAQ-OBLCVRSkMek24U7IXIHbq) (1.5)*
 
 ## How to deal with typical distributed system issues? (2.5)*
 ### First Law of Distributed Objects
