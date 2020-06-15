@@ -1,6 +1,13 @@
 Building and starting Docker container(s) as emulated production host
 =====================================================================
 
+[If you want ready-to-go Docker image WITHOUT Ansible provisioning]
+-------------------------------------------------------------------
+Within `test-env-docker-compose.yml` 
+1. remove line `build: .`
+1. replace tag `clear` to `provisioned`
+
+
 Build and start docker container(s)
 ---------------------------------------------
 ```bash
@@ -34,12 +41,6 @@ docker-compose --file inventories/test/test-env-docker-compose.yml start
 ```bash
 docker-compose --file inventories/test/test-env-docker-compose.yml down
 ```
-
-If you want ready-to-go Docker image without Ansible provisioning
------------------------------------------------------------------
-Within `test-env-docker-compose.yml` 
-1. remove line `build: .`
-1. replace tag `clear` to `provisioned`
 
 ---
 
