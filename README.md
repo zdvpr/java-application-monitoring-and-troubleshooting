@@ -20,13 +20,13 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 ## Hardware
 - [ ] RAM ≥ 8Гб
 - [ ] Wi-Fi with Internet access
-## Software at student's developer station
+## Software at student's developer desktop
 - [ ] [git](https://git-scm.com/downloads)
 - [ ] [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- [ ] [ssh terminal](https://www.bitvise.com/ssh-client-download) 
 - [ ] [Ansible for *nix](https://docs.ansible.com/ansible/latest/installation_guide/index.html) or [Ansible for Windows](https://geekflare.com/ansible-installation-windows/)
 - [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
 - [ ] [Docker](https://www.docker.com/products/docker-desktop)
-- [ ] [ssh terminal](https://www.bitvise.com/ssh-client-download) 
 ## Network access from student stations _to_ emulation of **prod** host
 - [ ] [prod](/iaac/inventories/production/hosts.yml) accessible
 - [ ] Ports at {{ prod }}[:ports_needed](/iaac/inventories/test/test-env-docker-compose.yml) accessible
