@@ -383,10 +383,8 @@ jmeter --> jmeter_agent
 
 ### Then
 - [ ] Prometheus UI up and running at `http://{{ prod }}:9090/alerts`
-- [x] JMeter can connect agent deployed at {{ prod }}:
+- [x] JMeter can connect agent deployed at {{ prod }}: `jmeter -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true`
 ```shell script
-jmeter -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true
-
 JMeter → Options → Log Viewer
 JMeter → Run → Remote Start → 127.0.0.1
 ```
@@ -418,7 +416,7 @@ JMeter → Run → Remote Start → 127.0.0.1
 ## Hands-on: Modern application _remote_ building, running and monitoring (30m)
 ### Given
 - [x] Given rights for application folder to developer user
-- [ ] `ssh` session to {{ prod }}:[ansible_port](/iaac/inventories/production/hosts.yml) `ssh -p 2222 root@localhost`
+- [ ] SSH session to {{ prod }}:[ansible_port](/iaac/inventories/production/hosts.yml) `ssh -p 2222 root@localhost`
 - [ ] **Forked** [application codebase](https://github.com/eugene-krivosheyev/agile-practices-application) to student's account
 - [ ] Application built at {{ prod }}
 ```shell script
