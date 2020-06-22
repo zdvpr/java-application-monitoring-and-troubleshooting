@@ -746,28 +746,71 @@ jvisualvm://Buffer Pools (plugin required)
 - [ ] Scheduler and preemptive concurrency
 - [ ] Scheduling overhead
 - [ ] Green and native threads
-- [ ] Thread states
+### Thread pooling
+- [ ] Thread pooling purpose
+### Thread states
+- [ ] Main states and transitions
 - [ ] Types of blocking/waiting
-### Demo
-- [ ] Monitoring threads online with local JMX Profiler
-- [ ] Making thread dump and analysing with IDE
-- [ ] Making thread dump and analysing with Profiler
-- [ ] Analyse thread statistics with Prometheus
-### Application threading architecture
-- [ ] Thread pooling patterns
-- [ ] Threading patterns for connections
-- [ ] Threading patterns for logic processing
-- [ ] Data access concurrency architectures
-- [ ] Cooperative concurrency application architecture
-### Typical issues and resolution
-- [ ] Parallelism issues and patterns
-- [ ] Concurrency issues and patterns
-### Teamwork
-- [ ] New metrics to *checklist* by tier: JVM
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse thread statistics with Prometheus
-- [ ] Make issue hypothesis report and resolving plan
+### Typical concurrency issues and solutions
+- [ ] Data race
+- [ ] Visibility and Reordering
+- [ ] Deadlock
+- [ ] Biased Locking for typical REST service
+
+### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
+- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+
+### Teamwork: Where and when threads start in the application code? (15m)
+- [ ] For given application codebase spot all the timepoints and places of starting thread.
+
+### Memory-intensive application architecture patterns
+- [ ] MMO game: centralized vs distributed data synchronisation  
+### Data-intensive application architecture patterns 
+- [ ] Threading patterns for connection handling: sync/async
+- [ ] Threading patterns for logic processing: sync/async with multiple pools
+- [ ] Data concurrent access patterns: sync/async ([files](https://www.baeldung.com/java-nio2-async-file-channel), [DB](https://spring.io/projects/spring-data-r2dbc), [HTTP REST calls](https://dzone.com/articles/high-concurrency-http-clients-on-the-jvm))
+
+## Hands-on quest: Memory monitoring (30min)
+### Given
+- [ ] Application ran at {{ prod }}
+- [ ] External Legacy System REST stub started
+- [ ] Load emulation ran
+
+### When
+- [ ] CLI tools used at {{ prod }}
+```shell script
+top + 'f' -> nTH -> space -> Esc
+jstack <pid> > thread-dump.tdump
+scp -P 2222 root@localhost:/tmp/thread-dump.txt .
+```
+
+- [ ] Profiler used
+```shell script
+jvisualvm://File/Load (thread-dump.tdump)
+jvisualvm://Threads (plugin Threads inspector required)
+```
+
+- [ ] Web applications used
+```
+http://{{ prod }}:8080/dbo/actuator/metrics
+http://{{ prod }}:9090/graph
+```
+
+
+### Finally
+- [ ] JMeter load emulation stopped
+- [ ] Application gracefully stopped
+- [ ] Database filled up with tests data removed
+
+### Then answered and reviewed at debrief
+- [ ] How many threads are in system?
+- [ ] Native or Green threads implemented by JVM?
+- [ ] How many threads working on requests processing?
+- [ ] Common thread state at load?
+- [ ] Hypothesis on what business logic is most consuming
+- [ ] Is it enough of threads?
+- [ ] Where threads count can be adjusted?
+- [ ] Hypothesis on application threading architecture: connection handling, logic processing, data access?
 
 ---
 
