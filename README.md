@@ -124,7 +124,7 @@ _* starred items and checked checklist items are **optional**_
 - [ ] What Quality Attributes/NFRs do we satisfy with application monitoring?
 - [ ] Start metrics [checklist](METRICS-CHECKLIST.md) by tier: JVM metrics
 
-## Hands-on: Simple application _local_ building, running and monitoring (30m)
+## Hands-on quest: Simple application _local_ building, running and monitoring (30m)
 ### Given
 - [ ] Satisfied [prerequisites](#Prerequisites) 
 - [ ] **Forked** simple project [codebase](https://github.com/eugene-krivosheyev/java-application-monitoring-and-troubleshooting) 
@@ -372,7 +372,7 @@ jmeter --> jmeter_agent
 - [ ] While monitoring: What type should we use? What performance metrics do we test?
 - [ ] Testing vs Monitoring
 
-## Hands-on: Prod host and monitoring provisioning (15m)
+## Hands-on quest: Prod host and monitoring provisioning (15m)
 ### Given
 - [ ] Ansible provisioning [scripts and assets](/iaac) `cd iaac`
 - [ ] Provisioning [documentation](/iaac/README.md)
@@ -412,7 +412,7 @@ JMeter → Run → Remote Start → 127.0.0.1
 | OS | Linux | [ps](https://www.geeksforgeeks.org/ps-command-in-linux-with-examples/), [top](https://www.geeksforgeeks.org/top-command-in-linux-with-examples/)
 | Hardware | x86 | `df`, `free`, [SNMP](https://docs.oracle.com/javase/8/docs/technotes/guides/management/snmp.html), [Prometheus Node Exporter](https://prometheus.io/docs/guides/node-exporter/)
 
-## Hands-on: Modern application _remote_ building, running and monitoring (30m)
+## Hands-on quest: Modern application _remote_ building, running and monitoring (30m)
 ### Given
 - [x] Given rights for application folder to developer user
 - [ ] SSH session to {{ prod }}:[ansible_port](/iaac/inventories/production/hosts.yml) `ssh -p 2222 root@localhost`
@@ -450,6 +450,9 @@ java -jar wiremock-jre8-standalone-2.26.3.jar --verbose --port 8888 & # curl loc
 
 - [ ] CLI tools used at {{ prod }}
 ```shell script
+uname --all
+cat /etc/os-release
+
 df -ah
 free -m
 
@@ -465,14 +468,24 @@ top + 'f'
 top -p <pid>
 top -H -p <pid>
 
+vmstat 1 [-w] # mpstat 1
+iostat 1 [-xm]
+pidstat 1
+netstat 1 [-plnt]
+
 jps [-lvm]
 jcmd <pid> help
 jcmd <pid> VM.uptime
 jcmd <pid> VM.system_properties
 jcmd <pid> VM.flags
+
+java -XX:+PrintFlagsFinal -version
+jinfo <pid>
+jinfo -flag PrintGCDetails <pid> # get jvm flag value
+jinfo -flag +PrintGCDetails <pid> # change flag value, makes sense only for _manageable_ ones
 ```
 
-- [ ] Load emulation ran at dev station
+- [ ] Load emulation ran
 ```shell script
 jmeter -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true # GUI mode
 jmeter -n -t load.jmx -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true # CLI mode
@@ -514,12 +527,93 @@ http://{{ prod }}:9090/graph?g0.range_input=15m&g0.tab=0&g0.expr=http_server_req
   
 ---
 
+## JIT compilation (45min)
+### JIT
+- [ ] ~~javac~~
+- [ ] JIT compilation and _compilation eligibility_
+- [ ] Code Cache Memory: JIT native code
+- [ ] C1 and C2 JIT compilers
+- [ ] Compilation threads: C1(1/3) + C2(2/3)
+- [ ] On-stack replacement (OSR) and _background compilation_ queue
+- [ ] C1 & C2 compiler queues dynamically resizes depending on available %CPU
+- [ ] Tiers:
+```
+0: interpreted mode
+1: simple C1 compiled code 
+2: limited C1 compiled code 
+3: full C1 compiled code 
+4: C2 compiled code
+```
+- [ ] Performance-happy path: 0 -> 3 -> 4
+- [ ] Deoptimization -> level 0 (_not entrant_ or _zombie_ code)
+### Optimization examples
+- [ ] Dead code elimination
+- [ ] Inlining
+- [ ] C2 Escape analysis
+- [ ] Intel SSE and AVX instruction set 
+### Tiered compilation trade-offs
+- [ ] Classes compiled, commited code cache
+- [ ] Startup time
+- [ ] Application throughput as f(warmup time)
+
+## Hands-on quest: JIT compilation monitoring (15m)
+### Given
+- [ ] Application ran at {{ prod }}
+- [ ] External Legacy System REST stub started
+- [ ] Load emulation ran
+
+### When
+- [ ] CLI tools used at {{ prod }}
+```shell script
+java -XX:+PrintFlagsFinal -version | grep CodeCache
+jinfo -flag UseCodeCacheFlushing <pid>
+
+jinfo -flag CICompilerCount <pid>
+jinfo -flag BackgroundCompilation <pid>
+
+jinfo -flag TieredCompilation <pid>
+jinfo -flag CompileThreshold <pid> # applies only when standard compilation: -XX:-TieredCompilation
+jinfo -flag Tier3InvocationThreshold <pid> # applies when tiered compilation: -XX:+TieredCompilation
+jinfo -flag Tier4InvocationThreshold <pid> # applies when tiered compilation: -XX:+TieredCompilation
+
+jstat -compiler <pid>
+jstat -printcompilation <pid> [1000]
+```
+
+- [ ] Web applications used
+```
+http://{{ prod }}:8080/dbo/actuator/metrics
+http://{{ prod }}:9090/graph
+```
+
+- [ ] Profiler used
+```shell script
+jconsole://localhost:9999/Memory/Code cache
+jconsole://localhost:9999/MBeans
+```
+
+### Finally
+- [ ] JMeter load emulation stopped
+- [ ] Application gracefully stopped
+- [ ] Database filled up with tests data removed
+
+### Then answered and reviewed at debrief
+- [ ] Compiled classes number 
+- [ ] Total compilation time
+- [ ] How is Code Cache full?
+
+---
+
 ## Typical JVM memory issues (3)
 [JVM memory overview](visuals/jvm-memory-overview.png)
 ### JVM memory architecture
-- [ ] On-heap and off-heap architectures
-- [ ] Memory structures for typical GCs
-- [ ] GC algorithms
+- [ ] [Heap/Object space] Eden space
+- [ ] [Heap/Object space] Survivor space
+- [ ] [Heap/Object space] Old/Tenured space
+- [ ] [Non-heap] Perm/Meta space
+- [ ] [Non-heap] Compressed Class space
+- [ ] [Non-heap] Code Cache: JIT native code, thread stacks, native libraries 
+- [ ] [Non-heap] Allocated native memory: direct allocation, NIO buffers 
 ### Heap dumps and key memory metrics
 - [ ] Creating
 - [ ] Analysing
@@ -531,21 +625,33 @@ http://{{ prod }}:9090/graph?g0.range_input=15m&g0.tab=0&g0.expr=http_server_req
 - [ ] Given workload
 - [ ] Analyse metrics with Prometheus
 - [ ] Analyse remote heap dump
-### Typical issues and resolution
-- [ ] Leaks
-- [ ] OOME for different generations
+### GC algorithms
+- [ ] 
 ### GC issues
 - [ ] stop-the-world problem
 - [ ] GC trade-off for latency and throughput
+### Generational heap structure
+- [ ] 
+### Typical issues and resolution
+- [ ] Leaks
+- [ ] OOME for different generations
 ### Demo
 - [ ] GC statistics monitoring
 ### Teamwork
 - [ ] New metrics to *checklist* by tier: JVM
-### Hands-on
+### Hands-on quest
 - [ ] Given workload tool and test plan
 - [ ] Analyse GC settings
 - [ ] Analyse GC statistics with Prometheus
-```
+```shell script
+jstat -gccapacity <pid>
+jstat -gcutil <pid>
+jstat -gc <pid>
+
+jstat -gc <pid> 1000 10
+
+jcmd <pid> GC.heap_info
+
 jcmd <pid> GC.heap_dump /tmp/dump.hprof
 jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
 ```
