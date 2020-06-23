@@ -608,6 +608,7 @@ jconsole://localhost:9999/MBeans
 - [ ] Compiled classes number 
 - [ ] Total compilation time
 - [ ] Is Code Cache full enough to begin worry about `CodeCache is full. Compiler has been disabled.`?
+- [ ] Is there Code Cache rolling after warm-up?
 
 ---
 
@@ -626,6 +627,9 @@ jconsole://localhost:9999/MBeans
 ### Teamwork: Where and when is memory allocated in the application code? (15m)
 - [ ] For given application codebase spot all the timepoints and places of memory allocation.
 
+### Garbage
+- [ ] What is garbage: objects ready for gc?
+- [ ] Stack trace
 ### Generational GC algorithms
 - [ ] Minor VS Full GC and theirs ratio
 - [ ] Copying collector for young generation
@@ -740,37 +744,47 @@ jvisualvm://Buffer Pools (plugin required)
 ---
 
 ## JVM threading management (3)
-[JVM threads overview](visuals/jvm-threads-overview.png)
+![JVM threads overview](visuals/jvm-threads-overview.png)
 ### JVM threading architecture
-- [ ] Threads
+- [ ] Thread definition and duality
 - [ ] Scheduler and preemptive concurrency
 - [ ] Scheduling overhead
 - [ ] Green and native threads
-### Thread pooling
-- [ ] Thread pooling purpose
+- [ ] Thread resources consumption: heap, stack, CPU, OS limits for threads and native stack memory 
 ### Thread states
 - [ ] Main states and transitions
 - [ ] Types of blocking/waiting
-### Typical concurrency issues and solutions
-- [ ] Data race
-- [ ] Visibility and Reordering
-- [ ] Deadlock
-- [ ] Biased Locking for typical REST service
-
-### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+### Stack
+- [ ] What does thread do? 
+- [ ] Stack trace
+- [ ] Thread dump
+### Thread pools
+- [ ] Why thread pools?
+- [ ] Pool metrics
 
 ### Teamwork: Where and when threads start in the application code? (15m)
 - [ ] For given application codebase spot all the timepoints and places of starting thread.
 
-### Memory-intensive application architecture patterns
-- [ ] MMO game: centralized vs distributed data synchronisation  
-### Data-intensive application architecture patterns 
-- [ ] Threading patterns for connection handling: sync/async
-- [ ] Threading patterns for logic processing: sync/async with multiple pools
-- [ ] Data concurrent access patterns: sync/async ([files](https://www.baeldung.com/java-nio2-async-file-channel), [DB](https://spring.io/projects/spring-data-r2dbc), [HTTP REST calls](https://dzone.com/articles/high-concurrency-http-clients-on-the-jvm))
+### Typical concurrency issues and solutions
+| Issue | WTF | Solutions
+|-------|-----|----------
+| Data Race | Concurrent non-atomic operation execution | Blocking: synchronized/monitor, non-blocking: atomics/CAS  
+| Visibility and Reordering | JVM aggressive optimizations | JMM: synchronized + volatile
+| Deadlock | Threads blocked by each other | oops ( 
 
-## Hands-on quest: Memory monitoring (30min)
+### Teamwork: Is there correlation between sync code presence and application throughput (15m)
+- [ ] Performance = f(% sync code) ?
+
+### Concurrent memory-intensive applications design patterns
+- [ ] async operations + thread synchronization: wait/notify
+- [ ] threading patterns for logic processing: sync/async with multiple pools
+- [ ] MMO game/DBMS cases: entry point synchronization, coarse-grained data objects locking, fine-grained data objects subsequent locking 
+- [ ] concurrent data structures
+
+### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
+- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+
+## Hands-on quest: Threads monitoring (30min)
 ### Given
 - [ ] Application ran at {{ prod }}
 - [ ] External Legacy System REST stub started
@@ -790,12 +804,13 @@ jvisualvm://File/Load (thread-dump.tdump)
 jvisualvm://Threads (plugin Threads inspector required)
 ```
 
+- [ ] Thread dump analysed
+
 - [ ] Web applications used
 ```
 http://{{ prod }}:8080/dbo/actuator/metrics
 http://{{ prod }}:9090/graph
 ```
-
 
 ### Finally
 - [ ] JMeter load emulation stopped
@@ -806,46 +821,81 @@ http://{{ prod }}:9090/graph
 - [ ] How many threads are in system?
 - [ ] Native or Green threads implemented by JVM?
 - [ ] How many threads working on requests processing?
-- [ ] Common thread state at load?
-- [ ] Hypothesis on what business logic is most consuming
+- [ ] Common thread state at normal load?
 - [ ] Is it enough of threads?
 - [ ] Where threads count can be adjusted?
-- [ ] Hypothesis on application threading architecture: connection handling, logic processing, data access?
+- [ ] Is there contended in-memory resource?
+- [ ] Hypothesis on what business logic is most CPU consuming
+- [ ] Hypothesis on application threading patterns: (a) connection handling, (b) logic processing, (c) data access?
 
 ---
 
 ## JVM IO management (3)
 ### Blocking IO architecture
 - [ ] Synchronous IO concept
-- [ ] Building blocks
-### Demo
-- [ ] Sync remote call implementation
+- [ ] What sources do we use to get/store data?
 ### Typical issues
+- [ ] Excessive IO wrapper classes objects allocation
 - [ ] Encoding
-- [ ] Buffering
-- [ ] Blocking for user data
-- [ ] Excessive IO classes objects allocation
-- [ ] Closing resources
-- [ ] Pooling resources
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse IO operations with Prometheus and logs
-- [ ] Make issue hypothesis report and resolving plan
+- [ ] Buffering as extra-resource allocation, non-reusability with OS
+- [ ] Buffering as CAP case
+- [ ] Blocking expensive server thread for user data IO 
+- [ ] Excessive resource allocation: closing resources
+### Outgoing connections pooling
+- [ ] Resource pools main metrics
+
+### HTTP protocol
+- [ ] HTTP overview
+- [ ] Commands and response codes
+- [ ] HTTP session concept
+- [ ] *Keep-alive*
+- [ ] Content zipping 
+
+### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
+- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+
 ### Non-blocking IO architecture
 - [ ] Asynchronous IO concept
 - [ ] NIO overview
-### Demo
-- [ ] Async remote call implementation
-### Typical issues
-- [ ] Code complexity
-- [ ] Error handling
-- [ ] Response time
-### Teamwork
-- [ ] New metrics to *checklist* by tier: JVM, OS
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse IO operations with Prometheus and logs
-- [ ] Make issue hypothesis report and resolving plan
+- [ ] Threading patterns for connection data processing: sync/async
+### IO data processing architecture patterns 
+- [ ] Threading scope patterns: thread-per-request, thread-per-connection, thread-per-session
+- [x] Threading patterns for logic processing: sync/async with multiple pools
+- [ ] Data access: sync/async ([files](https://www.baeldung.com/java-nio2-async-file-channel), [DB](https://spring.io/projects/spring-data-r2dbc), [HTTP REST calls](https://dzone.com/articles/high-concurrency-http-clients-on-the-jvm))
+
+## Hands-on quest: IO monitoring (30min)
+### Given
+- [ ] Application ran at {{ prod }}
+- [ ] External Legacy System REST stub started
+- [ ] Load emulation ran
+
+### When
+- [ ] Profiler used
+```shell script
+jvisualvm://Threads (plugin Threads inspector required)
+```
+- [ ] Thread dump analysed
+- [ ] Heap dump analysed
+- [ ] Web applications used
+```
+http://{{ prod }}:8080/dbo/actuator/metrics
+http://{{ prod }}:9090/graph
+```
+
+### Finally
+- [ ] JMeter load emulation stopped
+- [ ] Application gracefully stopped
+- [ ] Database filled up with tests data removed
+
+### Then answered and reviewed at debrief
+- [ ] Did test clients get http errors? 
+- [ ] Incoming http connections long-liveness
+- [ ] What is the system default IO encoding?
+- [ ] Is there excessive IO wrapper objects allocation?
+- [ ] Is outgoing HTTP connections pooled?
+- [ ] Is it enough HTTP connections in pool?
+- [ ] What threading pattern for connection data processing used in application design?
+- [ ] What threading scope pattern used in application design?
 
 ---
 
@@ -892,10 +942,11 @@ http://{{ prod }}:9090/graph
 ---
 
 ## Reference
+- [HotSpot JVM full options reference](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html)
 - [10 Important JVM Options](https://geekflare.com/important-jvm-options)
 - [Most Important JVM Parameters](https://www.baeldung.com/jvm-parameters)
 - [HotSpot JVM Performance Tuning Guidelines](https://ionutbalosin.com/2020/01/hotspot-jvm-performance-tuning-guidelines/)
-- [Java Performance, 2nd edition](https://www.oreilly.com/library/view/java-performance-2nd/9781492056102/)
+- [Java Performance Book, 2nd edition](https://www.oreilly.com/library/view/java-performance-2nd/9781492056102/)
 
 ---
 
