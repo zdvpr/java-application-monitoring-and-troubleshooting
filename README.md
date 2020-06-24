@@ -2,6 +2,13 @@ Java Application Monitoring and Troubleshooting Basics
 ======================================================
 _4. Java Application as a Runtime White Box: App running, JVM and application monitoring, troubleshooting, faults analysing and tuning._ 24 hrs / 3 days.
 
+> You have Java application running at prod server, Prometheus and ssh terminal.
+> Let's start monitoring!
+
+# Webinar recordings
+- [18.06.2020](https://us02web.zoom.us/rec/share/uOt4d5H27WJOSavGyUXzeIV_HN_hX6a8hnMdrPtcyxy4s4wGJs_6T7FjJoG91rDT)
+- [23.06.2020](https://us02web.zoom.us/rec/share/_fJVc63z7FhLRpHyyX2OaoEDA7vrT6a8hiQcrvAIzRpXh-wZrY1fxnhK3IlcM2xW)
+
 # Training Objectives
 - [ ] Understanding modern application architecture and defect hotspots
 - [ ] Understanding JVM classes, memory and threading architecture
@@ -13,12 +20,13 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 ## Hardware
 - [ ] RAM ≥ 8Гб
 - [ ] Wi-Fi with Internet access
-## Software at student's developer station
+## Software at student's developer desktop
 - [ ] [git](https://git-scm.com/downloads)
 - [ ] [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- [ ] [ssh terminal](https://www.bitvise.com/ssh-client-download) 
 - [ ] [Ansible for *nix](https://docs.ansible.com/ansible/latest/installation_guide/index.html) or [Ansible for Windows](https://geekflare.com/ansible-installation-windows/)
 - [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
-- [x] [Docker](https://www.docker.com/products/docker-desktop)
+- [ ] [Docker](https://www.docker.com/products/docker-desktop)
 ## Network access from student stations _to_ emulation of **prod** host
 - [ ] [prod](/iaac/inventories/production/hosts.yml) accessible
 - [ ] Ports at {{ prod }}[:ports_needed](/iaac/inventories/test/test-env-docker-compose.yml) accessible
@@ -112,12 +120,12 @@ _* starred items and checked checklist items are **optional**_
 
 ### [Hands-on](#hands-on-simple-application-local-building-running-and-monitoring-30m)
 
-## Teamwork: NFRs and metrics checklist (15m)
+## Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
 - [ ] What Quality Attributes/NFRs does JVM provide for application?
 - [ ] What Quality Attributes/NFRs do we satisfy with application monitoring?
-- [ ] Start metrics [checklist](METRICS-CHECKLIST.md) by tier: JVM metrics
+- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
 
-## Hands-on: Simple application _local_ building, running and monitoring (30m)
+## Hands-on quest: Simple application _local_ building, running and monitoring (30m)
 ### Given
 - [ ] Satisfied [prerequisites](#Prerequisites) 
 - [ ] **Forked** simple project [codebase](https://github.com/eugene-krivosheyev/java-application-monitoring-and-troubleshooting) 
@@ -128,11 +136,9 @@ git clone https://github.com/{{ STUDENT_ACCOUNT }}/java-application-monitoring-a
 cd java-application-monitoring-and-troubleshooting
 git checkout {{ group_custom_branch }}
 ```
+
 ### When
-- [ ] Project application built locally with maven
-```shell script
-mvn clean verify [-DskipTests]
-```
+- [ ] Project application built locally with maven `mvn clean verify [-DskipTests]`
 - [ ] Project application ran locally with CLI
 ```shell script
 java \
@@ -142,15 +148,14 @@ java \
   com.acme.dbo.Presentation \
   program arguments
 ```
-- [ ] JVisualVM profiler connected to running app
-```shell script
-$JAVA_HOME/bin/jvisualvm
-```
+
+- [ ] JVisualVM profiler connected to running app `$JAVA_HOME/bin/jvisualvm`
 - [ ] OS-specific monitoring tool shows application process details
 ```shell script
 linux$ top [-pid jvmpid]
 windows> taskmgr
 ```
+
 ### Then answered and reviewed at debrief
 - [ ] What is the default encoding for I/O?
 - [ ] What is the default heap size for app running?
@@ -306,13 +311,13 @@ component "<$server>\nhardware" as hardware #lightgray {
 ```
 </details>
 
-## Teamwork: What metrics do we monitor for production app? (30m)
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) by tiers
+## Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
+- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
 
 ## Monitoring architecture overview (30m)
 ![Inrastructure overview](http://www.plantuml.com/plantuml/svg/NP9BRiCW48Rtd6AKLJU-GfGRz01HP64pZMbj1Z6aRLJbxXqUrA4BIyptp-CVy8cZ3l6shSgHGJWO_0H1qP8xW6QGk8Rme-3Cl434i5cdrqlIMo2QTcod5S6l-ZuHVMIzGf6dG5-CuIB7zmrZEgacmt3SEpsKqdEa0A-UKmlohEI3GP9gVelteWRgbB-uZ59bEn_8v3KA1Nr55xFD0iOCHC_P-Eqf2Cq9YOoDYF6PDazEicLlxrSxvpkwfEvmtiXPMS2wAw0pdcoTKhc2Hzz1VCdy1MzS6XWTzQGPGMYmCu-BPQcxby8zEs_OcdRy-Dzmjs7IdrohFbdKV5DIP9t4Rtf6I99gis1uAK3ij1U0ePNL9wYWUNh2_V1iBEF-5KxeZFoNlm00)
 <details>
-<summary>puml</summary>
+<summary>pUML source</summary>
 
 ```puml
 @startuml
@@ -368,12 +373,9 @@ jmeter --> jmeter_agent
 - [ ] While monitoring: What type should we use? What performance metrics do we test?
 - [ ] Testing vs Monitoring
 
-## Hands-on: Prod host and monitoring provisioning (15m)
+## Hands-on quest: Prod host and monitoring provisioning *
 ### Given
-- [ ] Ansible provisioning [scripts and assets](/iaac) 
-```shell script
-cd iaac
-``` 
+- [ ] Ansible provisioning [scripts and assets](/iaac) `cd iaac`
 - [ ] Provisioning [documentation](/iaac/README.md)
 
 ### When
@@ -381,14 +383,11 @@ cd iaac
 
 ### Then
 - [ ] Prometheus UI up and running at `http://{{ prod }}:9090/alerts`
-- [x] JMeter can connect agent deployed at {{ prod }}:
+- [x] JMeter can connect agent deployed at {{ prod }}: `jmeter -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true`
 ```shell script
-jmeter -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true
-
 JMeter → Options → Log Viewer
 JMeter → Run → Remote Start → 127.0.0.1
 ```
-
 
 ## Modern applications architecture and deployment: How do we monitor tiers? (1h)
 <!--- TODO Rosetta stone visuals: concept - metaphor - code -->
@@ -405,7 +404,7 @@ JMeter → Run → Remote Start → 127.0.0.1
 | JVM: application debug API | JPDA | [jsadebugd](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jsadebugd.html)
 | JVM: application profiling API | JVMTI | [hprof](https://docs.oracle.com/javase/8/docs/technotes/samples/hprof.html)
 | JVM: threads, IO | JVM scheduler, JNI | [jstack](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstack.html)
-| JVM: memory, GC | Built-in Garbage Collectors | [jstat](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstat.html), [jstatd](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstatd.html), [jmap](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jmap.html), [jhat](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jinfo.html)
+| JVM: memory, GC | Built-in Garbage Collectors | [jstat](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstat.html), [jstatd](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstatd.html), [jmap](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jmap.html), [jhat](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jinfo.html) removed at jdk9
 | JVM: universal monitoring API | [JMX](https://docs.oracle.com/javase/tutorial/jmx/index.html) | [jvisualvm](https://docs.oracle.com/javase/8/docs/technotes/guides/visualvm/index.html) 
 | JVM: process | Oracle/OpenJDK JRE | [jps](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jps.html), [jcmd](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr006.html), [jinfo](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jinfo.html)
 | Containers | Docker | [docker cli](https://docs.docker.com/config/containers/runmetrics/), [docker api for Prometheus](https://docs.docker.com/config/daemon/prometheus/), [Prometheus cAdvisor](https://prometheus.io/docs/guides/cadvisor/)
@@ -414,13 +413,10 @@ JMeter → Run → Remote Start → 127.0.0.1
 | OS | Linux | [ps](https://www.geeksforgeeks.org/ps-command-in-linux-with-examples/), [top](https://www.geeksforgeeks.org/top-command-in-linux-with-examples/)
 | Hardware | x86 | `df`, `free`, [SNMP](https://docs.oracle.com/javase/8/docs/technotes/guides/management/snmp.html), [Prometheus Node Exporter](https://prometheus.io/docs/guides/node-exporter/)
 
-## Hands-on: Modern application _remote_ building, running and monitoring (30m)
+## Hands-on quest: Modern application _remote_ building, running and monitoring (30m)
 ### Given
 - [x] Given rights for application folder to developer user
-- [ ] `ssh` session to {{ prod }}:[ansible_port](/iaac/inventories/production/hosts.yml)
-```shell script
-ssh -p {{ ansible_port }} {{ ansible_user }}@{{ prod }}
-```
+- [ ] SSH session to {{ prod }}:[ansible_port](/iaac/inventories/production/hosts.yml) `ssh -p 2222 root@localhost`
 - [ ] **Forked** [application codebase](https://github.com/eugene-krivosheyev/agile-practices-application) to student's account
 - [ ] Application built at {{ prod }}
 ```shell script
@@ -439,6 +435,9 @@ nohup \
   java \
     -Xms128m -Xmx128m \
     -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=heapdump.hprof \
+    -XX:+TraceClassLoading -XX:+TraceClassUnloading \
+    -Xloggc:gc.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=8 -XX:GCLogFileSize=8m \
+    -XX:NativeMemoryTracking=detail \
     -Dderby.stream.error.file=log/derby.log \
     -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=0.0.0.0 \
     -jar target/dbo-1.0-SNAPSHOT.jar \
@@ -446,12 +445,18 @@ nohup \
       --server.port=8080 \
 > /dev/null 2>&1 &
 ```
-- [ ] Load emulation ran at dev station
+
+- [ ] External Legacy System REST stub started
 ```shell script
-jmeter -n -t load.jmx -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true
-```
+cd target/test-classes # cat mappings/legacyAccountingSystemResponse.json
+java -jar wiremock-jre8-standalone-2.26.3.jar --verbose --port 8888 & # curl localhost:8888/api/account
+``` 
+
 - [ ] CLI tools used at {{ prod }}
 ```shell script
+uname --all
+cat /etc/os-release
+
 df -ah
 free -m
 
@@ -462,23 +467,43 @@ ps -ef
 ps -eaux --forest
 ps -eT | grep <pid>
 
-top
+top + 'q'
 top + 'f'
 top -p <pid>
 top -H -p <pid>
+
+vmstat 1 [-w] # mpstat 1
+iostat 1 [-xm]
+pidstat 1
+netstat 1 [-plnt]
 
 jps [-lvm]
 jcmd <pid> help
 jcmd <pid> VM.uptime
 jcmd <pid> VM.system_properties
 jcmd <pid> VM.flags
+
+java -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -XX:+PrintFlagsFinal -version
+jinfo <pid>
+jinfo -flag PrintGCDetails <pid> # get jvm flag value
+jinfo -flag +PrintGCDetails <pid> # change flag value, makes sense only for _manageable_ ones
 ```
+
+- [ ] Load emulation ran
+```shell script
+jmeter -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true # GUI mode
+jmeter -n -t load.jmx -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true # CLI mode
+```
+
 - [ ] Web applications used from dev station
 ```
 http://{{ prod }}:8080/dbo/swagger-ui.html
 
 http://{{ prod }}:8080/dbo/actuator/health
 http://{{ prod }}:8080/dbo/actuator
+http://{{ prod }}:8080/dbo/actuator/metrics
+http://{{ prod }}:8080/dbo/actuator/metrics/jvm.memory.max?tag=area:nonheap&tag=id:Metaspace
+
 http://{{ prod }}:8080/dbo/actuator/prometheus
 
 http://{{ prod }}:9090/alerts
@@ -488,11 +513,8 @@ http://{{ prod }}:9090/graph?g0.range_input=15m&g0.tab=0&g0.expr=http_server_req
 
 ### Finally
 - [ ] JMeter load emulation stopped at dev station
-- [ ] Application gracefully stopped at {{ prod }}
-```shell script
-curl --request POST http://{{ prod }}:8080/dbo/actuator/shutdown
-rm -rf dbo-db
-```
+- [ ] Application gracefully stopped at {{ prod }} `curl --request POST http://{{ prod }}:8080/dbo/actuator/shutdown`
+- [ ] Database filled up with tests data removed `rm -rf dbo-db`
 
 ### Then answered and reviewed at debrief
 - [ ] Free HDD space? Free RAM?
@@ -509,155 +531,454 @@ rm -rf dbo-db
   
 ---
 
-## Typical JVM memory issues (3)
+## JIT compilation (45m)
+### JIT
+- [ ] ~~javac~~
+- [ ] JIT compilation and _compilation eligibility_
+- [ ] Code Cache Memory: JIT native code
+- [ ] C1 and C2 JIT compilers
+- [ ] Compilation threads: C1(1/3) + C2(2/3)
+- [ ] On-stack replacement (OSR) and _background compilation_ queue
+- [ ] C1 & C2 compiler queues dynamically resizes depending on available %CPU
+- [ ] Tiers:
+```
+0: interpreted mode
+1: simple C1 compiled code 
+2: limited C1 compiled code 
+3: full C1 compiled code 
+4: C2 compiled code
+```
+- [ ] Performance-happy path: 0 -> 3 -> 4
+- [ ] Deoptimization -> level 0 (_not entrant_ or _zombie_ code)
+### Optimization examples
+- [ ] Dead code elimination
+- [ ] Inlining
+- [ ] C2 Escape analysis for var caching, synchronization, skipping object creation
+- [ ] Intel SSE and AVX instruction set 
+### Tiered compilation trade-offs
+- [ ] Classes compiled, commited code cache
+- [ ] Startup time
+- [ ] Application throughput as f(warmup time)
+
+## Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
+- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+
+## Hands-on quest: JIT compilation monitoring (30m)
+### Given
+- [ ] Application ran at {{ prod }}
+- [ ] External Legacy System REST stub started
+- [ ] Load emulation ran
+
+### When
+- [ ] CLI tools used at {{ prod }}
+```shell script
+java -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -XX:+PrintFlagsFinal -version | grep CodeCache
+jinfo -flag UseCodeCacheFlushing <pid>
+jinfo -flag ReservedCodeCacheSize <pid>
+
+jinfo -flag CICompilerCount <pid>
+jinfo -flag BackgroundCompilation <pid>
+
+jinfo -flag TieredCompilation <pid>
+jinfo -flag CompileThreshold <pid> # applies only when standard compilation: -XX:-TieredCompilation
+jinfo -flag Tier3InvocationThreshold <pid> # applies when tiered compilation: -XX:+TieredCompilation
+jinfo -flag Tier4InvocationThreshold <pid> # applies when tiered compilation: -XX:+TieredCompilation
+
+jstat -compiler <pid>
+jstat -printcompilation <pid> [1000]
+```
+
+- [ ] Web applications used
+```
+http://{{ prod }}:8080/dbo/actuator/metrics
+http://{{ prod }}:9090/graph
+```
+
+- [ ] Profiler used
+```shell script
+jconsole://localhost:9999/Memory/Code cache
+jconsole://localhost:9999/MBeans
+```
+
+### Finally
+- [ ] JMeter load emulation stopped
+- [ ] Application gracefully stopped
+- [ ] Database filled up with tests data removed
+
+### Then answered and reviewed at debrief
+- [ ] Compiled classes number 
+- [ ] Total compilation time
+- [ ] Is Code Cache full enough to begin worry about `CodeCache is full. Compiler has been disabled.`?
+- [ ] Is there Code Cache rolling after warm-up?
+
+---
+
+## JVM memory management (2h)
 ### JVM memory architecture
-- [ ] On-heap and off-heap architectures
-- [ ] GC algorithms
-- [ ] Memory structures for typical GCs
-### Heap dumps and key memory metrics
-- [ ] Creating
-- [ ] Analysing
-### Demo
-- [ ] Memory parameters tuning
-- [ ] Analyse metrics with Prometheus
-- [ ] Heap dump analysing
-### Hands-on
-- [ ] Add new metrics to *checklist* by tier: JVM
-- [ ] Given workload
-- [ ] Analyse metrics with Prometheus
-- [ ] Analyse remote heap dump
-- [ ] Make issue hypothesis report and resolving plan
-### Typical issues and resolution
-- [ ] Leaks
-- [ ] OOME for different generations
-### GC issues
-- [ ] stop-the-world problem
-- [ ] GC trade-off for latency and thoughput
-### Demo
-- [ ] GC statistics monitoring
-### Teamwork
-- [ ] New metrics to *checklist* by tier: JVM
-### Hands-on
-- [ ] Given workload tool and test plan
-- [ ] Analyse GC settings
-- [ ] Analyse GC statistics with Prometheus
-- [ ] Make issue hypothesis report and resolving plan
+![Hotspot JVM Architecture Overview](https://ionutbalosin.com/wp-content/uploads/2020/01/HotSpotArchitecture.png)
+- [ ] [Non-heap] Code Cache: JIT native code, thread stacks, native libraries 
+- [ ] [Non-heap] Allocated native memory: direct allocation, NIO buffers 
+- [ ] [Non-heap] Compressed Class space
+- [ ] [Non-heap] Perm/Meta space
+- [ ] [Heap/Object space] New/Young generation (for some GCs also Eden and Survivor spaces)
+- [ ] [Heap/Object space] Old/Tenured generation
+![JVM memory overview](visuals/jvm-memory-overview.png)
+- [ ] Allocated vs Reserved vs Available memory 
+
+### Teamwork: Where and when is memory allocated in the application code? (15m)
+- [ ] For given application codebase spot all the timepoints and places of memory allocation.
+
+### Garbage
+- [ ] What is garbage: objects ready for gc?
+- [ ] Stack trace
+### Generational GC algorithms
+- [ ] Minor VS Full GC and theirs ratio
+- [ ] Copying collector for young generation
+- [ ] Mark-sweep-compact (MSC) collector for old generation
+### Concurrent GC algorithms
+- [ ] _Stop-the-world_ pauses
+- [ ] _Concurrent_/low-pause collectors: without stopping _application threads_ when it possible (e.g. Mark phase)
+- [ ] Trade-off: low-pauses vs CPU utilization taken out from application
+### [HotSpot collectors](https://docs.oracle.com/en/java/javase/12/gctuning/)
+| Collector name | Main idea | Full support /deprecation /experimental in JDK8 | JDK 11 | JDK 12 | Settings
+|----------------|-----------|-------------------------------------------------|--------|--------|----------
+| Serial | *Single-threaded* for new and old gen. *S-t-w* for full and minor gc. *MSC* for new and old gen. Suitable for containerized apps.| + | + | + | `-XX:+UseSerialGC`
+| Concurrent Mark-Sweep (CMS) | *Multi-threaded* for new and old gen. *S-t-w* for full and minor gc. *Copying* for new gen, *MSC* for old gen. | + | - | - | `-XX:+UseConcMarkSweepGC` 
+| Throughput / Parallel | *Multi-threaded* for new and old gen. *S-t-w* for full and minor gc. *Copying* for new gen, *MSC* for old gen. |  + | + | + | `-XX:+UseParallelGC` `-XX:+UseParallelOldGC`
+| G1 | Multi-regional. *Multi-threaded* for new and old gen. *S-t-w* for new gen, *concurrent* for old gen. *Copying* for new and old gen. | +/- | + | + | `-XX:+UseG1GC`
+| ZGC | | n/a | ? | ? |
+| Shenandoah | | ?? | ?? | ?? |
+| Epsilon | | n/a | ? | ? |
+
+### Heap dumps
+- [ ] Creating heap dump
+- [ ] Analysing heap dump
+- [ ] GC roots
+- [ ] _Shallow_, _deep_ (aggregation) and _retained_ (composition) sizes
+- [ ] _Dominators_ of the heap
+- [ ] Objects size and alignment (%8bytes), [jol](https://openjdk.java.net/projects/code-tools/jol) tool
+- [ ] Object [reference types](https://dzone.com/articles/weak-soft-and-phantom-references-in-java-and-why-they-matter): hard, soft, weak, phantom
+- [ ] _Compressed Oops_ as 35-bit reference (up to 32Gb) stored as 32-bit reference
+
+### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
+- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+
+### _Native/off-heap_ memory more deep dive and new settlers
+- [ ] Metaspace
+- [ ] Thread stacks
+- [ ] Code cache 
+- [ ] GC structures
+- [ ] Symbols as interned constants
+- [ ] Native Byte Buffers: JNI allocations
+- [ ] Native Byte Buffers: NIO direct buffers
+      
+
+## Hands-on quest: Memory monitoring (30m)
+### Given
+- [ ] Application ran at {{ prod }}
+- [ ] External Legacy System REST stub started
+- [ ] Load emulation ran
+
+### When
+- [ ] CLI tools used at {{ prod }}
+```shell script
+jstat -gccapacity <pid>
+jstat -gcutil <pid> [1000]
+jstat -gc <pid>
+jstat -gc <pid> 1000 10
+
+jcmd <pid> GC.heap_info
+jinfo -flag DisableExplicitGC <pid>
+jcmd <pid> GC.run
+jcmd <pid> GC.heap_info
+
+jinfo -flag NewRatio <pid>
+jinfo -flag NewSize <pid>
+jinfo -flag MaxNewSize <pid>
+jinfo -flag MetaspaceSize <pid>
+jinfo -flag MaxMetaspaceSize <pid>
+jinfo -flag ParallelGCThreads <pid>
+jinfo -flag ConcGCThreads <pid> 
+jinfo -flag MaxGCPauseMillis <pid> # for Throughput collector 
+jinfo -flag InitiatingHeapOccupancyPercent <pid> # for G1 collector 
+
+jcmd <pid> GC.class_histogram # jmap -histo[:live] <pid>
+
+jcmd <pid> GC.heap_dump /tmp/dump.hprof # jmap -dump[:live,format=b],file=/tmp/dump.hprof <pid>
+devstation$ scp -P 2222 root@localhost:/tmp/dump.hprof .
+
+jcmd <pid> VM.native_memory summary
 ```
-jcmd <pid> GC.heap_dump /tmp/dump.hprof
-jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
+
+- [ ] Web applications used
 ```
+http://{{ prod }}:8080/dbo/actuator/metrics
+http://{{ prod }}:9090/graph
+```
+
+- [ ] Profiler used
+```shell script
+jconsole://localhost:9999/Memory/Chart:*
+jconsole://localhost:9999/MBeans
+
+IDEA://Open Hprof snapshot (dump.hprof)
+
+jvisualvm://File/Load (dump.hprof)
+
+jvisualvm://VisualGC (plugin required)
+jvisualvm://Buffer Pools (plugin required)
+```
+
+### Finally
+- [ ] JMeter load emulation stopped
+- [ ] Application gracefully stopped
+- [ ] Database filled up with tests data removed
+
+### Then answered and reviewed at debrief
+- [ ] What GC type is used?
+- [ ] Has application stop-the-world GC pauses?
+- [ ] Is enough memory for given load?
+- [ ] Memory region with most risk of OOME
+- [ ] Top memory consuming application classes
+- [ ] What are the memory dominators?
+- [ ] What is the native memory footprint?
 
 ---
 
-## Typical JVM threading issues (3)
+## JVM threading management (2h)
+![JVM threads overview](visuals/jvm-threads-overview.png)
 ### JVM threading architecture
-- [ ] Threads
-- [ ] Sheduler and preemtive concurrency
-- [ ] Sheduling overhead
+- [ ] Thread definition and duality
+- [ ] Scheduler and preemptive concurrency
+- [ ] Scheduling overhead
 - [ ] Green and native threads
-- [ ] Thread states
+- [ ] Thread resources consumption: heap, stack, CPU, OS limits for threads and native stack memory 
+### Thread states
+- [ ] Main states and transitions
 - [ ] Types of blocking/waiting
-### Demo
-- [ ] Making thread dump and analysing with IDE
-- [ ] Making thread dump and analysing with Profiler
-- [ ] Monitoring threads online with local JMX Profiler
-- [ ] Analyse thread statistics with Prometheus
-### Application threading architecture
-- [ ] Thread pooling patterns
-- [ ] Threading patterns for connections
-- [ ] Threading patterns for logic processing
-- [ ] Data access concurrency architectures
-- [ ] Cooperative concurrency application arhitecture
-### Typical issues and resolution
-- [ ] Paralllism issues and patterns
-- [ ] Concurrency issues and patterns
-### Teamwork
-- [ ] New metrics to *checklist* by tier: JVM
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse thread statistics with Prometheus
-- [ ] Make issue hypothesis report and resolving plan
+### Stack
+- [ ] What does thread do? 
+- [ ] Stack trace
+- [ ] Thread dump
+### Thread pools
+- [ ] Why thread pools?
+- [ ] Pool metrics
+
+### Teamwork: Where and when threads start in the application code? (15m)
+- [ ] For given application codebase spot all the timepoints and places of starting thread.
+
+### Typical concurrency issues and solutions
+| Issue | WTF | Solutions
+|-------|-----|----------
+| Data Race | Concurrent non-atomic operation execution | Blocking: synchronized/monitor, non-blocking: atomics/CAS  
+| Visibility and Reordering | JVM aggressive optimizations | JMM: synchronized + volatile
+| Deadlock | Threads blocked by each other | oops ( 
+
+### Teamwork: Is there correlation between sync code presence and application throughput (15m)
+- [ ] Performance = f(% sync code) ?
+
+### Concurrent memory-intensive applications design patterns
+- [ ] async operations + thread synchronization: wait/notify
+- [ ] threading patterns for logic processing: sync/async with multiple pools
+- [ ] MMO game/DBMS cases: entry point synchronization, coarse-grained data objects locking, fine-grained data objects subsequent locking 
+- [ ] concurrent data structures
+
+### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
+- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+
+## Hands-on quest: Threads monitoring (30m)
+### Given
+- [ ] Application ran at {{ prod }}
+- [ ] External Legacy System REST stub started
+- [ ] Load emulation ran
+
+### When
+- [ ] CLI tools used at {{ prod }}
+```shell script
+top + 'f' -> nTH -> space -> Esc
+jstack <pid> > thread-dump.tdump
+scp -P 2222 root@localhost:/tmp/thread-dump.txt .
+```
+
+- [ ] Profiler used
+```shell script
+jvisualvm://File/Load (thread-dump.tdump)
+jvisualvm://Threads (plugin Threads inspector required)
+```
+
+- [ ] Thread dump analysed
+
+- [ ] Web applications used
+```
+http://{{ prod }}:8080/dbo/actuator/metrics
+http://{{ prod }}:9090/graph
+```
+
+### Finally
+- [ ] JMeter load emulation stopped
+- [ ] Application gracefully stopped
+- [ ] Database filled up with tests data removed
+
+### Then answered and reviewed at debrief
+- [ ] How many threads are in system?
+- [ ] Native or Green threads implemented by JVM?
+- [ ] How many threads working on requests processing?
+- [ ] Common thread state at normal load?
+- [ ] Is it enough of threads?
+- [ ] Where threads count can be adjusted?
+- [ ] Is there contended in-memory resource?
+- [ ] Hypothesis on what business logic is most CPU consuming
+- [ ] Hypothesis on application threading patterns: (a) connection handling, (b) logic processing, (c) data access?
 
 ---
 
-## Typical JVM IO issues (3)
+## JVM IO management (2h)
 ### Blocking IO architecture
-- [ ] Syncronous IO concept
-- [ ] Building blocks
-### Demo
-- [ ] Sync remote call implementation
+- [ ] Synchronous IO concept
+- [ ] What sources do we use to get/store data?
 ### Typical issues
+- [ ] Excessive IO wrapper classes objects allocation
 - [ ] Encoding
-- [ ] Buffering
-- [ ] Blocking for user data
-- [ ] Excessive IO classes objects allocation
-- [ ] Closing resources
-- [ ] Pooling resources
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse IO operations with Prometheus and logs
-- [ ] Make issue hypothesis report and resolving plan
+- [ ] Buffering as extra-resource allocation, non-reusability with OS
+- [ ] Buffering as CAP case
+- [ ] Blocking expensive server thread for user data IO 
+- [ ] Excessive resource allocation: closing resources
+### Outgoing connections pooling
+- [ ] Resource pools main metrics
+
+### HTTP protocol
+- [ ] HTTP overview
+- [ ] Commands and response codes
+- [ ] HTTP session concept
+- [ ] *Keep-alive*
+- [ ] Content zipping 
+
+### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
+- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+
 ### Non-blocking IO architecture
-- [ ] Asyncronous IO concept
-- [ ] NIO building blocks
-### Demo
-- [ ] Async remote call implementation
-### Typical issues
-- [ ] Code complexity
-- [ ] Error handling
-- [ ] Response time
-### Teamwork
-- [ ] New metrics to *checklist* by tier: JVM, OS
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse IO operations with Prometheus and logs
-- [ ] Make issue hypothesis report and resolving plan
+- [ ] Asynchronous IO concept
+- [ ] NIO overview
+- [ ] Threading patterns for connection data processing: sync/async (supported by sync/async Servlets, Spring MVC/WebFlux)
+### IO data processing architecture patterns 
+- [ ] Threading scope patterns: thread-per-request, thread-per-connection, thread-per-session
+- [x] Threading patterns for logic processing: sync/async with multiple pools
+- [ ] Data access: sync/async ([files](https://www.baeldung.com/java-nio2-async-file-channel), [DB](https://spring.io/projects/spring-data-r2dbc), [HTTP REST calls](https://dzone.com/articles/high-concurrency-http-clients-on-the-jvm))
+
+## Hands-on quest: IO monitoring (30m)
+### Given
+- [ ] Application ran at {{ prod }}
+- [ ] External Legacy System REST stub started
+- [ ] Load emulation ran
+
+### When
+- [ ] Profiler used
+```shell script
+jvisualvm://Threads (plugin Threads inspector required)
+```
+- [ ] Thread dump analysed
+- [ ] Heap dump analysed
+- [ ] Web applications used
+```
+http://{{ prod }}:8080/dbo/actuator/metrics
+http://{{ prod }}:9090/graph
+```
+
+### Finally
+- [ ] JMeter load emulation stopped
+- [ ] Application gracefully stopped
+- [ ] Database filled up with tests data removed
+
+### Then answered and reviewed at debrief
+- [ ] Did test clients get http errors? 
+- [ ] Incoming http connections long-liveness
+- [ ] What is the system default IO encoding?
+- [ ] Is there excessive IO wrapper objects allocation?
+-  [] Is outgoing HTTP connections pooled?
+- [ ] Is it enough HTTP connections in pool?
+- [ ] What threading pattern for connection data processing used in application design?
+- [ ] What threading scope pattern used in application design?
 
 ---
 
-## Typical data storage issues (3)
-### JDBC architecture
+## Persistent data management (2h)
+### JDBC subsystem architecture
 - [ ] JDBC API
 - [ ] Driver types
-- [ ] Prefetching tuning
+- [ ] Connection lifecycle
 - [ ] Prepared statements
-- [ ] Batch operattions
-- [ ] Transactions
+- [ ] ResultSet fetching
+### DB Connection pooling
+- [ ] DB Connection pool architecture
+- [ ] Prepare Statements pooling
+- [ ] Pool metrics
+### JDBC Transactions
+- [ ] Transaction concept
 - [ ] Isolation levels
-- [ ] Connection pools
-### Demo
-- [ ] Database CRUD implementaion with low-level JDBC API
-- [ ] Database CRUD implementaion with Spring JDBC Template
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse DB operations
-- [ ] Make issue hypothesis report and resolving plan
+- [ ] Transaction resources trade-offs
+
+### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
+- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+
 ### JPA architecture
 - [ ] JPA API
-- [ ] Caching levels
+- [ ] EntityManager and Context/Session
+- [ ] [Caching levels](/visuals/jpa-cache-overview.jpg)
 - [ ] JPA transactions architecture
 ### Spring JPA architecture
-- [ ] Spring Data JPA
-- [ ] Transaction management
-### Demo
-- [ ] Database CRUD implementaion with Spring Data JPA
-### Teamwork
-- [ ] New metrics to *checklist* by tier: JPA, JVM
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse DB operations
-- [ ] Make issue hypothesis report and resolving plan
+- [ ] Spring Data JPA module
+- [ ] Repositories code generation
+- [ ] Spring transaction management
+
+## Hands-on quest: JDBC subsystem monitoring (30m)
+### Given
+- [ ] Application ran at {{ prod }}
+- [ ] External Legacy System REST stub started
+- [ ] Load emulation ran
+
+### When
+- [ ] Profiler used
+```shell script
+jvisualvm://Threads (plugin Threads inspector required)
+```
+- [ ] Thread dump analysed
+- [ ] Heap dump analysed
+- [ ] Web applications used
+```
+http://{{ prod }}:8080/dbo/actuator/metrics
+http://{{ prod }}:9090/graph
+```
+
+### Finally
+- [ ] JMeter load emulation stopped
+- [ ] Application gracefully stopped
+- [ ] Database filled up with tests data removed
+
+### Then answered and reviewed at debrief
+- [ ] Is JDBC connections pooled?
+- [ ] Is it enough JDBC connections in pool?
+- [ ] ORM cache state?
+- [ ] Can we set less transaction isolation level to gain throughput?
 
 ---
 
-## Final retro (0.5)
+## Final retro (30m)
 - [ ] Value taken
-- [ ] Process Improvement Actions 
 - [ ] Training Improvement Actions
+- [ ] Process Improvement Actions 
 
 ---
 
-## Typical JVM containerization issues (1)*
+## Reference
+- [HotSpot JVM full options reference](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html)
+- [10 Important JVM Options](https://geekflare.com/important-jvm-options)
+- [Most Important JVM Parameters](https://www.baeldung.com/jvm-parameters)
+- [HotSpot JVM Performance Tuning Guidelines](https://ionutbalosin.com/2020/01/hotspot-jvm-performance-tuning-guidelines/)
+- [Java Performance Book, 2nd edition](https://www.oreilly.com/library/view/java-performance-2nd/9781492056102/)
+
+---
+
+## JVM application containerization *
 ### Containerization architecture
 - [ ] Docker overview
 - [ ] Docker containers
@@ -665,20 +986,13 @@ jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
 - [ ] Image provisioning and repositories
 ### Demo
 - [ ] Application containerization
-- [ ] Configurating container and resource limits
+- [ ] Container configuration and resource limits
 - [ ] Running and monitoring container
 ### Containerization issues
 - [ ] Memory issues and patterns
 - [ ] Disk I/O issues and patterns
-### Teamwork
-- [ ] New metrics to *checklist* by tier: JVM, OS
-### Hands-on
-- [ ] Given workload
-- [ ] Modify container configuration with K8s сonfig
-- [ ] Analyse system metrics with Prometheus
-- [ ] Make issue hypothesis report and resolving plan
 
-## Typical caching issues (1.5)*
+## Application caching *
 ### Caching concept
 - [ ] Why caches?
 - [ ] Caching architecture: levels
@@ -692,15 +1006,36 @@ jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
 - [ ] Cold start
 - [ ] Hit statistics
 - [ ] Cache resetting and inconsistency
-### Teamwork
-- [ ] New metrics to *checklist* by tier: caches
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse application caches configuration
-- [ ] Analyse caches statisitcs
-- [ ] Make issue hypothesis report and resolving plan
 
-## Generating application workload (1.5)*
+## Distributed logging *
+### Intro to Java logging solutions
+- [ ] Java logging libraries hell
+- [ ] SLF4J and Logback overview
+- [ ] Logging architecture
+- [ ] Application configuration
+### Distributed logging collection and processing
+- [ ] Distributed logging collection architecture with ELK stack
+- [ ] Application configuration
+- [ ] Searching and analysing logs
+
+## System monitoring *
+### Distributed monitoring arhitecture
+- [ ] Prometheus architecture overview
+- [ ] Metrics sources and agents
+- [ ] Analysing monitoring dashboards and alerts
+
+## Typical RDBMS issues *
+### DB architecture
+- [ ] DB request processing
+- [ ] DB execution plan
+- [ ] Constraints
+- [ ] Indexes
+- [ ] Transactions implementation architectures
+- [ ] "Vacuum" side effects
+### Request profiling
+- [ ] Profiling DB request with explain
+
+## Generating application workload *
 ### Load test design
 - [ ] Black-box approach
 - [ ] Load test structure
@@ -711,81 +1046,17 @@ jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
 - [ ] Stress
 - [ ] Spike
 - [ ] Redundancy
-### Demo with JMeter tool
+### JMeter tool
 - [ ] Agent architecture
 - [ ] Test plan
 - [ ] Configuring reports
 - [ ] Running workload
 - [ ] Report analysis
-### Hands-on
-- [ ] Congiuring workload plan
-- [ ] Running workload
-- [ ] Analysing reports
-- [ ] Issue hypothesis
 
-## Distributed logging (1.5)*
-### Intro to Java logging solutions
-- [ ] Java logging libraries hell
-- [ ] SLF4J and Logback overview
-- [ ] Logging architecture
-- [ ] Application configuration
-### Hands-on
-- [ ] Configuring application local logging
-### Distributed logging collection and processing
-- [ ] Distributed logging collection architecture with ELK stack
-- [ ] Application configuration
-- [ ] Searching and analysing logs
-### Demo
-- [ ] Configuring application distributed logging
-### Hands-on
-- [ ] Given configuration
-- [ ] Load tests run
-- [ ] Analysing logs with ELK
+## Typical CI/CD pipeline overview *
+- [ ] [CI/CD Pipeline](https://paper.dropbox.com/doc/Delivery-Pipeline-ci-cd-devops--A1GO2JqCDUodW3pUl3K0fsRxAQ-OBLCVRSkMek24U7IXIHbq)
 
-## System monitoring (1.5)*
-### Distributed monitoring arhitecture
-- [ ] Prometheus architecture overview
-- [ ] Metrics sources and agents
-- [ ] Analysing monitoring dashboards and alerts
-### Teamwork
-- [ ] New metrics *checklist* by tier: system and OS
-### Demo
-- [ ] Configuring hardware metrics dasboard and alerts with Prometheus
-### Hands-on 
-- [ ] Given configuration
-- [ ] Load tests run
-- [ ] Analysing metrics and alerts with Prometheus
-### Teamwork
-- [ ] New metrics to *checklist* by tier: JVM
-### Demo
-- [ ] Configuring JVM through JMX metrics with Prometheus
-### Hands-on 
-- [ ] Given configuration
-- [ ] Load tests run
-- [ ] Analysing metrics and alerts with Prometheus
-- [ ] Make issue hypothesis report and resolving plan
-
-## Typical RDBMS issues (1.5)*
-### DB architecture
-- [ ] DB request processing
-- [ ] DB execution plan
-- [ ] Constraints
-- [ ] Indexes
-- [ ] Transactions implementation architectures
-- [ ] "Vacuum" side effects
-### Demo
-- [ ] Profiling DB request with explain
-### Teamwork
-- [ ] New metrics to *checklist* by tier: DBMS, OS
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse DB schema
-- [ ] Analyse requests profiles
-- [ ] Make issue hypothesis report and resolving plan
-
-## Typical CI/CD [pipeline overview](https://paper.dropbox.com/doc/Delivery-Pipeline-ci-cd-devops--A1GO2JqCDUodW3pUl3K0fsRxAQ-OBLCVRSkMek24U7IXIHbq) (1.5)*
-
-## How to deal with typical distributed system issues? (2.5)*
+## Distributed system issues? *
 ### First Law of Distributed Objects
 - [ ] Distributed systems: Seasons in the abbys
 - [ ] CAP thesis
@@ -800,11 +1071,4 @@ jmap -dump:live,format=b,file=/tmp/dump.hprof <pid>
 ### Monitoring and tracing
 - [ ] Monitoring patterns
 - [ ] Tracing patterns
-### Demo
-- [ ] Business operation in microservices environment tracing
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse distributed architecture
-- [ ] Analyse call trace
 - [ ] Play "hell monkey"
-- [ ] Make issue hypothesis report and resolving plan
