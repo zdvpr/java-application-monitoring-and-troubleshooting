@@ -372,7 +372,7 @@ jmeter --> jmeter_agent
 - [ ] While monitoring: What type should we use? What performance metrics do we test?
 - [ ] Testing vs Monitoring
 
-## Hands-on quest: Prod host and monitoring provisioning (15m)
+## Hands-on quest: Prod host and monitoring provisioning *
 ### Given
 - [ ] Ansible provisioning [scripts and assets](/iaac) `cd iaac`
 - [ ] Provisioning [documentation](/iaac/README.md)
@@ -530,7 +530,7 @@ http://{{ prod }}:9090/graph?g0.range_input=15m&g0.tab=0&g0.expr=http_server_req
   
 ---
 
-## JIT compilation (45min)
+## JIT compilation (45m)
 ### JIT
 - [ ] ~~javac~~
 - [ ] JIT compilation and _compilation eligibility_
@@ -562,7 +562,7 @@ http://{{ prod }}:9090/graph?g0.range_input=15m&g0.tab=0&g0.expr=http_server_req
 ## Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
 - [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
 
-## Hands-on quest: JIT compilation monitoring (15m)
+## Hands-on quest: JIT compilation monitoring (30m)
 ### Given
 - [ ] Application ran at {{ prod }}
 - [ ] External Legacy System REST stub started
@@ -612,7 +612,7 @@ jconsole://localhost:9999/MBeans
 
 ---
 
-## JVM memory management (3)
+## JVM memory management (2h)
 ### JVM memory architecture
 ![Hotspot JVM Architecture Overview](https://ionutbalosin.com/wp-content/uploads/2020/01/HotSpotArchitecture.png)
 - [ ] [Non-heap] Code Cache: JIT native code, thread stacks, native libraries 
@@ -649,7 +649,7 @@ jconsole://localhost:9999/MBeans
 | Shenandoah | | ?? | ?? | ?? |
 | Epsilon | | n/a | ? | ? |
 
-### Heap dumps and key memory metrics
+### Heap dumps
 - [ ] Creating heap dump
 - [ ] Analysing heap dump
 - [ ] GC roots
@@ -671,7 +671,8 @@ jconsole://localhost:9999/MBeans
 - [ ] Native Byte Buffers: JNI allocations
 - [ ] Native Byte Buffers: NIO direct buffers
       
-## Hands-on quest: Memory monitoring (30min)
+
+## Hands-on quest: Memory monitoring (30m)
 ### Given
 - [ ] Application ran at {{ prod }}
 - [ ] External Legacy System REST stub started
@@ -743,7 +744,7 @@ jvisualvm://Buffer Pools (plugin required)
 
 ---
 
-## JVM threading management (3)
+## JVM threading management (2h)
 ![JVM threads overview](visuals/jvm-threads-overview.png)
 ### JVM threading architecture
 - [ ] Thread definition and duality
@@ -784,7 +785,7 @@ jvisualvm://Buffer Pools (plugin required)
 ### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
 - [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
 
-## Hands-on quest: Threads monitoring (30min)
+## Hands-on quest: Threads monitoring (30m)
 ### Given
 - [ ] Application ran at {{ prod }}
 - [ ] External Legacy System REST stub started
@@ -830,7 +831,7 @@ http://{{ prod }}:9090/graph
 
 ---
 
-## JVM IO management (3)
+## JVM IO management (2h)
 ### Blocking IO architecture
 - [ ] Synchronous IO concept
 - [ ] What sources do we use to get/store data?
@@ -857,13 +858,13 @@ http://{{ prod }}:9090/graph
 ### Non-blocking IO architecture
 - [ ] Asynchronous IO concept
 - [ ] NIO overview
-- [ ] Threading patterns for connection data processing: sync/async
+- [ ] Threading patterns for connection data processing: sync/async (supported by sync/async Servlets, Spring MVC/WebFlux)
 ### IO data processing architecture patterns 
 - [ ] Threading scope patterns: thread-per-request, thread-per-connection, thread-per-session
 - [x] Threading patterns for logic processing: sync/async with multiple pools
 - [ ] Data access: sync/async ([files](https://www.baeldung.com/java-nio2-async-file-channel), [DB](https://spring.io/projects/spring-data-r2dbc), [HTTP REST calls](https://dzone.com/articles/high-concurrency-http-clients-on-the-jvm))
 
-## Hands-on quest: IO monitoring (30min)
+## Hands-on quest: IO monitoring (30m)
 ### Given
 - [ ] Application ran at {{ prod }}
 - [ ] External Legacy System REST stub started
@@ -892,52 +893,78 @@ http://{{ prod }}:9090/graph
 - [ ] Incoming http connections long-liveness
 - [ ] What is the system default IO encoding?
 - [ ] Is there excessive IO wrapper objects allocation?
-- [ ] Is outgoing HTTP connections pooled?
+-  [] Is outgoing HTTP connections pooled?
 - [ ] Is it enough HTTP connections in pool?
 - [ ] What threading pattern for connection data processing used in application design?
 - [ ] What threading scope pattern used in application design?
 
 ---
 
-## Persistent data management (3)
-### JDBC architecture
+## Persistent data management (2h)
+### JDBC subsystem architecture
 - [ ] JDBC API
 - [ ] Driver types
-- [ ] Pre-fetching
+- [ ] Connection lifecycle
 - [ ] Prepared statements
-- [ ] Batch operations
-- [ ] Transactions
+- [ ] ResultSet fetching
+### DB Connection pooling
+- [ ] DB Connection pool architecture
+- [ ] Prepare Statements pooling
+- [ ] Pool metrics
+### JDBC Transactions
+- [ ] Transaction concept
 - [ ] Isolation levels
-- [ ] Connection pools
-### Demo
-- [ ] Database CRUD implementation with low-level JDBC API
-- [ ] Database CRUD implementation with Spring JDBC Template
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse DB operations
-- [ ] Make issue hypothesis report and resolving plan
+- [ ] Transaction resources trade-offs
+
+### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
+- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+
 ### JPA architecture
 - [ ] JPA API
+- [ ] EntityManager and Context/Session
 - [ ] [Caching levels](/visuals/jpa-cache-overview.jpg)
 - [ ] JPA transactions architecture
 ### Spring JPA architecture
-- [ ] Spring Data JPA
-- [ ] Transaction management
-### Demo
-- [ ] Database CRUD implementation with Spring Data JPA
-### Teamwork
-- [ ] New metrics to *checklist* by tier: JPA, JVM
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse DB operations
-- [ ] Make issue hypothesis report and resolving plan
+- [ ] Spring Data JPA module
+- [ ] Repositories code generation
+- [ ] Spring transaction management
+
+## Hands-on quest: JDBC subsystem monitoring (30m)
+### Given
+- [ ] Application ran at {{ prod }}
+- [ ] External Legacy System REST stub started
+- [ ] Load emulation ran
+
+### When
+- [ ] Profiler used
+```shell script
+jvisualvm://Threads (plugin Threads inspector required)
+```
+- [ ] Thread dump analysed
+- [ ] Heap dump analysed
+- [ ] Web applications used
+```
+http://{{ prod }}:8080/dbo/actuator/metrics
+http://{{ prod }}:9090/graph
+```
+
+### Finally
+- [ ] JMeter load emulation stopped
+- [ ] Application gracefully stopped
+- [ ] Database filled up with tests data removed
+
+### Then answered and reviewed at debrief
+- [ ] Is JDBC connections pooled?
+- [ ] Is it enough JDBC connections in pool?
+- [ ] ORM cache state?
+- [ ] Can we set less transaction isolation level to gain throughput?
 
 ---
 
-## Final retro (0.5)
+## Final retro (30m)
 - [ ] Value taken
-- [ ] Process Improvement Actions 
 - [ ] Training Improvement Actions
+- [ ] Process Improvement Actions 
 
 ---
 
@@ -950,7 +977,7 @@ http://{{ prod }}:9090/graph
 
 ---
 
-## Typical JVM containerization issues (1)*
+## JVM application containerization *
 ### Containerization architecture
 - [ ] Docker overview
 - [ ] Docker containers
@@ -963,15 +990,8 @@ http://{{ prod }}:9090/graph
 ### Containerization issues
 - [ ] Memory issues and patterns
 - [ ] Disk I/O issues and patterns
-### Teamwork
-- [ ] New metrics to *checklist* by tier: JVM, OS
-### Hands-on
-- [ ] Given workload
-- [ ] Modify container configuration with K8s сonfig
-- [ ] Analyse system metrics with Prometheus
-- [ ] Make issue hypothesis report and resolving plan
 
-## Typical caching issues (1.5)*
+## Application caching *
 ### Caching concept
 - [ ] Why caches?
 - [ ] Caching architecture: levels
@@ -985,57 +1005,25 @@ http://{{ prod }}:9090/graph
 - [ ] Cold start
 - [ ] Hit statistics
 - [ ] Cache resetting and inconsistency
-### Teamwork
-- [ ] New metrics to *checklist* by tier: caches
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse application caches configuration
-- [ ] Analyse caches statisitcs
-- [ ] Make issue hypothesis report and resolving plan
 
-## Distributed logging (1.5)*
+## Distributed logging *
 ### Intro to Java logging solutions
 - [ ] Java logging libraries hell
 - [ ] SLF4J and Logback overview
 - [ ] Logging architecture
 - [ ] Application configuration
-### Hands-on
-- [ ] Configuring application local logging
 ### Distributed logging collection and processing
 - [ ] Distributed logging collection architecture with ELK stack
 - [ ] Application configuration
 - [ ] Searching and analysing logs
-### Demo
-- [ ] Configuring application distributed logging
-### Hands-on
-- [ ] Given configuration
-- [ ] Load tests run
-- [ ] Analysing logs with ELK
 
-## System monitoring (1.5)*
+## System monitoring *
 ### Distributed monitoring arhitecture
 - [ ] Prometheus architecture overview
 - [ ] Metrics sources and agents
 - [ ] Analysing monitoring dashboards and alerts
-### Teamwork
-- [ ] New metrics *checklist* by tier: system and OS
-### Demo
-- [ ] Configuring hardware metrics dasboard and alerts with Prometheus
-### Hands-on 
-- [ ] Given configuration
-- [ ] Load tests run
-- [ ] Analysing metrics and alerts with Prometheus
-### Teamwork
-- [ ] New metrics to *checklist* by tier: JVM
-### Demo
-- [ ] Configuring JVM through JMX metrics with Prometheus
-### Hands-on 
-- [ ] Given configuration
-- [ ] Load tests run
-- [ ] Analysing metrics and alerts with Prometheus
-- [ ] Make issue hypothesis report and resolving plan
 
-## Typical RDBMS issues (1.5)*
+## Typical RDBMS issues *
 ### DB architecture
 - [ ] DB request processing
 - [ ] DB execution plan
@@ -1043,17 +1031,10 @@ http://{{ prod }}:9090/graph
 - [ ] Indexes
 - [ ] Transactions implementation architectures
 - [ ] "Vacuum" side effects
-### Demo
+### Request profiling
 - [ ] Profiling DB request with explain
-### Teamwork
-- [ ] New metrics to *checklist* by tier: DBMS, OS
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse DB schema
-- [ ] Analyse requests profiles
-- [ ] Make issue hypothesis report and resolving plan
 
-## Generating application workload (1.5)*
+## Generating application workload *
 ### Load test design
 - [ ] Black-box approach
 - [ ] Load test structure
@@ -1064,22 +1045,17 @@ http://{{ prod }}:9090/graph
 - [ ] Stress
 - [ ] Spike
 - [ ] Redundancy
-### Demo with JMeter tool
+### JMeter tool
 - [ ] Agent architecture
 - [ ] Test plan
 - [ ] Configuring reports
 - [ ] Running workload
 - [ ] Report analysis
-### Hands-on
-- [ ] Congiuring workload plan
-- [ ] Running workload
-- [ ] Analysing reports
-- [ ] Issue hypothesis
 
-## Typical CI/CD pipeline overview
-- [ ] [CI/CD Pipeline](https://paper.dropbox.com/doc/Delivery-Pipeline-ci-cd-devops--A1GO2JqCDUodW3pUl3K0fsRxAQ-OBLCVRSkMek24U7IXIHbq) (1.5)*
+## Typical CI/CD pipeline overview *
+- [ ] [CI/CD Pipeline](https://paper.dropbox.com/doc/Delivery-Pipeline-ci-cd-devops--A1GO2JqCDUodW3pUl3K0fsRxAQ-OBLCVRSkMek24U7IXIHbq)
 
-## How to deal with typical distributed system issues? (2.5)*
+## Distributed system issues? *
 ### First Law of Distributed Objects
 - [ ] Distributed systems: Seasons in the abbys
 - [ ] CAP thesis
@@ -1094,11 +1070,4 @@ http://{{ prod }}:9090/graph
 ### Monitoring and tracing
 - [ ] Monitoring patterns
 - [ ] Tracing patterns
-### Demo
-- [ ] Business operation in microservices environment tracing
-### Hands-on
-- [ ] Given workload
-- [ ] Analyse distributed architecture
-- [ ] Analyse call trace
 - [ ] Play "hell monkey"
-- [ ] Make issue hypothesis report and resolving plan
