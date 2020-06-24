@@ -977,6 +977,9 @@ http://{{ prod }}:9090/graph
 
 ---
 
+<details>
+<summary>Optional topics</summary>
+
 ## JVM application containerization *
 ### Containerization architecture
 - [ ] Docker overview
@@ -1071,3 +1074,5 @@ http://{{ prod }}:9090/graph
 - [ ] Monitoring patterns
 - [ ] Tracing patterns
 - [ ] Play "hell monkey"
+
+</details>
