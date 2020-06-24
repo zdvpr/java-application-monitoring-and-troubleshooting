@@ -968,6 +968,7 @@ http://{{ prod }}:9090/graph
 - [10 Important JVM Options](https://geekflare.com/important-jvm-options)
 - [Most Important JVM Parameters](https://www.baeldung.com/jvm-parameters)
 - [HotSpot JVM Performance Tuning Guidelines](https://ionutbalosin.com/2020/01/hotspot-jvm-performance-tuning-guidelines/)
+- [Garbage Collectors Table](http://www.fasterj.com/articles/oraclecollectors1.shtml)
 - [Java Performance Book, 2nd edition](https://www.oreilly.com/library/view/java-performance-2nd/9781492056102/)
 
 ---
