@@ -5,10 +5,6 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 > You have Java application running at prod server, Prometheus and ssh terminal.
 > Let's start monitoring!
 
-# Webinar recordings
-- [18.06.2020](https://us02web.zoom.us/rec/share/uOt4d5H27WJOSavGyUXzeIV_HN_hX6a8hnMdrPtcyxy4s4wGJs_6T7FjJoG91rDT)
-- [23.06.2020](https://us02web.zoom.us/rec/share/_fJVc63z7FhLRpHyyX2OaoEDA7vrT6a8hiQcrvAIzRpXh-wZrY1fxnhK3IlcM2xW)
-
 # Training Objectives
 - [ ] Understanding modern application architecture and defect hotspots
 - [ ] Understanding JVM classes, memory and threading architecture
@@ -37,8 +33,6 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] hub.docker.com :443 :80
 
 # Agenda
-_* starred items and checked checklist items are **optional**_
-
 ## Training introducing and focusing (15m)
 - [ ] Schedule
 - [ ] Trainer
