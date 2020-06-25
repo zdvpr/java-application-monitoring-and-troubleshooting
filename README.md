@@ -367,22 +367,6 @@ jmeter --> jmeter_agent
 - [ ] While monitoring: What type should we use? What performance metrics do we test?
 - [ ] Testing vs Monitoring
 
-## Hands-on quest: Prod host and monitoring provisioning *
-### Given
-- [ ] Ansible provisioning [scripts and assets](/iaac) `cd iaac`
-- [ ] Provisioning [documentation](/iaac/README.md)
-
-### When
-- [ ] Steps executed according Provisioning documentation
-
-### Then
-- [ ] Prometheus UI up and running at `http://{{ prod }}:9090/alerts`
-- [x] JMeter can connect agent deployed at {{ prod }}: `jmeter -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true`
-```shell script
-JMeter → Options → Log Viewer
-JMeter → Run → Remote Start → 127.0.0.1
-```
-
 ## Modern applications architecture and deployment: How do we monitor tiers? (1h)
 <!--- TODO Rosetta stone visuals: concept - metaphor - code -->
 | Tier | Implementation | Tools
