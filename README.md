@@ -6,8 +6,8 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 > Let's start monitoring!
 
 # Webinar recordings
-- [23.06.2020](https://us02web.zoom.us/rec/share/_fJVc63z7FhLRpHyyX2OaoEDA7vrT6a8hiQcrvAIzRpXh-wZrY1fxnhK3IlcM2xW)
 - [25.06.2020](https://us02web.zoom.us/rec/share/4N0qbLTbsVxIWp3B52PBBbQnFIDmaaa813RM_aEOykpPTjWwLbq-h51Uq0cpqvWS)
+- [26.06.2020](https://us02web.zoom.us/rec/share/wPNTH5zB6jxIRIGU413UC60wEarhaaa8g3IarKZZzB4fr22NuIM3v7Hb7b7L2UlR)
 
 # Training Objectives
 - [ ] Understanding modern application architecture and defect hotspots
