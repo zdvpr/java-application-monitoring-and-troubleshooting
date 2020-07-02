@@ -27,10 +27,14 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] [prod](/iaac/inventories/production/hosts.yml) accessible
 - [ ] Ports at {{ prod }}[:ports_needed](/iaac/inventories/test/test-env-docker-compose.yml) accessible
 ## Network Access from student stations _and_ prod host
-- [ ] github.org :443 :80
-- [ ] repo1.maven.org :443 :80
-- [ ] jcenter.bintray.com :443 :80
-- [ ] hub.docker.com :443 :80
+- [ ] (*.)github.com :443
+- [ ] (*.)galaxy.ansible.com :443
+- [ ] (*.)apache.org :443
+- [ ] repo1.maven.org :443
+- [ ] jcenter.bintray.com :443
+- [ ] (*.)docker.com :443
+- [ ] (*.)docker.io :443
+- [ ] (*.)cloudfront.net :443
 
 # Agenda
 ## Training introducing and focusing (15m)
