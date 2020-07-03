@@ -35,6 +35,7 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] (*.)docker.com :443
 - [ ] (*.)docker.io :443
 - [ ] (*.)cloudfront.net :443
+- [ ] (*.)grafana.com :443
 
 # Agenda
 ## Training introducing and focusing (15m)

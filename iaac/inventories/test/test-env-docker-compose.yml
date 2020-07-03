@@ -2,21 +2,29 @@ version: "3.6"
 
 services:
   prod:
-    container_name: prod
-#    For building disk image from scratch with later Ansible provisioning:
-#    build: .
+
+#    TODO Build docker images from scratch?
+#    build: . # Dockerfile for OS, sshd and python only
 #    image: ekr26/dev.ekr.iaac.edu.monitoring.prod:clear
-#    For ready-to-use image:
-    image: ekr26/dev.ekr.iaac.edu.monitoring.prod:provisioned
+
+#    TODO Download already made-up *clear* provisioned image for future Ansible full provision?
+    image: ekr26/dev.ekr.iaac.edu.monitoring.prod:clear # OS, sshd and python only
+
+#    TODO Download already made-up *fully* Ansible provisioned image?
+#    image: ekr26/dev.ekr.iaac.edu.monitoring.prod:provisioned
+
+    container_name: prod
     restart: always
     ports:
       - "2222:22"
+      - "3000:3000"
       - "8080:8080"
       - "9100:9100"
       - "9090:9090"
       - "9999:9999"
       - "1099:1099"
       - "42129:42129"
+
     privileged: true
     cap_add:
       - SYS_ADMIN

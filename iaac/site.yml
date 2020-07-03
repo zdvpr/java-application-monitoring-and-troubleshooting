@@ -4,6 +4,7 @@
 
   pre_tasks:
     - name: Add Google Chrome package base for Yum
+      tags: chrome
       blockinfile:
         path: /etc/yum.repos.d/google-chrome.repo
         create: yes
@@ -16,6 +17,7 @@
           gpgkey=https://dl.google.com/linux/linux_signing_key.pub
 
     - name: Update package manager cache
+      tags: cache
       run_once: true
       yum:
         name: tar
@@ -23,21 +25,30 @@
         update_cache: yes
       ignore_errors: yes
 
-  tasks:
-    - name: Install packages
-      package:
-        state: present
-        name:
-          - git
-          - java-1.8.0-openjdk-devel
-          - curl
-          - google-chrome-stable
 
   roles:
     - role: gantsign.maven
+      tags: maven
+      maven_version: '3.6.3'
+
     - role: lean_delivery.jmeter
+      tags: jmeter
+      jmeter_version: '5.3'
+
     - role: cloudalchemy.node-exporter
+      tags: node_exporter
+      node_exporter_version: '1.0.1'
+      node_exporter_enabled_collectors:
+        - processes
+        - systemd
+        - tcpstat
+        - meminfo_numa
+        - mountstats
+        - logind
+        - ksmd
+
     - role: cloudalchemy.prometheus
+      tags: prometheus
       prometheus_scrape_configs:
         - job_name: 'host'
           static_configs:
@@ -51,8 +62,59 @@
               labels:
                 env: prod
 
+    - role: cloudalchemy.grafana
+      tags: grafana
+      grafana_security:
+        admin_user: 'admin'
+        admin_password: 'admin'
+      grafana_datasources:
+        - name: Prometheus
+          type: prometheus
+          url: 'http://localhost:9090'
+          basicAuth: false
+          isDefault: true
+      grafana_dashboards_dir: files/grafana_dashboards
+#      grafana_dashboards: # if internet accessible
+#        - dashboard_id: 1860 # https://grafana.com/api/dashboards/1860
+#          revision_id: 20 # https://grafana.com/api/dashboards/1860/revisions
+#          datasource: prometheus
+
+
+  tasks:
+    - name: Copy pre-built Maven configuration
+      tags: maven
+      copy:
+        src: files/maven/settings.xml
+        dest: /opt/maven/apache-maven-3.6.3/conf/
+        mode: u=rw,g=rw,o=rw
+
+    - name: Install git
+      tags: git
+      package:
+        state: present
+        name: git
+
+    - name: Install jdk
+      tags: jdk
+      package:
+        state: present
+        name: java-1.8.0-openjdk-devel
+
+    - name: Install curl
+      tags: curl
+      package:
+        state: present
+        name: curl
+
+    - name: Install chrome
+      tags: chrome
+      package:
+        state: present
+        name: google-chrome-stable
+
   post_tasks:
     - name: Start JMeter remote agent
-      shell: "nohup jmeter-server -Dserver.rmi.ssl.disable=true -Djava.rmi.server.hostname={{ ansible_host }} -Dserver.rmi.localport=42129 &"
+      tags: jmeter
+      shell: "nohup jmeter-server -Dserver.rmi.ssl.disable=true -Djava.rmi.server.hostname={{ ansible_host }} -Dserver.rmi.localport=42129 > /dev/null 2>&1 &"
       args:
         chdir: "{{ lookup('env','JMETER_HOME') }}"
