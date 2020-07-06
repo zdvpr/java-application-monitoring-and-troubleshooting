@@ -30,13 +30,13 @@
     - _old_grafana_pkgs is changed
     - ansible_pkg_mgr == "apt"
 
-- name: Add Grafana repository file [RHEL/CentOS]
-  template:
-    src: "{{ grafana_yum_repo_template }}"
-    dest: "/etc/yum.repos.d/{{ grafana_yum_repo_template | basename | regex_replace('\\.j2$', '') }}"
-    force: true
-    backup: true
-  when: ansible_pkg_mgr in ['yum', 'dnf']
+#- name: Add Grafana repository file [RHEL/CentOS]
+#  template:
+#    src: "{{ grafana_yum_repo_template }}"
+#    dest: "/etc/yum.repos.d/{{ grafana_yum_repo_template | basename | regex_replace('\\.j2$', '') }}"
+#    force: true
+#    backup: true
+#  when: ansible_pkg_mgr in ['yum', 'dnf']
 
 - block:
     - name: Import Grafana GPG signing key [Debian/Ubuntu]
