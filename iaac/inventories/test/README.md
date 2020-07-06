@@ -52,12 +52,6 @@ Install host dependencies [for MacOS host only]
 brew install gnu-tar
 ```
 
-Update role dependencies [first time or roles updated]
--------------------------------------------------------
-```bash
-ansible-galaxy install -r requirements.yml --ignore-certs --force
-```
-
 Reset ssh keys [if container have changed]
 ------------------------------------------
 ```bash

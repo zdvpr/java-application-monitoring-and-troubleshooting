@@ -8,11 +8,6 @@ export http_proxy=
 export https_proxy=
 ```
 
-Update role dependencies [first time or roles updated]
-------------------------------------------------------
-```bash
-ansible-galaxy install -r requirements.yml --ignore-certs
-```
 
 Reset ssh keys [if target host have changed]
 --------------------------------------------
