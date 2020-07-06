@@ -4,19 +4,6 @@
   environment: "{{ env_proxy }}"
 
   pre_tasks:
-    - name: Add Google Chrome package base for Yum
-      tags: chrome
-      blockinfile:
-        path: /etc/yum.repos.d/google-chrome.repo
-        create: yes
-        block: |
-          [google-chrome]
-          name=google-chrome
-          baseurl=http://dl.google.com/linux/chrome/rpm/stable/x86_64
-          enabled=1
-          gpgcheck=1
-          gpgkey=https://dl.google.com/linux/linux_signing_key.pub
-
     - name: Update package manager cache
       tags: cache
       run_once: true
@@ -107,12 +94,6 @@
       package:
         state: present
         name: curl
-
-    - name: Install chrome
-      tags: chrome
-      package:
-        state: present
-        name: google-chrome-stable
 
   post_tasks:
     - name: Start JMeter remote agent
