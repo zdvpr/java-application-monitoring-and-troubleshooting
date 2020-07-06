@@ -47,10 +47,6 @@
           basicAuth: false
           isDefault: true
       grafana_dashboards_dir: files/grafana_dashboards
-#      grafana_dashboards: # if internet accessible
-#        - dashboard_id: 1860 # https://grafana.com/api/dashboards/1860
-#          revision_id: 20 # https://grafana.com/api/dashboards/1860/revisions
-#          datasource: prometheus
 
     - role: lean_delivery.jmeter
       tags: jmeter
