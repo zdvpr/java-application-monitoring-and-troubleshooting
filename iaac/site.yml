@@ -32,22 +32,6 @@
       tags: maven
       maven_version: '3.6.3'
 
-    - role: lean_delivery.jmeter
-      tags: jmeter
-      jmeter_version: '5.3'
-
-    - role: cloudalchemy.node-exporter
-      tags: node_exporter
-      node_exporter_version: '1.0.1'
-      node_exporter_enabled_collectors:
-        - processes
-        - systemd
-        - tcpstat
-        - meminfo_numa
-        - mountstats
-        - logind
-        - ksmd
-
     - role: cloudalchemy.prometheus
       tags: prometheus
       prometheus_scrape_configs:
@@ -62,6 +46,18 @@
             - targets: ['localhost:8080']
               labels:
                 env: prod
+
+    - role: cloudalchemy.node-exporter
+      tags: node_exporter
+      node_exporter_version: '1.0.1'
+      node_exporter_enabled_collectors:
+        - processes
+        - systemd
+        - tcpstat
+        - meminfo_numa
+        - mountstats
+        - logind
+        - ksmd
 
     - role: cloudalchemy.grafana
       tags: grafana
@@ -80,8 +76,18 @@
 #          revision_id: 20 # https://grafana.com/api/dashboards/1860/revisions
 #          datasource: prometheus
 
+    - role: lean_delivery.jmeter
+      tags: jmeter
+      jmeter_version: '5.3'
+
 
   tasks:
+    - name: Install jdk
+      tags: jdk
+      package:
+        state: present
+        name: java-1.8.0-openjdk-devel
+
     - name: Copy pre-built Maven configuration
       tags: maven
       copy:
@@ -94,12 +100,6 @@
       package:
         state: present
         name: git
-
-    - name: Install jdk
-      tags: jdk
-      package:
-        state: present
-        name: java-1.8.0-openjdk-devel
 
     - name: Install curl
       tags: curl
