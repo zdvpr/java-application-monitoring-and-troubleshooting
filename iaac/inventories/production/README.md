@@ -1,10 +1,11 @@
 Playbook for production hosts
 =============================
 
-Install host dependencies [for MacOs host only]
------------------------------------------------
+Setup corporate proxy
+---------------------
 ```bash
-brew install gnu-tar
+export http_proxy=
+export https_proxy=
 ```
 
 Update role dependencies [first time or roles updated]

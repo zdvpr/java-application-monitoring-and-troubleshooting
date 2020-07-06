@@ -1,6 +1,7 @@
 - hosts: prod
   gather_facts: yes
   become: yes
+  environment: "{{ env_proxy }}"
 
   pre_tasks:
     - name: Add Google Chrome package base for Yum

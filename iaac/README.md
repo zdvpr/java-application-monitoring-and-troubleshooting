@@ -4,9 +4,9 @@ Infrastructure as a Code for Java Monitoring training
 
 Testing IaaC
 ------------
-see [test/README.md](test/README.md)
+see [test/README.md](inventories/test/README.md)
 
 
 Deploying IaaC to prod environment
 ----------------------------------
-see [production/README.md](production/README.md)
+see [production/README.md](inventories/production/README.md)
