@@ -29,6 +29,7 @@
     url: '{{ jmeter_binaries_url }}/{{ jmeter_package }}'
     dest: '{{ jmeter_tmp_folder }}/{{ jmeter_package }}'
     checksum: 'sha512:{{ jmeter_checksum }}'
+    validate_certs: no
   register: jmeter_artifact
   until: jmeter_artifact is succeeded
 
