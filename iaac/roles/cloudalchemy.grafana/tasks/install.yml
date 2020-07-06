@@ -30,13 +30,11 @@
     - _old_grafana_pkgs is changed
     - ansible_pkg_mgr == "apt"
 
-#- name: Add Grafana repository file [RHEL/CentOS]
-#  template:
-#    src: "{{ grafana_yum_repo_template }}"
-#    dest: "/etc/yum.repos.d/{{ grafana_yum_repo_template | basename | regex_replace('\\.j2$', '') }}"
-#    force: true
-#    backup: true
-#  when: ansible_pkg_mgr in ['yum', 'dnf']
+- name: Make accessible Grafana repo and update yum cache
+  yum:
+    name: rbru-grafana-release
+    state: latest
+  when: ansible_pkg_mgr in ['yum', 'dnf']
 
 - block:
     - name: Import Grafana GPG signing key [Debian/Ubuntu]
@@ -63,12 +61,9 @@
   environment: "{{ grafana_environment }}"
 
 - name: Install Grafana
-#  package:
-#    name: "{{ grafana_package }}"
-#    state: "{{ (grafana_version == 'latest') | ternary('latest', 'present') }}"
-  command: "yum -y install {{ grafana_package }}"
+  package:
+    name: "{{ grafana_package }}"
+    state: "{{ (grafana_version == 'latest') | ternary('latest', 'present') }}"
   register: _install_packages
   until: _install_packages is succeeded
-  retries: 3
-  delay: 2
   notify: restart grafana

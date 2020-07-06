@@ -1,18 +1,6 @@
 - hosts: prod
   gather_facts: yes
   become: yes
-  environment: "{{ env_proxy }}"
-
-  pre_tasks:
-    - name: Update package manager cache
-      tags: cache
-      run_once: true
-      yum:
-        name: tar
-        state: present
-        update_cache: yes
-      ignore_errors: yes
-
 
   roles:
     - role: gantsign.maven
@@ -48,7 +36,7 @@
 
     - role: cloudalchemy.grafana
       tags: grafana
-      grafana_package: "rbru-grafana-release"
+      grafana_package: "grafana"
       grafana_security:
         admin_user: 'admin'
         admin_password: 'admin'
