@@ -63,11 +63,12 @@
   environment: "{{ grafana_environment }}"
 
 - name: Install Grafana
-  package:
-    name: "{{ grafana_package }}"
-    state: "{{ (grafana_version == 'latest') | ternary('latest', 'present') }}"
+#  package:
+#    name: "{{ grafana_package }}"
+#    state: "{{ (grafana_version == 'latest') | ternary('latest', 'present') }}"
+  command: "yum -y install {{ grafana_package }}"
   register: _install_packages
   until: _install_packages is succeeded
-  retries: 5
+  retries: 3
   delay: 2
   notify: restart grafana

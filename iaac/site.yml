@@ -48,7 +48,7 @@
 
     - role: cloudalchemy.grafana
       tags: grafana
-      grafana_package: rbru-grafana-release
+      grafana_package: "rbru-grafana-release"
       grafana_security:
         admin_user: 'admin'
         admin_password: 'admin'
