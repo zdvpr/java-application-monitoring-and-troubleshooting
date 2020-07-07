@@ -36,6 +36,7 @@
 
     - role: cloudalchemy.grafana
       tags: grafana
+      grafana_port: 8080 #TODO
       grafana_package: "grafana"
       grafana_security:
         admin_user: 'admin'
@@ -43,7 +44,7 @@
       grafana_datasources:
         - name: Prometheus
           type: prometheus
-          url: 'http://localhost:9090'
+          url: "http://{{ inventory_hostname }}:9090"
           basicAuth: false
           isDefault: true
       grafana_dashboards_dir: files/grafana_dashboards
