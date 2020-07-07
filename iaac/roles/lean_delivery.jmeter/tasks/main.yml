@@ -14,6 +14,7 @@
       uri:
         url: '{{ jmeter_binaries_url }}'
         return_content: true
+        validate_certs: no
       register: jm_archive_page
 
     - name: Find last release version
@@ -130,7 +131,7 @@
         group_id: kg.apc
         repository_url: https://repo.maven.apache.org/maven2
         dest: '{{ jmeter_tmp_folder }}/{{ jm_lib_item.id }}.jar'
-        validate_certs: false
+        validate_certs: no
       register: installed_lib
       until: installed_lib is succeeded
       loop:
