@@ -3,7 +3,7 @@
 jmeter_binaries_url: https://archive.apache.org/dist/jmeter/binaries
 jmeter_checksum_url: 'https://archive.apache.org/dist/jmeter/binaries/{{ jmeter_package }}.sha512'
 jmeter_checksum: >-
-  {{ lookup('url', jmeter_checksum_url).split()[0] }}
+  {{ lookup('url', jmeter_checksum_url, validate_certs=False).split()[0] }}
 jmeter_tmp_folder: /tmp
 jmeter_package: 'apache-jmeter-{{ jmeter_version }}.tgz'
 jmeter_root_path: /opt
