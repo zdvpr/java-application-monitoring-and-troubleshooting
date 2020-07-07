@@ -1,6 +1,7 @@
 - hosts: prod
   gather_facts: yes
   become: yes
+  environment: "{{ env_proxy | default('') }}"
 
   roles:
     - role: gantsign.maven
@@ -36,7 +37,7 @@
 
     - role: cloudalchemy.grafana
       tags: grafana
-      grafana_port: 8080 #TODO
+      grafana_port: 8081 #TODO
       grafana_package: "grafana"
       grafana_security:
         admin_user: 'admin'
@@ -55,18 +56,18 @@
 
 
   tasks:
-    - name: Install jdk
-      tags: jdk
-      package:
-        state: present
-        name: java-1.8.0-openjdk-devel
-
     - name: Copy pre-built Maven configuration
       tags: maven
       copy:
         src: files/maven/settings.xml
         dest: /opt/maven/apache-maven-3.6.3/conf/
         mode: u=rw,g=rw,o=rw
+
+    - name: Install jdk
+      tags: jdk
+      package:
+        state: present
+        name: java-1.8.0-openjdk-devel
 
     - name: Install git
       tags: git
