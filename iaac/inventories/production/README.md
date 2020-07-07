@@ -4,8 +4,8 @@ Playbook for production hosts
 Setup corporate proxy
 ---------------------
 ```bash
-export http_proxy=
-export https_proxy=
+export http_proxy=http://USER:PASSWORD@proxy-gw.raiffeisen.ru:8080
+export https_proxy=http://USER:PASSWORD@proxy-gw.raiffeisen.ru:8080
 ```
 
 
