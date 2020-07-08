@@ -33,7 +33,7 @@
 - name: Make accessible Grafana repo and update yum cache
   yum:
     name: rbru-grafana-release
-    state: latest
+    state: present
   when: ansible_pkg_mgr in ['yum', 'dnf']
 
 - block:

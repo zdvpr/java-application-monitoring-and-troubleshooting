@@ -120,7 +120,7 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 ## Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
 - [ ] What Quality Attributes/NFRs does JVM provide for application?
 - [ ] What Quality Attributes/NFRs do we satisfy with application monitoring?
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+- [ ] Adding metrics to Custom Grafana dashboard
 
 ## Hands-on quest: Simple application _local_ building, running and monitoring (30m)
 ### Given
@@ -308,8 +308,12 @@ component "<$server>\nhardware" as hardware #lightgray {
 ```
 </details>
 
-## Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+## Demo: monitoring environment (15m)
+- [ ] Node Exporter
+- [ ] Prometheus
+- [ ] Grafana: setting up datasource and export dashboard
+- [ ] Custom Grafana dashboard as training outcome
+- [ ] Adding metrics to Custom Grafana dashboard
 
 ## Monitoring architecture overview (30m)
 ![Inrastructure overview](http://www.plantuml.com/plantuml/svg/NP9BRiCW48Rtd6AKLJU-GfGRz01HP64pZMbj1Z6aRLJbxXqUrA4BIyptp-CVy8cZ3l6shSgHGJWO_0H1qP8xW6QGk8Rme-3Cl434i5cdrqlIMo2QTcod5S6l-ZuHVMIzGf6dG5-CuIB7zmrZEgacmt3SEpsKqdEa0A-UKmlohEI3GP9gVelteWRgbB-uZ59bEn_8v3KA1Nr55xFD0iOCHC_P-Eqf2Cq9YOoDYF6PDazEicLlxrSxvpkwfEvmtiXPMS2wAw0pdcoTKhc2Hzz1VCdy1MzS6XWTzQGPGMYmCu-BPQcxby8zEs_OcdRy-Dzmjs7IdrohFbdKV5DIP9t4Rtf6I99gis1uAK3ij1U0ePNL9wYWUNh2_V1iBEF-5KxeZFoNlm00)
@@ -551,7 +555,7 @@ http://{{ prod }}:9090/graph?g0.range_input=15m&g0.tab=0&g0.expr=http_server_req
 - [ ] Application throughput as f(warmup time)
 
 ## Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+- [ ] Adding metrics to Custom Grafana dashboard
 
 ## Hands-on quest: JIT compilation monitoring (30m)
 ### Given
@@ -651,7 +655,7 @@ jconsole://localhost:9999/MBeans
 - [ ] _Compressed Oops_ as 35-bit reference (up to 32Gb) stored as 32-bit reference
 
 ### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+- [ ] Adding metrics to Custom Grafana dashboard
 
 ### _Native/off-heap_ memory more deep dive and new settlers
 - [ ] Metaspace
@@ -774,7 +778,7 @@ jvisualvm://Buffer Pools (plugin required)
 - [ ] concurrent data structures
 
 ### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+- [ ] Adding metrics to Custom Grafana dashboard
 
 ## Hands-on quest: Threads monitoring (30m)
 ### Given
@@ -844,7 +848,7 @@ http://{{ prod }}:9090/graph
 - [ ] Content zipping 
 
 ### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+- [ ] Adding metrics to Custom Grafana dashboard
 
 ### Non-blocking IO architecture
 - [ ] Asynchronous IO concept
@@ -908,7 +912,7 @@ http://{{ prod }}:9090/graph
 - [ ] Transaction resources trade-offs
 
 ### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+- [ ] Adding metrics to Custom Grafana dashboard
 
 ### JPA architecture
 - [ ] JPA API
