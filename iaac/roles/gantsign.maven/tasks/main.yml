@@ -33,6 +33,7 @@
     validate_certs: yes
     timeout: '{{ maven_download_timeout }}'
     mode: 'u=rw,go=r'
+  environment: "{{ env_proxy | default('') }}"
 
 - name: create Maven installation directory
   become: yes
