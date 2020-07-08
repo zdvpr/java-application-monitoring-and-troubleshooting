@@ -9,13 +9,6 @@ Setup Artifactory account for target hosts
 ------------------------------------------
 `iaac/files/maven/settings.xml` 
 
-Setup corporate proxy
----------------------
-```cygwin shell
-export http_proxy=http://USER:PASSWORD@proxy-gw.raiffeisen.ru:8080
-export https_proxy=http://USER:PASSWORD@proxy-gw.raiffeisen.ru:8080
-```
-
 Smoke test Ansible connection
 -----------------------------
 ```cygwin shell
