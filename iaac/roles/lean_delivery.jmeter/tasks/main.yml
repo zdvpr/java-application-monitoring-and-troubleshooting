@@ -31,6 +31,7 @@
     dest: '{{ jmeter_tmp_folder }}/{{ jmeter_package }}'
     checksum: 'sha512:{{ jmeter_checksum }}'
     validate_certs: no
+  environment: "{{ env_proxy | default('') }}"
   register: jmeter_artifact
   until: jmeter_artifact is succeeded
 
