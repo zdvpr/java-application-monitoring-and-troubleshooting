@@ -443,7 +443,7 @@ nohup \
 - [ ] External Legacy System REST stub started
 ```shell script
 cd target/test-classes # cat mappings/legacyAccountingSystemResponse.json
-java -jar wiremock-jre8-standalone-2.26.3.jar --verbose --port 8888 & # curl localhost:8888/api/account
+java -jar wiremock-jre8-standalone-2.27.1.jar --verbose --port 8888 & # curl localhost:8888/api/account
 ``` 
 
 - [ ] CLI tools used at {{ prod }}
