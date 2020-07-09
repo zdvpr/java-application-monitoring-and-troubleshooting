@@ -1,0 +1,8 @@
+- import_role:
+    name: gantsign.maven
+
+- name: Copy pre-built Maven configuration
+  copy:
+    src: settings.xml
+    dest: /opt/maven/apache-maven-3.6.3/conf/
+    mode: u=rw,g=rw,o=rw

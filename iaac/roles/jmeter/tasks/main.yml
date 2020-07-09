@@ -1,0 +1,7 @@
+- import_role:
+    name: lean_delivery.jmeter
+
+- name: Start JMeter remote agent
+  shell: "nohup jmeter-server -Dserver.rmi.ssl.disable=true -Djava.rmi.server.hostname={{ ansible_host }} -Dserver.rmi.localport=42129 > /dev/null 2>&1 &"
+  args:
+    chdir: "{{ lookup('env','JMETER_HOME') }}"

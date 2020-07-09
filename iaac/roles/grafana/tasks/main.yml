@@ -1,0 +1,8 @@
+- import_role:
+    name: cloudalchemy.grafana
+  vars:
+    grafana_dashboards_dir: files/dashboards
+    grafana_package: "grafana"
+    grafana_security:
+      admin_user: 'admin'
+      admin_password: 'admin'
