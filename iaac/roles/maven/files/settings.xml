@@ -15,7 +15,7 @@
         <mirror>
             <id>internal-mirror-repository</id>
             <name>Intranet Corporate Maven Repo Mirror</name>
-            <url>https://artifactory.raiffeisen.ru/remote-mvn</url>
+            <url>https://artifactory.raiffeisen.ru/artifactory/remote-mvn</url>
             <mirrorOf>*</mirrorOf>
         </mirror>
     </mirrors>
