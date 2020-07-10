@@ -6,8 +6,8 @@
     <servers>
         <server>
             <id>internal-mirror-repository</id>
-            <username>TODO</username>
-            <password>TODO</password>
+            <username>srv-jvm-training</username>
+            <password>{fRtXtKZYB68H8bPWIKG/VQA+FaVbD7m0lhp+83/uA38=}</password>
         </server>
     </servers>
 

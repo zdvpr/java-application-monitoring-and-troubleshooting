@@ -124,7 +124,12 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 ## Hands-on quest: Simple application _local_ building, running and monitoring (30m)
 ### Given
 - [ ] Satisfied [prerequisites](#Prerequisites) 
-- [ ] Download locally simple project [codebase](https://github.com/eugene-krivosheyev/java-application-monitoring-and-troubleshooting/archive/raiffeisen.zip)
+- [ ] Cloned locally [training content](https://bitbucket.raiffeisen.ru/projects/JVMTRAIN/repos/java-application-monitoring-and-troubleshooting/browse)
+```shell script
+git clone --depth 1 --branch raiffeisen https://bitbucket.raiffeisen.ru/scm/jvmtrain/java-application-monitoring-and-troubleshooting.git
+cd java-application-monitoring-and-troubleshooting
+git checkout raiffeisen
+```
 
 ### When
 - [ ] Project application built locally with maven `mvn clean verify [-DskipTests]`
@@ -392,25 +397,31 @@ jmeter --> jmeter_agent
 
 ## Hands-on quest: Modern application _remote_ building, running and monitoring (30m)
 ### Given
-- [x] Given rights for application folder to developer user
-- [ ] SSH session to {{ prod }}:[ansible_port](/iaac/inventories/production/hosts.yml) `ssh -p 2222 root@localhost`
-- [ ] Demo Application codebase downloaded and built at {{ prod }} remotely
-```shell script
-export http_proxy=http://{{ USER }}:{{ PASSWORD }}@proxy-gw.raiffeisen.ru:8080
-export https_proxy=http://{{ USER }}:{{ PASSWORD }}@proxy-gw.raiffeisen.ru:8080
-
-cd /opt
-wget -P /tmp/ https://github.com/eugene-krivosheyev/agile-practices-application/archive/raiffeisen.zip
-unzip /tmp/raiffeisen.zip -d .
-rm /tmp/raiffeisen.zip
-
-cd agile-practices-application
-mvn clean verify [-DskipTests]
-```
+- [ ] SSH user session with domain account to [{{ prod host }}](iaac/inventories/production/hosts.yml)
+`ssh account@s-msk-t-jvm-XXX`
 
 ### When
-- [ ] Credentials for Maven server set at `$M2_HOME/conf/settings.xml`
+- [ ] [Demo Application](https://bitbucket.raiffeisen.ru/projects/JVMTRAIN/repos/agile-practices-application/browse) codebase cloned remotely
+```shell script
+cd /opt
+sudo git clone --depth 1 --branch raiffeisen https://bitbucket.raiffeisen.ru/scm/jvmtrain/agile-practices-application.git
+sudo chown {{ account }}:users -R agile-practices-application
+cd agile-practices-application
+git checkout raiffeisen
+```
 
+- [ ] Credentials for Maven Artifactory repo set up
+```shell script
+cp /opt/maven/settings-security.xml ~/.m2/
+mvn --encrypt-master-password {{ trainer_given_master_password }}
+vi ~/.m2/settings-security.xml
+```
+
+- [ ] Demo Application built remotely
+```shell script
+cd /opt/agile-practices-application
+mvn clean verify [-DskipTests]
+```
 
 - [ ] Application ran at {{ prod }}
 ```shell script
@@ -434,7 +445,7 @@ nohup \
 - [ ] External Legacy System REST stub started
 ```shell script
 cd target/test-classes # cat mappings/legacyAccountingSystemResponse.json
-java -jar wiremock-jre8-standalone-2.27.1.jar --verbose --port 8888 & # curl localhost:8888/api/account
+java -jar wiremock-jre8-standalone-2.27.1.jar --port 8888 [--verbose] & # curl localhost:8888/api/account
 ``` 
 
 - [ ] CLI tools used at {{ prod }}
