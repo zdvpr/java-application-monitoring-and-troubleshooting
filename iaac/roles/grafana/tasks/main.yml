@@ -1,3 +1,9 @@
+- name: Make accessible Grafana repo
+  yum:
+    name: rbru-grafana-release
+    state: present
+  when: ansible_pkg_mgr in ['yum', 'dnf']
+
 - import_role:
     name: cloudalchemy.grafana
   vars:

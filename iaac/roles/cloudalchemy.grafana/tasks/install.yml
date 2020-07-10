@@ -30,12 +30,6 @@
     - _old_grafana_pkgs is changed
     - ansible_pkg_mgr == "apt"
 
-- name: Make accessible Grafana repo and update yum cache
-  yum:
-    name: rbru-grafana-release
-    state: present
-  when: ansible_pkg_mgr in ['yum', 'dnf']
-
 - block:
     - name: Import Grafana GPG signing key [Debian/Ubuntu]
       apt_key:
