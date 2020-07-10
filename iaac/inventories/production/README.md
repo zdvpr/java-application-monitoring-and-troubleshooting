@@ -12,8 +12,8 @@ Setup Artifactory account for target hosts
 Setup corporate proxy
 ---------------------
 ```cygwin shell
-export http_proxy=http://USER:PASSWORD@proxy-gw.raiffeisen.ru:8080
-export https_proxy=http://USER:PASSWORD@proxy-gw.raiffeisen.ru:8080
+export http_proxy=http://USER:PASSWORD@proxy:port
+export https_proxy=http://USER:PASSWORD@proxy:port
 ```
 
 Smoke test Ansible connection
