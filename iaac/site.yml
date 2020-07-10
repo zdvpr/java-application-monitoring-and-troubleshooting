@@ -4,6 +4,9 @@
   # should not use proxy environment
 
   roles:
+    - role: git
+      tags: git
+
     - role: jdk
       tags: jdk
 
