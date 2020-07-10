@@ -55,7 +55,6 @@
 
     - role: grafana
       tags: grafana
-      grafana_port: 8081 #TODO
       grafana_datasources:
         - name: Prometheus
           type: prometheus
