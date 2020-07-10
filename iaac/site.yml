@@ -1,33 +1,6 @@
 - hosts: prod
   gather_facts: yes
   become: yes
-  # should not use proxy environment
-
-  roles:
-    - role: git
-      tags: git
-
-    - role: jdk
-      tags: jdk
-
-    - role: grafana
-      tags: grafana
-      grafana_port: 8081 #TODO
-      grafana_datasources:
-        - name: Prometheus
-          type: prometheus
-          url: "http://{{ inventory_hostname }}:9090"
-          basicAuth: false
-          access: proxy
-          isDefault: true
-
-    - role: curl
-      tags: curl
-
-
-- hosts: prod
-  gather_facts: yes
-  become: yes
   environment: "{{ env_proxy | default('') }}"
 
   roles:
@@ -65,3 +38,31 @@
     - role: jmeter
       tags: jmeter
       jmeter_version: '5.3'
+
+
+
+- hosts: prod
+  gather_facts: yes
+  become: yes
+  # should not use proxy environment
+
+  roles:
+    - role: git
+      tags: git
+
+    - role: jdk
+      tags: jdk
+
+    - role: grafana
+      tags: grafana
+      grafana_port: 8081 #TODO
+      grafana_datasources:
+        - name: Prometheus
+          type: prometheus
+          url: "http://{{ inventory_hostname }}:9090"
+          basicAuth: false
+          access: proxy
+          isDefault: true
+
+    - role: curl
+      tags: curl
