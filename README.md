@@ -17,7 +17,6 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] RAM ≥ 8Гб
 - [ ] Wi-Fi with Internet access
 ## Software at student's developer desktop
-- [ ] [git](https://git-scm.com/downloads)
 - [ ] [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [ ] [ssh terminal](https://www.bitvise.com/ssh-client-download) 
 - [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
@@ -125,14 +124,7 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 ## Hands-on quest: Simple application _local_ building, running and monitoring (30m)
 ### Given
 - [ ] Satisfied [prerequisites](#Prerequisites) 
-- [ ] **Forked** simple project [codebase](https://github.com/eugene-krivosheyev/java-application-monitoring-and-troubleshooting) 
-- [ ] Cloned fork locally
-```shell script
-cd
-git clone https://github.com/{{ STUDENT_ACCOUNT }}/java-application-monitoring-and-troubleshooting
-cd java-application-monitoring-and-troubleshooting
-git checkout {{ group_custom_branch }}
-```
+- [ ] Download locally simple project [codebase](https://github.com/eugene-krivosheyev/java-application-monitoring-and-troubleshooting/archive/raiffeisen.zip)
 
 ### When
 - [ ] Project application built locally with maven `mvn clean verify [-DskipTests]`
@@ -402,22 +394,21 @@ jmeter --> jmeter_agent
 ### Given
 - [x] Given rights for application folder to developer user
 - [ ] SSH session to {{ prod }}:[ansible_port](/iaac/inventories/production/hosts.yml) `ssh -p 2222 root@localhost`
-- [ ] **Forked** [application codebase](https://github.com/eugene-krivosheyev/agile-practices-application) to student's account
-- [ ] Application built at {{ prod }}
+- [ ] Demo Application codebase downloaded and built at {{ prod }} remotely
 ```shell script
+export http_proxy=http://{{ USER }}:{{ PASSWORD }}@proxy-gw.raiffeisen.ru:8080
+export https_proxy=http://{{ USER }}:{{ PASSWORD }}@proxy-gw.raiffeisen.ru:8080
+
 cd /opt
-git clone --branch master --depth 1 https://github.com/{{ STUDENT_ACCOUNT }}/agile-practices-application
+wget -P /tmp/ https://github.com/eugene-krivosheyev/agile-practices-application/archive/raiffeisen.zip
+unzip /tmp/raiffeisen.zip -d .
+rm /tmp/raiffeisen.zip
+
 cd agile-practices-application
 mvn clean verify [-DskipTests]
 ```
 
 ### When
-- [ ] Proxy environment set #TODO
-```bash
-export http_proxy=http://USER:PASSWORD@proxy-gw.raiffeisen.ru:8080
-export https_proxy=http://USER:PASSWORD@proxy-gw.raiffeisen.ru:8080
-```
-
 - [ ] Credentials for Maven server set at `$M2_HOME/conf/settings.xml`
 
 
