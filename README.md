@@ -441,9 +441,8 @@ nohup \
     -Xloggc:gc.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=8 -XX:GCLogFileSize=8m \
     -XX:NativeMemoryTracking=detail \
     -Dderby.stream.error.file=log/derby.log \
-    -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false \
-    -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999 \
-    -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname={{ prod }} \
+    -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false \
+    -Djava.rmi.server.hostname={{ prod }} -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999 \
     -jar target/dbo-1.0-SNAPSHOT.jar \
       --spring.profiles.active=qa \
       --server.port=8080 \
