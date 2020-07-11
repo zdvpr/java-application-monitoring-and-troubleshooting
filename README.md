@@ -97,7 +97,7 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 
 ### How do we build Java application?
 - [ ] JVM vs JRE vs JDK
-- [ ] Phisical point ov view for java application
+- [ ] Physical point ov view for java application
 - [ ] Classes, packages and JARs
 - [ ] classpath x2
 - [ ] Build cycle raw
@@ -136,8 +136,8 @@ java \
   -Xms128m -Xmx256m \
   -cp target/dbo-1.0-SNAPSHOT.jar \
   -Dapp.property=value \
-  com.acme.dbo.Presentation \
-  program arguments
+    com.acme.dbo.Presentation \
+      program arguments
 ```
 
 - [ ] JVisualVM profiler connected to running app `$JAVA_HOME/bin/jvisualvm`
@@ -531,6 +531,9 @@ http://{{ prod }}:9090/graph?g0.range_input=15m&g0.tab=0&g0.expr=http_server_req
 - [ ] How many http sessions are active?
 - [ ] What is the current `system load average`?
 - [ ] What is the 90% percentile of service response time?
+
+### After debrief
+- [ ] Updated your custom Grafana dashboard with metrics you think is important
   
 ---
 
@@ -613,6 +616,9 @@ jconsole://localhost:9999/MBeans
 - [ ] Total compilation time
 - [ ] Is Code Cache full enough to begin worry about `CodeCache is full. Compiler has been disabled.`?
 - [ ] Is there Code Cache rolling after warm-up?
+
+### After debrief
+- [ ] Updated your custom Grafana dashboard with metrics you think is important
 
 ---
 
@@ -746,6 +752,9 @@ jvisualvm://Buffer Pools (plugin required)
 - [ ] What are the memory dominators?
 - [ ] What is the native memory footprint?
 
+### After debrief
+- [ ] Updated your custom Grafana dashboard with metrics you think is important
+
 ---
 
 ## JVM threading management (2h)
@@ -833,6 +842,9 @@ http://{{ prod }}:9090/graph
 - [ ] Hypothesis on what business logic is most CPU consuming
 - [ ] Hypothesis on application threading patterns: (a) connection handling, (b) logic processing, (c) data access?
 
+### After debrief
+- [ ] Updated your custom Grafana dashboard with metrics you think is important
+
 ---
 
 ## JVM IO management (2h)
@@ -902,6 +914,9 @@ http://{{ prod }}:9090/graph
 - [ ] What threading pattern for connection data processing used in application design?
 - [ ] What threading scope pattern used in application design?
 
+### After debrief
+- [ ] Updated your custom Grafana dashboard with metrics you think is important
+
 ---
 
 ## Persistent data management (2h)
@@ -963,12 +978,16 @@ http://{{ prod }}:9090/graph
 - [ ] ORM cache state?
 - [ ] Can we set less transaction isolation level to gain throughput?
 
+### After debrief
+- [ ] Updated your custom Grafana dashboard with metrics you think is important
+
 ---
 
 ## Final retro (30m)
 - [ ] Value taken
-- [ ] Training Improvement Actions
 - [ ] Process Improvement Actions 
+- [ ] Training Improvement Actions
+- [ ] Custom Grafana dashboards competition
 
 ---
 
