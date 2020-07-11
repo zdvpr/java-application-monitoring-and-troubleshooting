@@ -313,7 +313,7 @@ component "<$server>\nhardware" as hardware #lightgray {
 - [ ] Adding metrics to Custom Grafana dashboard
 
 ## Monitoring architecture overview (30m)
-![Inrastructure overview](http://www.plantuml.com/plantuml/svg/PL1RJWCn3FptAQp-zmfLRy01gghAxbeqaCHHd0KgrBlZFCAsy14fCsEFFJvADYclta7WXN2tq0SgbIs77Hf1nHtYD-19v8gPahV1k7FH1r3D1B6J8upEt2RczwftKkKfyQTGEkltpLCkFnWoxW-Rqnt0p9aJlaGf5Xm5zE5UYthzm5lJ8FgKNzn6GKiN4oyrHaNq5JcfMFSip6Km03YpZnmePCqLexDplS6vTEF9Sx2we0slI669R4Ek9fq7l3yxw5nTuqghD8F5P3CP8LGssLakLolQTskDMtL9C4oV-SE_XLlGeZpi2uzbJIqtA2SUbyFz8FlfEZ5cRVGVwwD6Nxtx0G00)
+![Inrastructure overview](http://www.plantuml.com/plantuml/svg/NL71Ri8m3BtxAopk_0BYmddIs0rLA6sjaQsDepXbe8b_dvCcqEvGANxFVdv-tKiq8KxZ08vxmarFLrGeMdORD89Qbn9_0KyY5umKHklCq2I-5ieP9xOT2FrWxYtpT-OBg7GR-4SeDFhy6Ycc5rGQjxkNqWF0T943ldb94km5zCEjDbMvMZ-7Ab2sFEjv5SpN-S1zFYDNTFCSbCm-4tAk201sF7fsvABUvVrWkvn1awRnDBApaODrdqYkzsnTp2851toi5NIlshZG9BD0Rw9fZH0g6cmdvuiLdRlFWw_kT44LNUEx_uRBeObP-8Lrcx8v0q1OTkKrfyDDEpHAV3ySFr0plDgEy1Ydjac_f2QDsofIeYv0zRQ0rrRs6jKq3dy0)
 <details>
 <summary>pUML source</summary>
 
@@ -350,6 +350,8 @@ node prod {
 
  jmeter -> application
  node_exporter -> prod
+ 
+ application --> [External REST service Stub]
 }
 
 terminal --> prod
