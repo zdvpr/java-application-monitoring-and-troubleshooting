@@ -313,7 +313,7 @@ component "<$server>\nhardware" as hardware #lightgray {
 - [ ] Adding metrics to Custom Grafana dashboard
 
 ## Monitoring architecture overview (30m)
-![Inrastructure overview](http://www.plantuml.com/plantuml/svg/NP9BRiCW48Rtd6AKLJU-GfGRz01HP64pZMbj1Z6aRLJbxXqUrA4BIyptp-CVy8cZ3l6shSgHGJWO_0H1qP8xW6QGk8Rme-3Cl434i5cdrqlIMo2QTcod5S6l-ZuHVMIzGf6dG5-CuIB7zmrZEgacmt3SEpsKqdEa0A-UKmlohEI3GP9gVelteWRgbB-uZ59bEn_8v3KA1Nr55xFD0iOCHC_P-Eqf2Cq9YOoDYF6PDazEicLlxrSxvpkwfEvmtiXPMS2wAw0pdcoTKhc2Hzz1VCdy1MzS6XWTzQGPGMYmCu-BPQcxby8zEs_OcdRy-Dzmjs7IdrohFbdKV5DIP9t4Rtf6I99gis1uAK3ij1U0ePNL9wYWUNh2_V1iBEF-5KxeZFoNlm00)
+![Inrastructure overview](http://www.plantuml.com/plantuml/svg/PL1RJWCn3FptAQp-zmfLRy01gghAxbeqaCHHd0KgrBlZFCAsy14fCsEFFJvADYclta7WXN2tq0SgbIs77Hf1nHtYD-19v8gPahV1k7FH1r3D1B6J8upEt2RczwftKkKfyQTGEkltpLCkFnWoxW-Rqnt0p9aJlaGf5Xm5zE5UYthzm5lJ8FgKNzn6GKiN4oyrHaNq5JcfMFSip6Km03YpZnmePCqLexDplS6vTEF9Sx2we0slI669R4Ek9fq7l3yxw5nTuqghD8F5P3CP8LGssLakLolQTskDMtL9C4oV-SE_XLlGeZpi2uzbJIqtA2SUbyFz8FlfEZ5cRVGVwwD6Nxtx0G00)
 <details>
 <summary>pUML source</summary>
 
@@ -335,7 +335,6 @@ ops --> browser
 ops --> jmeter
 
 node prod {
- [jmeter agent] as jmeter_agent
  [node exporter] as node_exporter
 
  component [application] {
@@ -349,17 +348,13 @@ node prod {
  prometheus --> monitor
  prometheus -> node_exporter
 
- jmeter_agent -> application
+ jmeter -> application
  node_exporter -> prod
-
- interface port
- monitor -( port
 }
 
 terminal --> prod
 browser --> prometheus
 browser --> application
-jmeter --> jmeter_agent
 @enduml
 ```
 
@@ -486,10 +481,23 @@ jinfo -flag PrintGCDetails <pid> # get jvm flag value
 jinfo -flag +PrintGCDetails <pid> # change flag value, makes sense only for _manageable_ ones
 ```
 
+- [ ] Load emulation set up: database test data provisioning (`dbo-db` folder)
+```shell script
+jmeter -t load.jmx -j log/jmeter/jmeter.log # GUI mode
+```
+- Read _constants_ section
+- Toggled on _setup_ test plan entry
+- Shown entry _setup_/Summary Report
+- Menu: Run/Start
+- Got samples of ${CLIENTS} constant count
+- Toggled off _setup_ test plan entry
+- Toggled on _reporting-users_, _admin-users_, _operations-users_ test plan entries
+- Test plan saved
+
 - [ ] Load emulation ran
 ```shell script
-jmeter -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true # GUI mode
-jmeter -n -t load.jmx -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true # CLI mode
+mkdir -p log/jmeter/report
+jmeter -n -t load.jmx -j log/jmeter/jmeter.log -l log/jmeter/jmeter.jtl -e -o log/jmeter/report # CLI mode
 ```
 
 - [ ] Web applications used from dev station
@@ -509,22 +517,21 @@ http://{{ prod }}:9090/graph?g0.range_input=15m&g0.tab=0&g0.expr=http_server_req
 ```
 
 ### Finally
-- [ ] JMeter load emulation stopped at dev station
+- [ ] JMeter load emulation stopped at dev station after ${TEST_DURATION_SEC}
 - [ ] Application gracefully stopped at {{ prod }} `curl --request POST http://{{ prod }}:8080/dbo/actuator/shutdown`
-- [ ] Database filled up with tests data removed `rm -rf dbo-db`
 
 ### Then answered and reviewed at debrief
 - [ ] Free HDD space? Free RAM?
 - [ ] How many JVMs running?
 - [ ] What DBMS used for application?
 - [ ] What JVM version used for application? What are the parameters, properties and arguments used?
-- [x] How many Docker containers are running? What images used?
 - [ ] What are the `health` indicator for application?
 - [ ] What is the application uptime?
 - [ ] What is the CPU usage for application?
 - [ ] How many http requests servlet container handled by different URLs? 
 - [ ] How many http sessions are active?
 - [ ] What is the current `system load average`?
+- [ ] What is the 90% percentile of service response time?
   
 ---
 
