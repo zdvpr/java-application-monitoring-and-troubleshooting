@@ -17,11 +17,11 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] RAM ≥ 8Гб
 - [ ] Wi-Fi with Internet access
 ## Software at student's developer desktop
-- [ ] [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- [ ] [Oracle JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) or [AdoptOpenJDK](https://adoptopenjdk.net) + [VisualVM](https://visualvm.github.io)
 - [ ] [ssh terminal](https://www.bitvise.com/ssh-client-download) 
 - [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
 ## Network access from student stations _to_ emulation of **prod** host
-- [ ] [prod](/iaac/inventories/production/hosts.yml) accessible
+- [ ] [prod host](/iaac/inventories/production/hosts.yml) accessible
 - [ ] Ports at {{ prod }}[:ports_needed](/iaac/inventories/test/test-env-docker-compose.yml) accessible
 ## Network Access from student stations _and_ prod host
 - [ ] (*.)github.com :443
@@ -29,9 +29,6 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] (*.)apache.org :443
 - [ ] repo1.maven.org :443
 - [ ] jcenter.bintray.com :443
-- [ ] (*.)docker.com :443
-- [ ] (*.)docker.io :443
-- [ ] (*.)cloudfront.net :443
 - [ ] (*.)grafana.com :443
 
 # Agenda
