@@ -302,13 +302,6 @@ component "<$server>\nhardware" as hardware #lightgray {
 ```
 </details>
 
-## Demo: monitoring environment (15m)
-- [ ] Node Exporter
-- [ ] Prometheus
-- [ ] Grafana: setting up datasource and export dashboard
-- [ ] Custom Grafana dashboard as training outcome
-- [ ] Adding metrics to Custom Grafana dashboard
-
 ## Monitoring architecture overview (30m)
 ![Inrastructure overview](http://www.plantuml.com/plantuml/svg/NL71Ri8m3BtxAopk_0BYmddIs0rLA6sjaQsDepXbe8b_dvCcqEvGANxFVdv-tKiq8KxZ08vxmarFLrGeMdORD89Qbn9_0KyY5umKHklCq2I-5ieP9xOT2FrWxYtpT-OBg7GR-4SeDFhy6Ycc5rGQjxkNqWF0T943ldb94km5zCEjDbMvMZ-7Ab2sFEjv5SpN-S1zFYDNTFCSbCm-4tAk201sF7fsvABUvVrWkvn1awRnDBApaODrdqYkzsnTp2851toi5NIlshZG9BD0Rw9fZH0g6cmdvuiLdRlFWw_kT44LNUEx_uRBeObP-8Lrcx8v0q1OTkKrfyDDEpHAV3ySFr0plDgEy1Ydjac_f2QDsofIeYv0zRQ0rrRs6jKq3dy0)
 <details>
@@ -359,11 +352,25 @@ browser --> application
 
 </details>
 
-### Monitoring overview and tools
-### Load generation architecture overview
+## Demo: monitoring environment (15m)
+- [ ] Node Exporter
+- [ ] Prometheus
+- [ ] Grafana: setting up datasource and export dashboard
+- [ ] Custom Grafana dashboard as training outcome
+- [ ] Adding metrics to Custom Grafana dashboard
+
+## Load generation architecture overview (15m)
 - [ ] Types of performance testing except stress testing?
 - [ ] While monitoring: What type should we use? What performance metrics do we test?
 - [ ] Testing vs Monitoring
+
+## Demo: load generation tools (15m)
+- [ ] JMeter overview
+- [ ] Test plan
+- [ ] Constants
+- [ ] Test plan elements
+- [ ] Running test plan: GUI and CLI modes
+- [ ] Statistics overview: GUI and CLI mode
 
 ## Modern applications architecture and deployment: How do we monitor tiers? (1h)
 <!--- TODO Rosetta stone visuals: concept - metaphor - code -->
@@ -499,7 +506,7 @@ mkdir -p log/jmeter/report
 jmeter -n -t load.jmx -j log/jmeter/jmeter.log -l log/jmeter/jmeter.jtl -e -o log/jmeter/report # CLI mode
 ```
 
-- [ ] Web applications used from dev station
+- [ ] Web applications used
 ```
 http://{{ prod }}:8080/dbo/swagger-ui.html
 
@@ -602,8 +609,8 @@ http://{{ prod }}:9090/graph
 
 - [ ] Profiler used
 ```shell script
-jconsole://localhost:9999/Memory/Code cache
-jconsole://localhost:9999/MBeans
+jconsole://{{ prod }}:9999/Memory/Code cache
+jconsole://{{ prod }}:9999/MBeans
 ```
 
 ### Finally
