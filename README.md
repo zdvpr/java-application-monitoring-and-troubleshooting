@@ -18,6 +18,8 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] Wi-Fi with Internet access
 ## Software at student's developer desktop
 - [ ] [Oracle JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) or [AdoptOpenJDK](https://adoptopenjdk.net) + [VisualVM](https://visualvm.github.io)
+- [ ] [IntelliJ IDEA](https://www.jetbrains.com/idea/download)
+- [ ] [Maven](https://maven.apache.org/download.cgi)
 - [ ] [ssh terminal](https://www.bitvise.com/ssh-client-download) 
 - [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
 ## Network access from student stations _to_ emulation of **prod** host
@@ -128,6 +130,14 @@ cd java-application-monitoring-and-troubleshooting
 git checkout raiffeisen
 ```
 
+- [ ] Credentials for corporate Maven Artifactory repo set up
+```shell script
+cp iaac/roles/maven/files/settings.xml $M2_HOME/conf/
+cp iaac/roles/maven/files/settings-security.xml ~/.m2/
+mvn --encrypt-master-password {{ trainer_given_master_password }}
+vi ~/.m2/settings-security.xml
+```
+
 ### When
 - [ ] Project application built locally with maven `mvn clean verify [-DskipTests]`
 - [ ] Project application ran locally with CLI
@@ -140,7 +150,8 @@ java \
       program arguments
 ```
 
-- [ ] JVisualVM profiler connected to running app `$JAVA_HOME/bin/jvisualvm`
+- [ ] JVisualVM profiler ran `$JAVA_HOME/bin/jvisualvm`
+- [ ] JVisualVM profiler connected to running app `Local connections`
 - [ ] OS-specific monitoring tool shows application process details
 ```shell script
 linux$ top [-pid jvmpid]
@@ -154,6 +165,9 @@ windows> taskmgr
 - [ ] How many OS threads is active within OS JVM process? 
 - [ ] What is the minimal possible heap size for app running?
 - [x] What is the difference for profiler times: Self time/Total time, CPU time?
+
+### After debrief
+- [ ] Application architecture overview
 
 ---
 
@@ -398,10 +412,8 @@ browser --> application
 
 ## Hands-on quest: Modern application _remote_ building, running and monitoring (30m)
 ### Given
-- [ ] SSH user session with domain account to [{{ prod host }}](iaac/inventories/production/hosts.yml)
-`ssh account@s-msk-t-jvm-XXX`
+- [ ] SSH user session with domain account to [{{ prod host }}](iaac/inventories/production/hosts.yml) `ssh account@s-msk-t-jvm-XXX`
 
-### When
 - [ ] [Demo Application](https://bitbucket.raiffeisen.ru/projects/JVMTRAIN/repos/agile-practices-application/browse) codebase cloned remotely
 ```shell script
 cd /opt
@@ -411,8 +423,9 @@ cd agile-practices-application
 git checkout raiffeisen
 ```
 
-- [ ] Credentials for Maven Artifactory repo set up
+- [ ] Credentials for corporate Maven Artifactory repo set up
 ```shell script
+mkdir ~/.m2
 cp /opt/maven/settings-security.xml ~/.m2/
 mvn --encrypt-master-password {{ trainer_given_master_password }}
 vi ~/.m2/settings-security.xml
@@ -450,6 +463,29 @@ nohup \
 > /dev/null 2>&1 &
 ```
 
+- [ ] Local load emulation set up: database test data provisioning (`dbo-db` folder)
+```shell script
+cd java-application-monitoring-and-troubleshooting
+jmeter -t load.jmx -j log/jmeter/jmeter.log # GUI mode
+```
+- Read _constants_ section
+- Set up ${PROD_HOST} constant
+- Toggled on _setup_ test plan entry
+- Shown entry _setup_/Summary Report
+- Menu: Run/Start
+- Wait while got samples of ${CLIENTS} constant count
+- Toggled off _setup_ test plan entry
+- Toggled on _reporting-users_, _admin-users_, _operations-users_ test plan entries
+- Test plan saved
+
+- [ ] Local load emulation ran
+```shell script
+cd java-application-monitoring-and-troubleshooting
+mkdir -p log/jmeter/report
+jmeter -n -t load.jmx -j log/jmeter/jmeter.log -l log/jmeter/jmeter.jtl -e -o log/jmeter/report # CLI mode
+```
+
+### When
 - [ ] CLI tools used at {{ prod }}
 ```shell script
 uname --all
@@ -487,25 +523,6 @@ jinfo -flag PrintGCDetails <pid> # get jvm flag value
 jinfo -flag +PrintGCDetails <pid> # change flag value, makes sense only for _manageable_ ones
 ```
 
-- [ ] Load emulation set up: database test data provisioning (`dbo-db` folder)
-```shell script
-jmeter -t load.jmx -j log/jmeter/jmeter.log # GUI mode
-```
-- Read _constants_ section
-- Toggled on _setup_ test plan entry
-- Shown entry _setup_/Summary Report
-- Menu: Run/Start
-- Got samples of ${CLIENTS} constant count
-- Toggled off _setup_ test plan entry
-- Toggled on _reporting-users_, _admin-users_, _operations-users_ test plan entries
-- Test plan saved
-
-- [ ] Load emulation ran
-```shell script
-mkdir -p log/jmeter/report
-jmeter -n -t load.jmx -j log/jmeter/jmeter.log -l log/jmeter/jmeter.jtl -e -o log/jmeter/report # CLI mode
-```
-
 - [ ] Web applications used
 ```
 http://{{ prod }}:8080/dbo/swagger-ui.html
@@ -540,7 +557,8 @@ http://{{ prod }}:9090/graph?g0.range_input=15m&g0.tab=0&g0.expr=http_server_req
 - [ ] What is the 90% percentile of service response time?
 
 ### After debrief
-- [ ] Updated your custom Grafana dashboard with metrics you think is important
+- [ ] Updated your custom Grafana dashboard with metrics you think is important `http://{{ prod }}:3000`
+- [ ] Recommendations on informational architecture  
   
 ---
 
