@@ -490,6 +490,7 @@ jmeter -n -t load.jmx -j log/jmeter/jmeter.log -l log/jmeter/jmeter.jtl -e -o lo
 ```shell script
 uname --all
 cat /etc/os-release
+uptime
 
 df -ah
 free -m
