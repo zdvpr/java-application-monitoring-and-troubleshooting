@@ -538,6 +538,8 @@ http://{{ prod }}:8080/dbo/actuator/prometheus
 http://{{ prod }}:9090/alerts
 http://{{ prod }}:9090/graph
 http://{{ prod }}:9090/graph?g0.range_input=15m&g0.tab=0&g0.expr=http_server_requests_seconds_count
+
+http://{{ prod }}:3000
 ```
 
 ### Finally
