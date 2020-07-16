@@ -39,10 +39,9 @@ Installation at Windows:
 
 - [ ] [SSH terminal for Windows](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 
 Installation at Windows:
-
-Check if you already have SSH client: 
+1. Check if you already have SSH client: 
 1. run "cmd" program
-2. try run `ssh -V`
+1. try run `ssh -V`
 
 If you don't have pre-installed SSH:
 1. Download "MSI Windows Installer" distribution with link provided
