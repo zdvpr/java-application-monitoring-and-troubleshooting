@@ -17,14 +17,13 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] RAM ≥ 8Гб
 - [ ] Wi-Fi with Internet access
 ## Software at student's developer desktop
-- [ ] [git](https://git-scm.com/downloads)
-- [ ] [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- [ ] [Oracle JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) or [AdoptOpenJDK](https://adoptopenjdk.net) + [VisualVM](https://visualvm.github.io)
+- [ ] [IntelliJ IDEA](https://www.jetbrains.com/idea/download)
+- [ ] [Maven](https://maven.apache.org/download.cgi)
 - [ ] [ssh terminal](https://www.bitvise.com/ssh-client-download) 
-- [ ] [Ansible for *nix](https://docs.ansible.com/ansible/latest/installation_guide/index.html) or [Ansible for Windows](https://geekflare.com/ansible-installation-windows/)
 - [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
-- [ ] [Docker](https://www.docker.com/products/docker-desktop)
 ## Network access from student stations _to_ emulation of **prod** host
-- [ ] [prod](/iaac/inventories/production/hosts.yml) accessible
+- [ ] [prod host](/iaac/inventories/production/hosts.yml) accessible
 - [ ] Ports at {{ prod }}[:ports_needed](/iaac/inventories/test/test-env-docker-compose.yml) accessible
 ## Network Access from student stations _and_ prod host
 - [ ] (*.)github.com :443
@@ -32,9 +31,7 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] (*.)apache.org :443
 - [ ] repo1.maven.org :443
 - [ ] jcenter.bintray.com :443
-- [ ] (*.)docker.com :443
-- [ ] (*.)docker.io :443
-- [ ] (*.)cloudfront.net :443
+- [ ] (*.)grafana.com :443
 
 # Agenda
 ## Training introducing and focusing (15m)
@@ -51,11 +48,12 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 
 ## Java Platform crash course (2h)
 ### What do any application doing?
-[System as Public service Metaphor](/visuals/restoran-as-system-metaphor.jpg)
+![System as Public service](/visuals/restaurant-as-system-metaphor.jpg "System as Public service")
 
 | Concept | Metaphor | Code
 |---------|----------|-----
 | Thread | **Worker man** | Thread created by runtime: `java MyApplication` 
+| Thread Pool | [Workers **Team**](/visuals/restaurant-with-thread-pools.jpg) often the same Role | Typical architecture: pool managed by container, async arch: some pools managed by framework/application   
 | Data input | **Visitor's wishes** | [Console user input](/src/main/java/com/acme/dbo/Presentation.java#L31)
 | Data processing | **Meal recipes, conversation scripts, labor instructions** | [Code as instructions](/src/main/java/com/acme/dbo/Controller.java) 
 | Data storing | **Persistent production store** | [Files as persistent store](/src/main/java/com/acme/dbo/ClientRepository.java)
@@ -101,7 +99,7 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 
 ### How do we build Java application?
 - [ ] JVM vs JRE vs JDK
-- [ ] Phisical point ov view for java application
+- [ ] Physical point ov view for java application
 - [ ] Classes, packages and JARs
 - [ ] classpath x2
 - [ ] Build cycle raw
@@ -120,18 +118,24 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 ## Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
 - [ ] What Quality Attributes/NFRs does JVM provide for application?
 - [ ] What Quality Attributes/NFRs do we satisfy with application monitoring?
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+- [ ] Adding metrics to Custom Grafana dashboard
 
 ## Hands-on quest: Simple application _local_ building, running and monitoring (30m)
 ### Given
 - [ ] Satisfied [prerequisites](#Prerequisites) 
-- [ ] **Forked** simple project [codebase](https://github.com/eugene-krivosheyev/java-application-monitoring-and-troubleshooting) 
-- [ ] Cloned fork locally
+- [ ] Cloned locally [training content](https://bitbucket.raiffeisen.ru/projects/JVMTRAIN/repos/java-application-monitoring-and-troubleshooting/browse)
 ```shell script
-cd
-git clone https://github.com/{{ STUDENT_ACCOUNT }}/java-application-monitoring-and-troubleshooting
+git clone --depth 1 --branch raiffeisen https://bitbucket.raiffeisen.ru/scm/jvmtrain/java-application-monitoring-and-troubleshooting.git
 cd java-application-monitoring-and-troubleshooting
-git checkout {{ group_custom_branch }}
+git checkout raiffeisen
+```
+
+- [ ] Credentials for corporate Maven Artifactory repo set up
+```shell script
+cp iaac/roles/maven/files/settings.xml $M2_HOME/conf/
+cp iaac/roles/maven/files/settings-security.xml ~/.m2/
+mvn --encrypt-master-password {{ trainer_given_master_password }}
+vi ~/.m2/settings-security.xml
 ```
 
 ### When
@@ -142,11 +146,12 @@ java \
   -Xms128m -Xmx256m \
   -cp target/dbo-1.0-SNAPSHOT.jar \
   -Dapp.property=value \
-  com.acme.dbo.Presentation \
-  program arguments
+    com.acme.dbo.Presentation \
+      program arguments
 ```
 
-- [ ] JVisualVM profiler connected to running app `$JAVA_HOME/bin/jvisualvm`
+- [ ] JVisualVM profiler ran `$JAVA_HOME/bin/jvisualvm`
+- [ ] JVisualVM profiler connected to running app `Local connections`
 - [ ] OS-specific monitoring tool shows application process details
 ```shell script
 linux$ top [-pid jvmpid]
@@ -161,12 +166,15 @@ windows> taskmgr
 - [ ] What is the minimal possible heap size for app running?
 - [x] What is the difference for profiler times: Self time/Total time, CPU time?
 
+### After debrief
+- [ ] Application architecture overview
+
 ---
 
 ## Modern applications architecture and deployment: What tiers do we monitor? (1h)
 | Tier 
 |------
-| Application Layers: UI/P, API/C, BL/S, DAL/R
+| Application logic layers: UI/P, API/C, BL/S, DAL/R
 | Application caching 
 | Thread Pool 
 | JPA Caching
@@ -308,11 +316,8 @@ component "<$server>\nhardware" as hardware #lightgray {
 ```
 </details>
 
-## Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
-
 ## Monitoring architecture overview (30m)
-![Inrastructure overview](http://www.plantuml.com/plantuml/svg/NP9BRiCW48Rtd6AKLJU-GfGRz01HP64pZMbj1Z6aRLJbxXqUrA4BIyptp-CVy8cZ3l6shSgHGJWO_0H1qP8xW6QGk8Rme-3Cl434i5cdrqlIMo2QTcod5S6l-ZuHVMIzGf6dG5-CuIB7zmrZEgacmt3SEpsKqdEa0A-UKmlohEI3GP9gVelteWRgbB-uZ59bEn_8v3KA1Nr55xFD0iOCHC_P-Eqf2Cq9YOoDYF6PDazEicLlxrSxvpkwfEvmtiXPMS2wAw0pdcoTKhc2Hzz1VCdy1MzS6XWTzQGPGMYmCu-BPQcxby8zEs_OcdRy-Dzmjs7IdrohFbdKV5DIP9t4Rtf6I99gis1uAK3ij1U0ePNL9wYWUNh2_V1iBEF-5KxeZFoNlm00)
+![Inrastructure overview](http://www.plantuml.com/plantuml/svg/NL71Ri8m3BtxAopk_0BYmddIs0rLA6sjaQsDepXbe8b_dvCcqEvGANxFVdv-tKiq8KxZ08vxmarFLrGeMdORD89Qbn9_0KyY5umKHklCq2I-5ieP9xOT2FrWxYtpT-OBg7GR-4SeDFhy6Ycc5rGQjxkNqWF0T943ldb94km5zCEjDbMvMZ-7Ab2sFEjv5SpN-S1zFYDNTFCSbCm-4tAk201sF7fsvABUvVrWkvn1awRnDBApaODrdqYkzsnTp2851toi5NIlshZG9BD0Rw9fZH0g6cmdvuiLdRlFWw_kT44LNUEx_uRBeObP-8Lrcx8v0q1OTkKrfyDDEpHAV3ySFr0plDgEy1Ydjac_f2QDsofIeYv0zRQ0rrRs6jKq3dy0)
 <details>
 <summary>pUML source</summary>
 
@@ -334,7 +339,6 @@ ops --> browser
 ops --> jmeter
 
 node prod {
- [jmeter agent] as jmeter_agent
  [node exporter] as node_exporter
 
  component [application] {
@@ -348,43 +352,39 @@ node prod {
  prometheus --> monitor
  prometheus -> node_exporter
 
- jmeter_agent -> application
+ jmeter -> application
  node_exporter -> prod
-
- interface port
- monitor -( port
+ 
+ application --> [External REST service Stub]
 }
 
 terminal --> prod
 browser --> prometheus
 browser --> application
-jmeter --> jmeter_agent
 @enduml
 ```
 
 </details>
 
-### Monitoring overview and tools
-### Load generation architecture overview
+## Demo: monitoring environment (15m)
+- [ ] Node Exporter
+- [ ] Prometheus
+- [ ] Grafana: setting up datasource and export dashboard
+- [ ] Custom Grafana dashboard as training outcome
+- [ ] Adding metrics to Custom Grafana dashboard
+
+## Load generation architecture overview (15m)
 - [ ] Types of performance testing except stress testing?
 - [ ] While monitoring: What type should we use? What performance metrics do we test?
 - [ ] Testing vs Monitoring
 
-## Hands-on quest: Prod host and monitoring provisioning *
-### Given
-- [ ] Ansible provisioning [scripts and assets](/iaac) `cd iaac`
-- [ ] Provisioning [documentation](/iaac/README.md)
-
-### When
-- [ ] Steps executed according Provisioning documentation
-
-### Then
-- [ ] Prometheus UI up and running at `http://{{ prod }}:9090/alerts`
-- [x] JMeter can connect agent deployed at {{ prod }}: `jmeter -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true`
-```shell script
-JMeter → Options → Log Viewer
-JMeter → Run → Remote Start → 127.0.0.1
-```
+## Demo: load generation tools (15m)
+- [ ] JMeter overview
+- [ ] Test plan
+- [ ] Constants
+- [ ] Test plan elements
+- [ ] Running test plan: GUI and CLI modes
+- [ ] Statistics overview: GUI and CLI mode
 
 ## Modern applications architecture and deployment: How do we monitor tiers? (1h)
 <!--- TODO Rosetta stone visuals: concept - metaphor - code -->
@@ -412,18 +412,37 @@ JMeter → Run → Remote Start → 127.0.0.1
 
 ## Hands-on quest: Modern application _remote_ building, running and monitoring (30m)
 ### Given
-- [x] Given rights for application folder to developer user
-- [ ] SSH session to {{ prod }}:[ansible_port](/iaac/inventories/production/hosts.yml) `ssh -p 2222 root@localhost`
-- [ ] **Forked** [application codebase](https://github.com/eugene-krivosheyev/agile-practices-application) to student's account
-- [ ] Application built at {{ prod }}
+- [ ] SSH user session with domain account to [{{ prod host }}](iaac/inventories/production/hosts.yml) `ssh account@s-msk-t-jvm-XXX`
+
+- [ ] [Demo Application](https://bitbucket.raiffeisen.ru/projects/JVMTRAIN/repos/agile-practices-application/browse) codebase cloned remotely
 ```shell script
 cd /opt
-git clone --branch master --depth 1 https://github.com/{{ STUDENT_ACCOUNT }}/agile-practices-application
+sudo git clone --depth 1 --branch raiffeisen https://bitbucket.raiffeisen.ru/scm/jvmtrain/agile-practices-application.git
+sudo chown {{ account }}:users -R agile-practices-application
 cd agile-practices-application
+git checkout raiffeisen
+```
+
+- [ ] Credentials for corporate Maven Artifactory repo set up
+```shell script
+mkdir ~/.m2
+cp /opt/maven/settings-security.xml ~/.m2/
+mvn --encrypt-master-password {{ trainer_given_master_password }}
+vi ~/.m2/settings-security.xml
+```
+
+- [ ] Demo Application built remotely
+```shell script
+cd /opt/agile-practices-application
 mvn clean verify [-DskipTests]
 ```
 
-### When
+- [ ] External Legacy System REST stub started
+```shell script
+cd target/test-classes # cat mappings/legacyAccountingSystemResponse.json
+java -jar wiremock-jre8-standalone-2.27.1.jar --port 8888 [--verbose] & # curl localhost:8888/api/account
+``` 
+
 - [ ] Application ran at {{ prod }}
 ```shell script
 cd /opt/agile-practices-application
@@ -436,23 +455,42 @@ nohup \
     -Xloggc:gc.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=8 -XX:GCLogFileSize=8m \
     -XX:NativeMemoryTracking=detail \
     -Dderby.stream.error.file=log/derby.log \
-    -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=0.0.0.0 \
+    -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false \
+    -Djava.rmi.server.hostname={{ prod }} -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999 \
     -jar target/dbo-1.0-SNAPSHOT.jar \
       --spring.profiles.active=qa \
       --server.port=8080 \
 > /dev/null 2>&1 &
 ```
 
-- [ ] External Legacy System REST stub started
+- [ ] Local load emulation set up: database test data provisioning (`dbo-db` folder)
 ```shell script
-cd target/test-classes # cat mappings/legacyAccountingSystemResponse.json
-java -jar wiremock-jre8-standalone-2.26.3.jar --verbose --port 8888 & # curl localhost:8888/api/account
-``` 
+cd java-application-monitoring-and-troubleshooting
+jmeter -t load.jmx -j log/jmeter/jmeter.log # GUI mode
+```
+- Read _constants_ section
+- Set up ${PROD_HOST} constant
+- Toggled on _setup_ test plan entry
+- Shown entry _setup_/Summary Report
+- Menu: Run/Start
+- Wait while got samples of ${CLIENTS} constant count
+- Toggled off _setup_ test plan entry
+- Toggled on _reporting-users_, _admin-users_, _operations-users_ test plan entries
+- Test plan saved
 
+- [ ] Local load emulation ran
+```shell script
+cd java-application-monitoring-and-troubleshooting
+mkdir -p log/jmeter/report
+jmeter -n -t load.jmx -j log/jmeter/jmeter.log -l log/jmeter/jmeter.jtl -e -o log/jmeter/report # CLI mode
+```
+
+### When
 - [ ] CLI tools used at {{ prod }}
 ```shell script
 uname --all
 cat /etc/os-release
+uptime
 
 df -ah
 free -m
@@ -472,7 +510,7 @@ top -H -p <pid>
 vmstat 1 [-w] # mpstat 1
 iostat 1 [-xm]
 pidstat 1
-netstat 1 [-plnt]
+netstat 1 [-tulnp]
 
 jps [-lvm]
 jcmd <pid> help
@@ -486,13 +524,7 @@ jinfo -flag PrintGCDetails <pid> # get jvm flag value
 jinfo -flag +PrintGCDetails <pid> # change flag value, makes sense only for _manageable_ ones
 ```
 
-- [ ] Load emulation ran
-```shell script
-jmeter -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true # GUI mode
-jmeter -n -t load.jmx -Jremote_hosts=127.0.0.1 -Dserver.rmi.ssl.disable=true # CLI mode
-```
-
-- [ ] Web applications used from dev station
+- [ ] Web applications used
 ```
 http://{{ prod }}:8080/dbo/swagger-ui.html
 
@@ -506,25 +538,30 @@ http://{{ prod }}:8080/dbo/actuator/prometheus
 http://{{ prod }}:9090/alerts
 http://{{ prod }}:9090/graph
 http://{{ prod }}:9090/graph?g0.range_input=15m&g0.tab=0&g0.expr=http_server_requests_seconds_count
+
+http://{{ prod }}:3000
 ```
 
 ### Finally
-- [ ] JMeter load emulation stopped at dev station
+- [ ] JMeter load emulation stopped at dev station after ${TEST_DURATION_SEC}
 - [ ] Application gracefully stopped at {{ prod }} `curl --request POST http://{{ prod }}:8080/dbo/actuator/shutdown`
-- [ ] Database filled up with tests data removed `rm -rf dbo-db`
 
 ### Then answered and reviewed at debrief
 - [ ] Free HDD space? Free RAM?
 - [ ] How many JVMs running?
 - [ ] What DBMS used for application?
 - [ ] What JVM version used for application? What are the parameters, properties and arguments used?
-- [x] How many Docker containers are running? What images used?
 - [ ] What are the `health` indicator for application?
 - [ ] What is the application uptime?
 - [ ] What is the CPU usage for application?
 - [ ] How many http requests servlet container handled by different URLs? 
 - [ ] How many http sessions are active?
 - [ ] What is the current `system load average`?
+- [ ] What is the 90% percentile of service response time?
+
+### After debrief
+- [ ] Updated your custom Grafana dashboard with metrics you think is important `http://{{ prod }}:3000`
+- [ ] Recommendations on informational architecture  
   
 ---
 
@@ -558,7 +595,7 @@ http://{{ prod }}:9090/graph?g0.range_input=15m&g0.tab=0&g0.expr=http_server_req
 - [ ] Application throughput as f(warmup time)
 
 ## Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+- [ ] Adding metrics to Custom Grafana dashboard
 
 ## Hands-on quest: JIT compilation monitoring (30m)
 ### Given
@@ -593,8 +630,8 @@ http://{{ prod }}:9090/graph
 
 - [ ] Profiler used
 ```shell script
-jconsole://localhost:9999/Memory/Code cache
-jconsole://localhost:9999/MBeans
+jconsole://{{ prod }}:9999/Memory/Code cache
+jconsole://{{ prod }}:9999/MBeans
 ```
 
 ### Finally
@@ -607,6 +644,9 @@ jconsole://localhost:9999/MBeans
 - [ ] Total compilation time
 - [ ] Is Code Cache full enough to begin worry about `CodeCache is full. Compiler has been disabled.`?
 - [ ] Is there Code Cache rolling after warm-up?
+
+### After debrief
+- [ ] Updated your custom Grafana dashboard with metrics you think is important
 
 ---
 
@@ -658,7 +698,7 @@ jconsole://localhost:9999/MBeans
 - [ ] _Compressed Oops_ as 35-bit reference (up to 32Gb) stored as 32-bit reference
 
 ### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+- [ ] Adding metrics to Custom Grafana dashboard
 
 ### _Native/off-heap_ memory more deep dive and new settlers
 - [ ] Metaspace
@@ -740,6 +780,9 @@ jvisualvm://Buffer Pools (plugin required)
 - [ ] What are the memory dominators?
 - [ ] What is the native memory footprint?
 
+### After debrief
+- [ ] Updated your custom Grafana dashboard with metrics you think is important
+
 ---
 
 ## JVM threading management (2h)
@@ -781,7 +824,7 @@ jvisualvm://Buffer Pools (plugin required)
 - [ ] concurrent data structures
 
 ### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+- [ ] Adding metrics to Custom Grafana dashboard
 
 ## Hands-on quest: Threads monitoring (30m)
 ### Given
@@ -827,6 +870,9 @@ http://{{ prod }}:9090/graph
 - [ ] Hypothesis on what business logic is most CPU consuming
 - [ ] Hypothesis on application threading patterns: (a) connection handling, (b) logic processing, (c) data access?
 
+### After debrief
+- [ ] Updated your custom Grafana dashboard with metrics you think is important
+
 ---
 
 ## JVM IO management (2h)
@@ -851,7 +897,7 @@ http://{{ prod }}:9090/graph
 - [ ] Content zipping 
 
 ### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+- [ ] Adding metrics to Custom Grafana dashboard
 
 ### Non-blocking IO architecture
 - [ ] Asynchronous IO concept
@@ -896,6 +942,9 @@ http://{{ prod }}:9090/graph
 - [ ] What threading pattern for connection data processing used in application design?
 - [ ] What threading scope pattern used in application design?
 
+### After debrief
+- [ ] Updated your custom Grafana dashboard with metrics you think is important
+
 ---
 
 ## Persistent data management (2h)
@@ -915,7 +964,7 @@ http://{{ prod }}:9090/graph
 - [ ] Transaction resources trade-offs
 
 ### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Add metrics to [checklist](METRICS-CHECKLIST.md) to tires needed
+- [ ] Adding metrics to Custom Grafana dashboard
 
 ### JPA architecture
 - [ ] JPA API
@@ -957,12 +1006,16 @@ http://{{ prod }}:9090/graph
 - [ ] ORM cache state?
 - [ ] Can we set less transaction isolation level to gain throughput?
 
+### After debrief
+- [ ] Updated your custom Grafana dashboard with metrics you think is important
+
 ---
 
 ## Final retro (30m)
 - [ ] Value taken
-- [ ] Training Improvement Actions
 - [ ] Process Improvement Actions 
+- [ ] Training Improvement Actions
+- [ ] Custom Grafana dashboards competition
 
 ---
 

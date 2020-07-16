@@ -1,39 +1,12 @@
-Playbook for production hosts
-=============================
+Infrastructure as a Code for Java Monitoring training 
+=====================================================
 
-Install host dependencies [for MacOs only]
-------------------------------------------
-```bash
-brew install gnu-tar
-```
 
-Update dependency roles
------------------------
-```bash
-ansible-galaxy install -r requirements.yml
-```
+Testing IaaC
+------------
+see [test/README.md](inventories/test/README.md)
 
-Reset ssh keys [if target host've changed]
-------------------------------------------
-```bash
-ssh-keygen -R {{ ansible_ssh_host }}
-```
 
-Smoke test Ansible connections
-------------------------------
-```bash
-ansible -i inventories/production -m shell -a 'uname -a' all
-```
-
-Dry run [if IaaC have changed]
-------------------------------
-```bash
-ansible-playbook site.yml -i inventories/production --check
-```
-
-Run playbook against docker test environment hosts inventory
-------------------------------------------------------------
-```bash
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES #for MacOSX
-ansible-playbook site.yml -i inventories/production
-```
+Deploying IaaC to prod environment
+----------------------------------
+see [production/README.md](inventories/production/README.md)

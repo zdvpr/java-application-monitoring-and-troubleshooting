@@ -9,7 +9,7 @@ Within `test-env-docker-compose.yml`
 
 
 Build and start docker container(s)
----------------------------------------------
+-----------------------------------
 ```bash
 docker-compose --file inventories/test/test-env-docker-compose.yml up --detach
 ```
@@ -42,7 +42,6 @@ docker-compose --file inventories/test/test-env-docker-compose.yml start
 docker-compose --file inventories/test/test-env-docker-compose.yml down
 ```
 
----
 
 Provisioning docker container as `prod` with Ansible
 ====================================================
@@ -53,27 +52,44 @@ Install host dependencies [for MacOS host only]
 brew install gnu-tar
 ```
 
-Update dependency roles
------------------------
+Reset ssh keys [if container have changed]
+------------------------------------------
 ```bash
-ansible-galaxy install -r requirements.yml
-```
-
-Reset ssh keys [if container changed]
--------------------------------------
-```bash
-ssh-keygen -R 127.0.0.1
+ssh-keygen -R '[localhost]:2222'
+ssh-keygen -R '[127.0.0.1]:2222'
 ```
 
 Smoke test Ansible connections
 ------------------------------
 ```bash
 ansible -i inventories/test -m shell -a 'uname -a' all
+ansible -i inventories/test -m shell -a 'cat /etc/os-release' all
+```
+
+Prepare for run [for MacOs host only]
+-------------------------------------
+```bash
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 ```
 
 Run playbook against docker host(s)
 -----------------------------------
 ```bash
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES #for MacOSX only
 ansible-playbook site.yml -i inventories/test
+```
+
+
+The whole script
+================
+```startup
+docker-compose --file inventories/test/test-env-docker-compose.yml up --detach && \
+ssh-keygen -R '[localhost]:2222' && \
+ssh-keygen -R '[127.0.0.1]:2222' && \
+ansible -i inventories/test -m shell -a 'uname -a' all && \
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES && \
+ansible-playbook site.yml -i inventories/test
+```
+
+```shutdown
+docker-compose --file inventories/test/test-env-docker-compose.yml down -t 3
 ```

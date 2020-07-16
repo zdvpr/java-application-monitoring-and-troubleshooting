@@ -1,43 +1,15 @@
 - hosts: prod
   gather_facts: yes
   become: yes
-
-  pre_tasks:
-    - name: Add Google Chrome package base for Yum
-      blockinfile:
-        path: /etc/yum.repos.d/google-chrome.repo
-        create: yes
-        block: |
-          [google-chrome]
-          name=google-chrome
-          baseurl=http://dl.google.com/linux/chrome/rpm/stable/x86_64
-          enabled=1
-          gpgcheck=1
-          gpgkey=https://dl.google.com/linux/linux_signing_key.pub
-
-    - name: Update package manager cache
-      run_once: true
-      yum:
-        name: tar
-        state: present
-        update_cache: yes
-      ignore_errors: yes
-
-  tasks:
-    - name: Install packages
-      package:
-        state: present
-        name:
-          - git
-          - java-1.8.0-openjdk-devel
-          - curl
-          - google-chrome-stable
+  environment: "{{ env_proxy | default('') }}"
 
   roles:
-    - role: gantsign.maven
-    - role: lean_delivery.jmeter
-    - role: cloudalchemy.node-exporter
+    - role: maven
+      tags: maven
+      maven_version: '3.6.3'
+
     - role: cloudalchemy.prometheus
+      tags: prometheus
       prometheus_scrape_configs:
         - job_name: 'host'
           static_configs:
@@ -51,8 +23,40 @@
               labels:
                 env: prod
 
-  post_tasks:
-    - name: Start JMeter remote agent
-      shell: "nohup jmeter-server -Dserver.rmi.ssl.disable=true -Djava.rmi.server.hostname={{ ansible_host }} -Dserver.rmi.localport=42129 &"
-      args:
-        chdir: "{{ lookup('env','JMETER_HOME') }}"
+    - role: cloudalchemy.node-exporter
+      tags: node_exporter
+      node_exporter_version: '1.0.1'
+      node_exporter_enabled_collectors:
+        - processes
+        - systemd
+        - tcpstat
+        - meminfo_numa
+        - mountstats
+        - logind
+        - ksmd
+
+
+- hosts: prod
+  gather_facts: yes
+  become: yes
+  # should not use proxy environment
+
+  roles:
+    - role: git
+      tags: git
+
+    - role: jdk
+      tags: jdk
+
+    - role: grafana
+      tags: grafana
+      grafana_datasources:
+        - name: Prometheus
+          type: prometheus
+          url: "http://{{ inventory_hostname }}:9090"
+          basicAuth: false
+          access: proxy
+          isDefault: true
+
+    - role: curl
+      tags: curl
