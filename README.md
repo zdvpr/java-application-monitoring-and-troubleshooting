@@ -39,7 +39,10 @@ Installation at Windows:
 
 - [ ] [SSH terminal for Windows](https://www.bitvise.com/ssh-client-download) 
 Installation at Windows:
-Check if you already have SSH client: run "cmd" program and try run `ssh -V`.
+Check if you already have SSH client: 
+1. run "cmd" program
+2. try run `ssh -V`
+
 If you don't have pre-installed SSH:
 1. Download "SSH Client Installer" distribution with link provided
 1. Run distribution
