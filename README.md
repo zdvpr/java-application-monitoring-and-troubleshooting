@@ -37,14 +37,15 @@ Installation at Windows:
 1. Add full path to "bin" subfolder to Windows system PATH variable
 1. Check installation: run "cmd" program and get Maven version `mvn --version` 
 
-- [ ] [SSH terminal for Windows](https://www.bitvise.com/ssh-client-download) 
+- [ ] [SSH terminal for Windows](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 
 Installation at Windows:
+
 Check if you already have SSH client: 
 1. run "cmd" program
 2. try run `ssh -V`
 
 If you don't have pre-installed SSH:
-1. Download "SSH Client Installer" distribution with link provided
+1. Download "MSI Windows Installer" distribution with link provided
 1. Run distribution
 1. All installation questions and options leave as default 
 
