@@ -17,11 +17,10 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] RAM ≥ 8Гб
 - [ ] Wi-Fi with Internet access
 ## Software at student's developer desktop
-- [ ] [Oracle JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) or [AdoptOpenJDK](https://adoptopenjdk.net) + [VisualVM](https://visualvm.github.io)
+- [ ] [AdoptOpenJDK](https://adoptopenjdk.net) + [VisualVM](https://visualvm.github.io)
 Installation at Windows:
-1. Choose JDK distribution (between Oracle and AdoptOpenJDK) based on your corporate policy. If OracleJDK have been chosen you need to register on Oracle website with email. 
-1. Download distribution with link provided
-1. Run distribution
+1. Download distributions with links provided
+1. Run distributions
 1. All installation questions and options leave as default 
 
 - [ ] [IntelliJ IDEA CE](https://www.jetbrains.com/idea/download)
@@ -40,8 +39,7 @@ Installation at Windows:
 
 - [ ] [SSH terminal for Windows](https://www.bitvise.com/ssh-client-download) 
 Installation at Windows:
-1. Check if you already have SSH client: run "cmd" program and try run `ssh -V`
-
+Check if you already have SSH client: run "cmd" program and try run `ssh -V`.
 If you don't have pre-installed SSH:
 1. Download "SSH Client Installer" distribution with link provided
 1. Run distribution
