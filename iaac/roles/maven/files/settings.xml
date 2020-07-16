@@ -5,7 +5,12 @@
 
     <servers>
         <server>
-            <id>internal-mirror-repository</id>
+            <id>internal-central-mirror-repository</id>
+            <username>srv-jvm-training</username>
+            <password>{fRtXtKZYB68H8bPWIKG/VQA+FaVbD7m0lhp+83/uA38=}</password>
+        </server>
+        <server>
+            <id>internal-jcenter-mirror-repository</id>
             <username>srv-jvm-training</username>
             <password>{fRtXtKZYB68H8bPWIKG/VQA+FaVbD7m0lhp+83/uA38=}</password>
         </server>
@@ -13,10 +18,16 @@
 
     <mirrors>
         <mirror>
-            <id>internal-mirror-repository</id>
+            <id>internal-central-mirror-repository</id>
             <name>Intranet Corporate Maven Repo Mirror</name>
             <url>https://artifactory.raiffeisen.ru/artifactory/remote-mvn</url>
-            <mirrorOf>*</mirrorOf>
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+        <mirror>
+            <id>internal-jcenter-mirror-repository</id>
+            <name>Intranet Corporate Maven Repo Mirror</name>
+            <url>https://artifactory.raiffeisen.ru/artifactory/jcenter</url>
+            <mirrorOf>jcenter</mirrorOf>
         </mirror>
     </mirrors>
 </settings>
