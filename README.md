@@ -18,20 +18,54 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] Wi-Fi with Internet access
 ## Software at student's developer desktop
 - [ ] [Oracle JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) or [AdoptOpenJDK](https://adoptopenjdk.net) + [VisualVM](https://visualvm.github.io)
-- [ ] [IntelliJ IDEA](https://www.jetbrains.com/idea/download)
+<details>
+<summary>Installation at Windows</summary>
+1. Choose JDK distribution (between Oracle and AdoptOpenJDK) based on your corporate policy. If OracleJDK have been chosen you need to register on Oracle website with email. 
+1. Download distribution with link provided
+1. Run distribution
+1. All installation questions and options leave as default 
+</details>
+
+- [ ] [IntelliJ IDEA CE](https://www.jetbrains.com/idea/download)
+<details>
+<summary>Installation at Windows</summary>
+1. Download "Community Edition" distribution with link provided
+1. Run distribution
+1. All installation questions and options leave as default 
+</details>
+
 - [ ] [Maven](https://maven.apache.org/download.cgi)
-- [ ] [ssh terminal](https://www.bitvise.com/ssh-client-download) 
+<details>
+<summary>Installation at Windows</summary>
+1. Download "Binary zip archive" distribution with link provided
+1. Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
+1. Remember this path, later we'll refer it as M2_HOME. Or add Windows system variable M2_HOME with value of path to unpacked distribution folder.   
+1. Add full path to "bin" subfolder to Windows system PATH variable
+1. Check installation: run "cmd" program and get Maven version `mvn --version` 
+</details>
+
+- [ ] [SSH terminal for Windows](https://www.bitvise.com/ssh-client-download) 
+<details>
+<summary>Installation at Windows</summary>
+1. Check if you already have SSH client: run "cmd" program and try run `ssh -V`
+If you don't have pre-installed SSH:
+1. Download "SSH Client Installer" distribution with link provided
+1. Run distribution
+1. All installation questions and options leave as default 
+</details>
+
 - [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
+<details>
+<summary>Installation at Windows</summary>
+1. Download binary zip distribution with link provided
+1. Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
+1. Remember this path, later we'll refer it as JMETER_HOME. Or add Windows system variable JMETER_HOME with value of path to unpacked distribution folder.   
+1. Add full path to "bin" subfolder to Windows system PATH variable
+</details>
+
 ## Network access from student stations _to_ emulation of **prod** host
 - [ ] [prod host](/iaac/inventories/production/hosts.yml) accessible
 - [ ] Ports at {{ prod }}[:ports_needed](/iaac/inventories/test/test-env-docker-compose.yml) accessible
-## Network Access from student stations _and_ prod host
-- [ ] (*.)github.com :443
-- [ ] (*.)galaxy.ansible.com :443
-- [ ] (*.)apache.org :443
-- [ ] repo1.maven.org :443
-- [ ] jcenter.bintray.com :443
-- [ ] (*.)grafana.com :443
 
 # Agenda
 ## Training introducing and focusing (15m)
