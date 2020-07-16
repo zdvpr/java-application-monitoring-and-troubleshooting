@@ -18,51 +18,41 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] Wi-Fi with Internet access
 ## Software at student's developer desktop
 - [ ] [Oracle JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) or [AdoptOpenJDK](https://adoptopenjdk.net) + [VisualVM](https://visualvm.github.io)
-<details>
-<summary>Installation at Windows</summary>
-- Choose JDK distribution (between Oracle and AdoptOpenJDK) based on your corporate policy. If OracleJDK have been chosen you need to register on Oracle website with email. 
-- Download distribution with link provided
-- Run distribution
-- All installation questions and options leave as default 
-</details>
+Installation at Windows:
+1. Choose JDK distribution (between Oracle and AdoptOpenJDK) based on your corporate policy. If OracleJDK have been chosen you need to register on Oracle website with email. 
+1. Download distribution with link provided
+1. Run distribution
+1. All installation questions and options leave as default 
 
 - [ ] [IntelliJ IDEA CE](https://www.jetbrains.com/idea/download)
-<details>
-<summary>Installation at Windows</summary>
-- Download "Community Edition" distribution with link provided
-- Run distribution
-- All installation questions and options leave as default 
-</details>
+Installation at Windows:
+1. Download "Community Edition" distribution with link provided
+1. Run distribution
+1. All installation questions and options leave as default 
 
 - [ ] [Maven](https://maven.apache.org/download.cgi)
-<details>
-<summary>Installation at Windows</summary>
-- Download "Binary zip archive" distribution with link provided
-- Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
-- Remember this path, later we'll refer it as M2_HOME. Or add Windows system variable M2_HOME with value of path to unpacked distribution folder.   
-- Add full path to "bin" subfolder to Windows system PATH variable
-- Check installation: run "cmd" program and get Maven version `mvn --version` 
-</details>
+Installation at Windows:
+1. Download "Binary zip archive" distribution with link provided
+1. Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
+1. Remember this path, later we'll refer it as M2_HOME. Or add Windows system variable M2_HOME with value of path to unpacked distribution folder.   
+1. Add full path to "bin" subfolder to Windows system PATH variable
+1. Check installation: run "cmd" program and get Maven version `mvn --version` 
 
 - [ ] [SSH terminal for Windows](https://www.bitvise.com/ssh-client-download) 
-<details>
-<summary>Installation at Windows</summary>
-- Check if you already have SSH client: run "cmd" program and try run `ssh -V`
+Installation at Windows:
+1. Check if you already have SSH client: run "cmd" program and try run `ssh -V`
 
 If you don't have pre-installed SSH:
-- Download "SSH Client Installer" distribution with link provided
-- Run distribution
-- All installation questions and options leave as default 
-</details>
+1. Download "SSH Client Installer" distribution with link provided
+1. Run distribution
+1. All installation questions and options leave as default 
 
 - [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
-<details>
-<summary>Installation at Windows</summary>
-- Download binary zip distribution with link provided
-- Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
-- Remember this path, later we'll refer it as JMETER_HOME. Or add Windows system variable JMETER_HOME with value of path to unpacked distribution folder.   
-- Add full path to "bin" subfolder to Windows system PATH variable
-</details>
+Installation at Windows:
+1. Download binary zip distribution with link provided
+1. Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
+1. Remember this path, later we'll refer it as JMETER_HOME. Or add Windows system variable JMETER_HOME with value of path to unpacked distribution folder.   
+1. Add full path to "bin" subfolder to Windows system PATH variable
 
 ## Network access from student stations _to_ emulation of **prod** host
 - [ ] [prod host](/iaac/inventories/production/hosts.yml) accessible
