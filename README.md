@@ -17,21 +17,26 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] RAM ≥ 8Гб
 - [ ] Wi-Fi with Internet access
 ## Software at student's developer desktop
-- [ ] [AdoptOpenJDK](https://adoptopenjdk.net) + [VisualVM](https://visualvm.github.io)
+- [ ] [AdoptOpenJDK](https://adoptopenjdk.net)
 Installation at Windows:
-1. Download distributions with links provided
+1. Download distribution: OpenJDK 8 HotSpot Latest Release [Windows installer](https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u262-b10/OpenJDK8U-jdk_x86-32_windows_hotspot_8u262b10.msi) 
 1. Run distributions
 1. All installation questions and options leave as default 
 
+- [ ] [VisualVM](https://visualvm.github.io)
+Installation at Windows:
+1. Download distribution: [default latest version](https://github.com/visualvm/visualvm.src/releases/download/2.0.3/visualvm_203.zip)
+1. Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
+
 - [ ] [IntelliJ IDEA CE](https://www.jetbrains.com/idea/download)
 Installation at Windows:
-1. Download "Community Edition" distribution with link provided
+1. Download distribution: [latest Windows Community edition](https://download.jetbrains.com/idea/ideaIC-2020.1.4.exe)
 1. Run distribution
 1. All installation questions and options leave as default 
 
 - [ ] [Maven](https://maven.apache.org/download.cgi)
 Installation at Windows:
-1. Download "Binary zip archive" distribution with link provided
+1. Download distribution: [latest Binary zip archive](http://mirror.linux-ia64.org/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip)
 1. Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
 1. Remember this path, later we'll refer it as M2_HOME. Or add Windows system variable M2_HOME with value of path to unpacked distribution folder.   
 1. Add full path to "bin" subfolder to Windows system PATH variable
@@ -44,13 +49,13 @@ Installation at Windows:
 1. try run `ssh -V`
 
 If you don't have pre-installed SSH:
-1. Download "MSI Windows Installer" distribution with link provided
+1. Download distribution: [MSI Windows Installer 64-bit](https://the.earth.li/~sgtatham/putty/latest/w64/putty-64bit-0.74-installer.msi)
 1. Run distribution
 1. All installation questions and options leave as default 
 
 - [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
 Installation at Windows:
-1. Download binary zip distribution with link provided
+1. Download distribution: [latest Binary ZIP](https://apache-mirror.rbc.ru/pub/apache//jmeter/binaries/apache-jmeter-5.3.zip)
 1. Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
 1. Remember this path, later we'll refer it as JMETER_HOME. Or add Windows system variable JMETER_HOME with value of path to unpacked distribution folder.   
 1. Add full path to "bin" subfolder to Windows system PATH variable
