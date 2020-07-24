@@ -19,7 +19,7 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 ## Software at student's developer desktop
 - [ ] [AdoptOpenJDK](https://adoptopenjdk.net) OpenJDK 8 HotSpot Latest Release
 Installation at Windows:
-1. Download distribution: preffered <a href='softwarecenter:SoftwareID=ScopeId_1999C8B9-1E4A-4832-84B4-AAC87980BDC9/Application_c0cf2d23-58dd-4798-a91c-696b82180ff3'>Windows Installer at corporate repo</a> or fallback [Windows installer at official website](https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u262-b10/OpenJDK8U-jdk_x86-32_windows_hotspot_8u262b10.msi) 
+1. Download distribution: preffered Windows Installer at corporate repo (`softwarecenter:SoftwareID=ScopeId_1999C8B9-1E4A-4832-84B4-AAC87980BDC9/Application_c0cf2d23-58dd-4798-a91c-696b82180ff3`) or fallback [Windows installer at official website](https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u262-b10/OpenJDK8U-jdk_x86-32_windows_hotspot_8u262b10.msi) 
 1. Run distributions
 1. All installation questions and options leave as default 
 
