@@ -17,24 +17,24 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] RAM ≥ 8Гб
 - [ ] Wi-Fi with Internet access
 ## Software at student's developer desktop
-- [ ] [AdoptOpenJDK](https://adoptopenjdk.net)
+- [ ] [AdoptOpenJDK](https://adoptopenjdk.net) OpenJDK 8 HotSpot Latest Release
 Installation at Windows:
-1. Download distribution: OpenJDK 8 HotSpot Latest Release [Windows installer](https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u262-b10/OpenJDK8U-jdk_x86-32_windows_hotspot_8u262b10.msi) 
+1. Download distribution: preffered [Windows Installer at corporate repo](softwarecenter:SoftwareID=ScopeId_1999C8B9-1E4A-4832-84B4-AAC87980BDC9/Application_c0cf2d23-58dd-4798-a91c-696b82180ff3) or fallback [Windows installer at official website](https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u262-b10/OpenJDK8U-jdk_x86-32_windows_hotspot_8u262b10.msi) 
 1. Run distributions
 1. All installation questions and options leave as default 
 
-- [ ] [VisualVM](https://visualvm.github.io)
+- [ ] [VisualVM](https://visualvm.github.io) latest
 Installation at Windows:
 1. Download distribution: [default latest version](https://github.com/visualvm/visualvm.src/releases/download/2.0.3/visualvm_203.zip)
 1. Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
 
-- [ ] [IntelliJ IDEA CE](https://www.jetbrains.com/idea/download)
+- [ ] [IntelliJ IDEA CE](https://www.jetbrains.com/idea/download) latest Community Edition
 Installation at Windows:
 1. Download distribution: [latest Windows Community edition](https://download.jetbrains.com/idea/ideaIC-2020.1.4.exe)
 1. Run distribution
 1. All installation questions and options leave as default 
 
-- [ ] [Maven](https://maven.apache.org/download.cgi)
+- [ ] [Maven](https://maven.apache.org/download.cgi) latest binary zip
 Installation at Windows:
 1. Download distribution: [latest Binary zip archive](http://mirror.linux-ia64.org/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip)
 1. Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
@@ -42,13 +42,12 @@ Installation at Windows:
 1. Add full path to "bin" subfolder to Windows system PATH variable
 1. Check installation: run "cmd" program and get Maven version `mvn --version` 
 
-- [ ] [SSH terminal for Windows](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 
-Installation at Windows:
+- [ ] SSH terminal (for Windows only)
 1. Check if you already have SSH client: 
 1. run "cmd" program
 1. try run `ssh -V`
 
-If you don't have pre-installed SSH:
+If you don't have pre-installed SSH client, installation [PuTTY for Windows](https://www.chiark.greenend.org.uk/~sgtatham/putty) at Windows:
 1. Download distribution: [MSI Windows Installer 64-bit](https://the.earth.li/~sgtatham/putty/latest/w64/putty-64bit-0.74-installer.msi)
 1. Run distribution
 1. All installation questions and options leave as default 
