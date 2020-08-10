@@ -149,7 +149,6 @@ Installation at Windows:
 ```shell script
 git clone --depth 1 --branch raiffeisen https://bitbucket.raiffeisen.ru/scm/jvmtrain/java-application-monitoring-and-troubleshooting.git
 cd java-application-monitoring-and-troubleshooting
-git checkout raiffeisen
 ```
 
 - [ ] Credentials for corporate Maven Artifactory repo set up
@@ -442,7 +441,6 @@ cd /opt
 sudo git clone --depth 1 --branch raiffeisen https://bitbucket.raiffeisen.ru/scm/jvmtrain/agile-practices-application.git
 sudo chown {{ account }}:users -R agile-practices-application
 cd agile-practices-application
-git checkout raiffeisen
 ```
 
 - [ ] Credentials for corporate Maven Artifactory repo set up
