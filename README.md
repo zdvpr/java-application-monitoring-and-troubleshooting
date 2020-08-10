@@ -68,7 +68,7 @@ Installation at Windows:
 - [ ] Topics focus demand from attendees
 - [ ] Additional topics demand form attendees
 
-## Java Platform crash course (2h)
+## Java app development crash course (1h)
 ### What do any application doing?
 ![System as Public service](/visuals/restaurant-as-system-metaphor.jpg "System as Public service")
 
@@ -117,8 +117,11 @@ Installation at Windows:
 | Working with _class_: dynamic classloading | Instructions what to do workers get just in time not ahead but worker remember it till die | But we have run-time latency costs
 | Working with _instance_: create and GC | We ask our vice to hire and retire workers | Objects state costs us RAM memory. When object's no longer needed it purged from RAM
 
-### [Teamwork](#teamwork-nfrs-and-metrics-checklist-15m)
+## Teamwork: What metrics do we consider for dev, test, qa and production environments? (30m)
+- [ ] What Quality Attributes/NFRs does JVM provide for application?
+- [ ] What Quality Attributes/NFRs do we satisfy with application monitoring?
 
+## Java app delivery crash course (1h)
 ### How do we build Java application?
 - [ ] JVM vs JRE vs JDK
 - [ ] Physical point ov view for java application
@@ -126,21 +129,16 @@ Installation at Windows:
 - [ ] classpath x2
 - [ ] Build cycle raw
 - [ ] Build cycle with Maven
+
 ### How do we run Java application?
 - [ ] JVM vs JRE vs JDK
 - [ ] Run with JVM
 - [ ] Ways for application run-time parameterization: jvm parameters, program arguments, sys/app properties
 - [ ] Key JVM parameters for memory setup
+
 ### How do we monitor Java application internals?
 - [ ] JMX simple tooling demo: JVisualVM
 - [ ] JMX architecture overview
-
-### [Hands-on](#hands-on-simple-application-local-building-running-and-monitoring-30m)
-
-## Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] What Quality Attributes/NFRs does JVM provide for application?
-- [ ] What Quality Attributes/NFRs do we satisfy with application monitoring?
-- [ ] Adding metrics to Custom Grafana dashboard
 
 ## Hands-on quest: Simple application _local_ building, running and monitoring (30m)
 ### Given
@@ -900,7 +898,7 @@ http://{{ prod }}:9090/graph
 
 ---
 
-## JVM IO management (2h)
+## JVM IO management (1.5h)
 ### Blocking IO architecture
 - [ ] Synchronous IO concept
 - [ ] What sources do we use to get/store data?
@@ -972,7 +970,7 @@ http://{{ prod }}:9090/graph
 
 ---
 
-## Persistent data management (2h)
+## Persistent data management (1.5h)
 ### JDBC subsystem architecture
 - [ ] JDBC API
 - [ ] Driver types
@@ -1036,7 +1034,7 @@ http://{{ prod }}:9090/graph
 
 ---
 
-## Final retro (30m)
+## Final retro (15m)
 - [ ] Value taken
 - [ ] Process Improvement Actions 
 - [ ] Training Improvement Actions
