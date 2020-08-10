@@ -564,7 +564,7 @@ http://{{ prod }}:3000
 
 ### Finally
 - [ ] JMeter load emulation stopped at dev station after ${TEST_DURATION_SEC}
-- [ ] Application gracefully stopped at {{ prod }} `curl --request POST http://{{ prod }}:8080/dbo/actuator/shutdown`
+- [ ] Application gracefully stopped at {{ prod }} `icurl --request POST http://{{ prod }}:8080/dbo/actuator/shutdown`
 
 ### Then answered and reviewed at debrief
 - [ ] Free HDD space? Free RAM?
@@ -584,6 +584,9 @@ http://{{ prod }}:3000
 - [ ] Recommendations on informational architecture  
   
 ---
+
+## Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
+- [ ] Adding metrics to Custom Grafana dashboard
 
 ## JIT compilation (45m)
 ### JIT
@@ -613,9 +616,6 @@ http://{{ prod }}:3000
 - [ ] Classes compiled, commited code cache
 - [ ] Startup time
 - [ ] Application throughput as f(warmup time)
-
-## Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Adding metrics to Custom Grafana dashboard
 
 ## Hands-on quest: JIT compilation monitoring (50m)
 ### Given
