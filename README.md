@@ -762,7 +762,7 @@ jinfo -flag InitiatingHeapOccupancyPercent <pid> # for G1 collector
 jcmd <pid> GC.class_histogram # jmap -histo[:live] <pid>
 
 jcmd <pid> GC.heap_dump /tmp/dump.hprof # jmap -dump[:live,format=b],file=/tmp/dump.hprof <pid>
-devstation$ scp -P 2222 root@localhost:/tmp/dump.hprof .
+devstation$ scp -P 22 {{ account }}@{{ prod }}:/tmp/dump.hprof .
 
 jcmd <pid> VM.native_memory summary
 ```
