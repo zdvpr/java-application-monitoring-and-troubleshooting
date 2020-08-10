@@ -855,7 +855,7 @@ jvisualvm://Buffer Pools (plugin required)
 ```shell script
 top + 'f' -> nTH -> space -> Esc
 jstack <pid> > thread-dump.tdump
-scp -P 2222 root@localhost:/tmp/thread-dump.txt .
+scp -P 22 {{ account }}@{{ prod }}:/tmp/thread-dump.txt .
 ```
 
 - [ ] Profiler used
