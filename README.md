@@ -55,7 +55,7 @@ Installation at Windows:
 - [ ] [prod host](/iaac/inventories/production/hosts.yml) accessible
 - [ ] Ports at {{ prod }}[:ports_needed](/iaac/inventories/test/test-env-docker-compose.yml) accessible
 
-# Agenda
+# Agenda (20 a.hr.)
 ## Training introducing and focusing (15m)
 - [ ] Schedule
 - [ ] Trainer
@@ -68,7 +68,7 @@ Installation at Windows:
 - [ ] Topics focus demand from attendees
 - [ ] Additional topics demand form attendees
 
-## Java app development crash course (1h)
+## Java app development crash course (50m)
 ### What do any application doing?
 ![System as Public service](/visuals/restaurant-as-system-metaphor.jpg "System as Public service")
 
@@ -121,7 +121,7 @@ Installation at Windows:
 - [ ] What Quality Attributes/NFRs does JVM provide for application?
 - [ ] What Quality Attributes/NFRs do we satisfy with application monitoring?
 
-## Java app delivery crash course (1h)
+## Java app delivery crash course (50m)
 ### How do we build Java application?
 - [ ] JVM vs JRE vs JDK
 - [ ] Physical point ov view for java application
@@ -140,7 +140,7 @@ Installation at Windows:
 - [ ] JMX simple tooling demo: JVisualVM
 - [ ] JMX architecture overview
 
-## Hands-on quest: Simple application _local_ building, running and monitoring (30m)
+## Hands-on quest: Simple application _local_ building, running and monitoring (50m)
 ### Given
 - [ ] Satisfied [prerequisites](#Prerequisites) 
 - [ ] Cloned locally [training content](https://bitbucket.raiffeisen.ru/projects/JVMTRAIN/repos/java-application-monitoring-and-troubleshooting/browse)
@@ -434,7 +434,7 @@ browser --> application
 | OS | Linux | [ps](https://www.geeksforgeeks.org/ps-command-in-linux-with-examples/), [top](https://www.geeksforgeeks.org/top-command-in-linux-with-examples/)
 | Hardware | x86 | `df`, `free`, [SNMP](https://docs.oracle.com/javase/8/docs/technotes/guides/management/snmp.html), [Prometheus Node Exporter](https://prometheus.io/docs/guides/node-exporter/)
 
-## Hands-on quest: Modern application _remote_ building, running and monitoring (30m)
+## Hands-on quest: Modern application _remote_ building, running and monitoring (50m)
 ### Given
 - [ ] SSH user session with domain account to [{{ prod host }}](iaac/inventories/production/hosts.yml) `ssh account@s-msk-t-jvm-XXX`
 
@@ -620,7 +620,7 @@ http://{{ prod }}:3000
 ## Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
 - [ ] Adding metrics to Custom Grafana dashboard
 
-## Hands-on quest: JIT compilation monitoring (30m)
+## Hands-on quest: JIT compilation monitoring (50m)
 ### Given
 - [ ] Application ran at {{ prod }}
 - [ ] External Legacy System REST stub started
@@ -733,7 +733,7 @@ jconsole://{{ prod }}:9999/MBeans
 - [ ] Native Byte Buffers: NIO direct buffers
       
 
-## Hands-on quest: Memory monitoring (30m)
+## Hands-on quest: Memory monitoring (50m)
 ### Given
 - [ ] Application ran at {{ prod }}
 - [ ] External Legacy System REST stub started
@@ -849,7 +849,7 @@ jvisualvm://Buffer Pools (plugin required)
 ### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
 - [ ] Adding metrics to Custom Grafana dashboard
 
-## Hands-on quest: Threads monitoring (30m)
+## Hands-on quest: Threads monitoring (50m)
 ### Given
 - [ ] Application ran at {{ prod }}
 - [ ] External Legacy System REST stub started
@@ -931,7 +931,7 @@ http://{{ prod }}:9090/graph
 - [x] Threading patterns for logic processing: sync/async with multiple pools
 - [ ] Data access: sync/async ([files](https://www.baeldung.com/java-nio2-async-file-channel), [DB](https://spring.io/projects/spring-data-r2dbc), [HTTP REST calls](https://dzone.com/articles/high-concurrency-http-clients-on-the-jvm))
 
-## Hands-on quest: IO monitoring (30m)
+## Hands-on quest: IO monitoring (50m)
 ### Given
 - [ ] Application ran at {{ prod }}
 - [ ] External Legacy System REST stub started
@@ -960,7 +960,7 @@ http://{{ prod }}:9090/graph
 - [ ] Incoming http connections long-liveness
 - [ ] What is the system default IO encoding?
 - [ ] Is there excessive IO wrapper objects allocation?
--  [] Is outgoing HTTP connections pooled?
+- [ ] Is outgoing HTTP connections pooled?
 - [ ] Is it enough HTTP connections in pool?
 - [ ] What threading pattern for connection data processing used in application design?
 - [ ] What threading scope pattern used in application design?
@@ -999,7 +999,7 @@ http://{{ prod }}:9090/graph
 - [ ] Repositories code generation
 - [ ] Spring transaction management
 
-## Hands-on quest: JDBC subsystem monitoring (30m)
+## Hands-on quest: JDBC subsystem monitoring (50m)
 ### Given
 - [ ] Application ran at {{ prod }}
 - [ ] External Legacy System REST stub started
