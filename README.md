@@ -518,9 +518,6 @@ uptime
 df -ah
 free -m
 
-docker images -a
-docker ps -a
-
 ps -ef
 ps -eaux --forest
 ps -eT | grep <pid>
