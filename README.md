@@ -778,8 +778,6 @@ http://{{ prod }}:9090/graph
 jconsole://localhost:9999/Memory/Chart:*
 jconsole://localhost:9999/MBeans
 
-IDEA://Open Hprof snapshot (dump.hprof)
-
 jvisualvm://File/Load (dump.hprof)
 
 jvisualvm://VisualGC (plugin required)
