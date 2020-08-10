@@ -34,14 +34,6 @@ Installation at Windows:
 1. Run distribution
 1. All installation questions and options leave as default 
 
-- [ ] [Maven](https://maven.apache.org/download.cgi) latest binary zip
-Installation at Windows:
-1. Download distribution: [latest Binary zip archive](http://mirror.linux-ia64.org/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip)
-1. Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
-1. Remember this path, later we'll refer it as M2_HOME. Or add Windows system variable M2_HOME with value of path to unpacked distribution folder.   
-1. Add full path to "bin" subfolder to Windows system PATH variable
-1. Check installation: run "cmd" program and get Maven version `mvn --version` 
-
 - [ ] SSH terminal (for Windows only)
 1. Check if you already have SSH client: 
 1. run "cmd" program
