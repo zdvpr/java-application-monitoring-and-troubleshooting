@@ -145,7 +145,7 @@ Installation at Windows:
 - [ ] Satisfied [prerequisites](#Prerequisites) 
 - [ ] Cloned locally [training content](https://bitbucket.raiffeisen.ru/projects/JVMTRAIN/repos/java-application-monitoring-and-troubleshooting/browse)
 ```shell script
-git clone --depth 1 --branch raiffeisen https://bitbucket.raiffeisen.ru/scm/jvmtrain/java-application-monitoring-and-troubleshooting.git
+git clone --depth 1 --branch master https://bitbucket.raiffeisen.ru/scm/jvmtrain/java-application-monitoring-and-troubleshooting.git
 cd java-application-monitoring-and-troubleshooting
 ```
 
@@ -441,7 +441,7 @@ browser --> application
 - [ ] [Demo Application](https://bitbucket.raiffeisen.ru/projects/JVMTRAIN/repos/agile-practices-application/browse) codebase cloned remotely
 ```shell script
 cd /opt
-sudo git clone --depth 1 --branch raiffeisen https://bitbucket.raiffeisen.ru/scm/jvmtrain/agile-practices-application.git
+sudo git clone --depth 1 --branch master https://bitbucket.raiffeisen.ru/scm/jvmtrain/agile-practices-application.git
 sudo chown {{ account }}:users -R agile-practices-application
 cd agile-practices-application
 ```
