@@ -159,8 +159,13 @@ mvn --encrypt-master-password {{ trainer_given_master_password }}
 vi ~/.m2/settings-security.xml
 ```
 
+- [x] Set up Maven to ignore SSL cert errors
+```shell script
+-Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.http.ssl.ignore.validity.dates=true
+```
+
 ### When
-- [ ] Project application built locally with maven `mvn clean verify [-DskipTests]`
+- [ ] Project application built locally with IDEA's built-in maven `mvn clean verify [-DskipTests]`
 - [ ] Project application ran locally with CLI
 ```shell script
 java \
