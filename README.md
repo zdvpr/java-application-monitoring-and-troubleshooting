@@ -16,11 +16,18 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 ## Hardware
 - [ ] RAM ≥ 8Гб
 - [ ] Wi-Fi with Internet access
+
 ## Software at student's developer desktop
+- [ ] [Git](https://git-scm.com)
+Installation at Windows:
+1. Download distribution: [Git for Windows Setup](https://git-scm.com/download/win)
+1. Run distribution
+1. All installation questions and options leave as default 
+
 - [ ] [AdoptOpenJDK](https://adoptopenjdk.net) OpenJDK 8 HotSpot Latest Release
 Installation at Windows:
 1. Download distribution: preffered Windows Installer at corporate repo (`softwarecenter:SoftwareID=ScopeId_1999C8B9-1E4A-4832-84B4-AAC87980BDC9/Application_c0cf2d23-58dd-4798-a91c-696b82180ff3`) or fallback [Windows installer at official website](https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u262-b10/OpenJDK8U-jdk_x86-32_windows_hotspot_8u262b10.msi) 
-1. Run distributions
+1. Run distribution
 1. All installation questions and options leave as default 
 
 - [ ] [VisualVM](https://visualvm.github.io) latest
