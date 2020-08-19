@@ -1044,6 +1044,7 @@ http://{{ prod }}:9090/graph
 ---
 
 ## Reference
+- [jstat GC monitoring](https://dzone.com/articles/how-monitor-java-garbage)
 - [HotSpot JVM full options reference](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html)
 - [10 Important JVM Options](https://geekflare.com/important-jvm-options)
 - [Most Important JVM Parameters](https://www.baeldung.com/jvm-parameters)
