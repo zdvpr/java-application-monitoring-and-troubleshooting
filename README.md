@@ -429,6 +429,11 @@ sudo chown {{ account }}:users -R agile-practices-application
 cd agile-practices-application
 ```
 
+- [ ] Made Maven able to run with given user
+```shell script
+chmod a+x -R /opt/maven
+```
+
 - [ ] Credentials for corporate Maven Artifactory repo set up
 ```shell script
 mkdir ~/.m2
