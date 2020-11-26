@@ -191,6 +191,7 @@ windows> taskmgr
 
 ### Then answered and reviewed at debrief
 - [ ] What is the default encoding for I/O?
+- [ ] Does the maximun heap size shown with JVisualVM correspond to -Xmx key?
 - [ ] What is the default heap size for app running?
 - [ ] How many java threads is active within JVM? 
 - [ ] How many OS threads is active within OS JVM process? 
