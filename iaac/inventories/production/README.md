@@ -28,11 +28,3 @@ Run playbook against production hosts inventory
 ```cygwin shell
 ansible-playbook site.yml -i inventories/production --ask-pass --ask-become-pass
 ```
-
-Add student account to access target virtual hosts
---------------------------------------------------
-```shell script
-sudo vi /etc/sssd/sssd.conf
-sudo service sssd restart
-sudo usermod -aG wheel {{ account }}
-```
