@@ -7,6 +7,7 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 
 # Recordings
 - [03.06](https://us02web.zoom.us/rec/share/MjJTU_4RSQGGNH95QovCR3dn-1QfjfnP3SsGZQMH6XHO61_1PxvT8WXP1IHdi6bo.hFXL2jideIzIBBH2)
+- [08.06](https://us02web.zoom.us/rec/share/EZDsz8JPh5yvU8pEW95IBIm2PWKBXKoKFPYNoDjStWYDJDwRwrUtKU8q4Dax10pT.ZXSW-MsKGeOiSzMv)
 
 # Training Objectives
 - [ ] Understanding modern application architecture and defect hotspots
