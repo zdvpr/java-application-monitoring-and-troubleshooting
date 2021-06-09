@@ -349,7 +349,7 @@ component "<$server>\nhardware" as hardware #lightgray {
 </details>
 
 ## Monitoring architecture overview (30m)
-![Inrastructure overview](http://www.plantuml.com/plantuml/svg/NL71Ri8m3BtxAopk_0BYmddIs0rLA6sjaQsDepXbe8b_dvCcqEvGANxFVdv-tKiq8KxZ08vxmarFLrGeMdORD89Qbn9_0KyY5umKHklCq2I-5ieP9xOT2FrWxYtpT-OBg7GR-4SeDFhy6Ycc5rGQjxkNqWF0T943ldb94km5zCEjDbMvMZ-7Ab2sFEjv5SpN-S1zFYDNTFCSbCm-4tAk201sF7fsvABUvVrWkvn1awRnDBApaODrdqYkzsnTp2851toi5NIlshZG9BD0Rw9fZH0g6cmdvuiLdRlFWw_kT44LNUEx_uRBeObP-8Lrcx8v0q1OTkKrfyDDEpHAV3ySFr0plDgEy1Ydjac_f2QDsofIeYv0zRQ0rrRs6jKq3dy0)
+![Inrastructure overview](https://www.planttext.com/api/plantuml/svg/PLBBReCm4BplLwouvnUYN7AkrFI6K6Im4ro1RTc6fAhoxrqR6qnpGFBClcPsEJdFh9_60PJc0YikPYJAIwqgP0u99uY_WBLpFNfXHwdOq8Hu1XHhhNuuOHjwVe_2fzSyeh7w9WV2eI03U06mpckB7yQ5W3OEwCF3uRWbPM8TauaqRCNBH4Wkg9vZhvslqaWUrSUWU1fjVL8Jc6jc0B3Jez5AA8yrCsQGNRJUX6giHwqa2PRgZa9newNoiKdY0L_x3ZINLFLYSai3pZnhcHD8h9MTk_RIKTrFA4GaVNVBRaon9kyWLLFN3SJOEh7aZszkbgM4I646zcbv5WTIKAH5lZu_AONsZf_donVImcVP2RpugMt20VDPjYRfBlyTb7IffUIJ-nsNZUOVugt1YIv1V-yV)
 <details>
 <summary>pUML source</summary>
 
@@ -357,20 +357,18 @@ component "<$server>\nhardware" as hardware #lightgray {
 @startuml
 node "dev station" as devstation {
  [ssh terminal] as terminal
- [ansible playbook] as ansible
  [browser]
  [jmeter]
-
- ansible -> terminal
+ [jvm profiler] as profiler
 }
 
 actor Ops as ops
-ops --> ansible
+ops --> profiler
 ops --> terminal
 ops --> browser
 ops --> jmeter
 
-node prod {
+node "prod host" as prod {
  [node exporter] as node_exporter
 
  component [application] {
@@ -380,12 +378,14 @@ node prod {
  component [prometheus] {
   database metrics_history
  }
+  
+ [grafana] --> prometheus
 
  prometheus --> monitor
  prometheus -> node_exporter
 
  jmeter -> application
- node_exporter -> prod
+ node_exporter --> prod
  
  application --> [External REST service Stub]
 }
@@ -393,6 +393,9 @@ node prod {
 terminal --> prod
 browser --> prometheus
 browser --> application
+browser --> grafana
+browser --> monitor
+profiler --> application
 @enduml
 ```
 
