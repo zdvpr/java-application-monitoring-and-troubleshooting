@@ -1,13 +1,8 @@
 - hosts: prod
   gather_facts: yes
   become: yes
-  environment: "{{ env_proxy | default('') }}"
 
   roles:
-    - role: maven
-      tags: maven
-      maven_version: '3.6.3'
-
     - role: cloudalchemy.prometheus
       tags: prometheus
       prometheus_scrape_configs:
@@ -23,9 +18,8 @@
               labels:
                 env: prod
 
-    - role: cloudalchemy.node-exporter
+    - role: cloudalchemy.node_exporter
       tags: node_exporter
-      node_exporter_version: '1.0.1'
       node_exporter_enabled_collectors:
         - processes
         - systemd
@@ -35,21 +29,11 @@
         - logind
         - ksmd
 
-
-- hosts: prod
-  gather_facts: yes
-  become: yes
-  # should not use proxy environment
-
-  roles:
-    - role: git
-      tags: git
-
-    - role: jdk
-      tags: jdk
-
-    - role: grafana
+    - role: cloudalchemy.grafana
       tags: grafana
+      grafana_security:
+        admin_user: admin
+        admin_password: P@ssw0rd
       grafana_datasources:
         - name: Prometheus
           type: prometheus
@@ -58,5 +42,40 @@
           access: proxy
           isDefault: true
 
-    - role: curl
-      tags: curl
+  tasks:
+    - name: Open port for node_exporter
+      tags: node_exporter
+      ansible.builtin.command: firewall-cmd --zone=public --permanent --add-port 9100/tcp
+
+    - name: Open port for Grafana
+      tags: grafana
+      ansible.builtin.command: firewall-cmd --zone=public --permanent --add-port 3000/tcp
+
+    - name: Open port for dbo application
+      tags: app
+      ansible.builtin.command: firewall-cmd --zone=public --permanent --add-port 8080/tcp
+
+    - name: Open port for JMX
+      tags: app
+      ansible.builtin.command: firewall-cmd --zone=public --permanent --add-port 9999/tcp
+
+    - name: Reload firewall
+      tags: node_exporter,grafana,app
+      ansible.builtin.command: firewall-cmd --reload
+
+    - name: Install dev software
+      tags: devsoft
+      ansible.builtin.package:
+        name:
+          - curl
+          - git
+          - java-1.8.0-openjdk-devel
+          - maven
+        state: present
+
+    - name: Copy Application
+      tags: app
+      ansible.builtin.copy:
+        src: ../bin/dbo-1.0-SNAPSHOT.jar
+        dest: /opt/agile-practices-application/target/
+        mode: u=rwx,g=rx,o=rx

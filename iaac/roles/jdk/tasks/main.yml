@@ -1,4 +1,0 @@
-- name: Install jdk
-  package:
-    state: present
-    name: java-1.8.0-openjdk-devel

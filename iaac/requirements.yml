@@ -1,10 +1,6 @@
-- src: gantsign.maven
-  version: '5.4.3'
-- src: lean_delivery.jmeter
-  version: '1.1.0'
 - src: cloudalchemy.prometheus
-  version: '2.15.5'
-- src: cloudalchemy.node-exporter
-  version: '0.21.3'
+  version: '4.0.0'
+- src: cloudalchemy.node_exporter
+  version: '2.0.0'
 - src: cloudalchemy.grafana
-  version: '0.17.0'
+  version: '0.18.0'

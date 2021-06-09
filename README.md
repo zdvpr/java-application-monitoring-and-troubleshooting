@@ -26,18 +26,19 @@ Installation at Windows:
 
 - [ ] [AdoptOpenJDK](https://adoptopenjdk.net) OpenJDK 8 HotSpot Latest Release
 Installation at Windows:
-1. Download distribution: preffered Windows Installer at corporate repo (`softwarecenter:SoftwareID=ScopeId_1999C8B9-1E4A-4832-84B4-AAC87980BDC9/Application_c0cf2d23-58dd-4798-a91c-696b82180ff3`) or fallback [Windows installer at official website](https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u262-b10/OpenJDK8U-jdk_x86-32_windows_hotspot_8u262b10.msi) 
+1. Download distribution 
 1. Run distribution
 1. All installation questions and options leave as default 
 
 - [ ] [VisualVM](https://visualvm.github.io) latest
 Installation at Windows:
-1. Download distribution: [default latest version](https://github.com/visualvm/visualvm.src/releases/download/2.0.3/visualvm_203.zip)
-1. Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
+1. Download any distribution
+1. Run distribution
+1. All installation questions and options leave as default
 
 - [ ] [IntelliJ IDEA CE](https://www.jetbrains.com/idea/download) latest Community Edition
 Installation at Windows:
-1. Download distribution: [latest Windows Community edition](https://download.jetbrains.com/idea/ideaIC-2020.1.4.exe)
+1. Download distribution
 1. Run distribution
 1. All installation questions and options leave as default 
 
@@ -53,14 +54,10 @@ If you don't have pre-installed SSH client, installation [PuTTY for Windows](htt
 
 - [ ] [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
 Installation at Windows:
-1. Download distribution: [latest Binary ZIP](https://apache-mirror.rbc.ru/pub/apache//jmeter/binaries/apache-jmeter-5.3.zip)
+1. Download distribution
 1. Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
 1. Remember this path, later we'll refer it as JMETER_HOME. Or add Windows system variable JMETER_HOME with value of path to unpacked distribution folder.   
 1. Add full path to "bin" subfolder to Windows system PATH variable
-
-## Network access from student stations _to_ emulation of **prod** host
-- [ ] [prod host](/iaac/inventories/production/hosts.yml) accessible
-- [ ] Ports at {{ prod }}[:ports_needed](/iaac/inventories/test/test-env-docker-compose.yml) accessible
 
 # Agenda (20 a.hr.)
 ## Training introducing and focusing (15m)
@@ -150,23 +147,10 @@ Installation at Windows:
 ## Hands-on quest: Simple application _local_ building, running and monitoring (50m)
 ### Given
 - [ ] Satisfied [prerequisites](#Prerequisites) 
-- [ ] Cloned locally [training content](https://bitbucket.raiffeisen.ru/projects/JVMTRAIN/repos/java-application-monitoring-and-troubleshooting/browse)
+- [ ] Cloned locally training repo
 ```shell script
-git clone --depth 1 --branch master https://bitbucket.raiffeisen.ru/scm/jvmtrain/java-application-monitoring-and-troubleshooting.git
+git clone --depth 1 --branch master https://github.com/eugene-krivosheyev/java-application-monitoring-and-troubleshooting
 cd java-application-monitoring-and-troubleshooting
-```
-
-- [ ] Credentials for corporate Maven Artifactory repo set up
-```shell script
-cp iaac/roles/maven/files/settings.xml $M2_HOME/conf/
-cp iaac/roles/maven/files/settings-security.xml ~/.m2/
-mvn --encrypt-master-password {{ trainer_given_master_password }}
-vi ~/.m2/settings-security.xml
-```
-
-- [x] Set up Maven to ignore SSL cert errors
-```shell script
--Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.http.ssl.ignore.validity.dates=true
 ```
 
 ### When
@@ -181,7 +165,8 @@ java \
       program arguments
 ```
 
-- [ ] JVisualVM profiler ran `$JAVA_HOME/bin/jvisualvm`
+- [ ] JVisualVM profiler ran `jvisualvm`
+- In case of JDK locating error: `/usr/local/Caskroom/visualvm/2.0.7/VisualVM.app/Contents/MacOS/visualvm --jdkhome /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home`
 - [ ] JVisualVM profiler connected to running app `Local connections`
 - [ ] OS-specific monitoring tool shows application process details
 ```shell script
@@ -404,7 +389,7 @@ profiler --> application
 ## Demo: monitoring environment (15m)
 - [ ] Node Exporter
 - [ ] Prometheus
-- [ ] Grafana: setting up datasource and export dashboard
+- [ ] Grafana: setting up datasource and [export dashboard](https://grafana.com/grafana/dashboards/1860)
 - [ ] Custom Grafana dashboard as training outcome
 - [ ] Adding metrics to Custom Grafana dashboard
 
@@ -425,25 +410,11 @@ profiler --> application
 ### Given
 - [ ] SSH user session with domain account to [{{ prod host }}](iaac/inventories/production/hosts.yml) `ssh account@s-msk-t-jvm-XXX`
 
-- [ ] [Demo Application](https://bitbucket.raiffeisen.ru/projects/JVMTRAIN/repos/agile-practices-application/browse) codebase cloned remotely
+- [ ] Demo Application codebase cloned remotely
 ```shell script
 cd /opt
-sudo git clone --depth 1 --branch master https://bitbucket.raiffeisen.ru/scm/jvmtrain/agile-practices-application.git
-sudo chown {{ account }}:users -R agile-practices-application
+sudo git clone --depth 1 --branch master https://github.com/eugene-krivosheyev/agile-practices-application
 cd agile-practices-application
-```
-
-- [ ] Made Maven able to run with given user
-```shell script
-chmod a+x -R /opt/maven
-```
-
-- [ ] Credentials for corporate Maven Artifactory repo set up
-```shell script
-mkdir ~/.m2
-cp /opt/maven/settings-security.xml ~/.m2/
-mvn --encrypt-master-password {{ trainer_given_master_password }}
-vi ~/.m2/settings-security.xml
 ```
 
 - [ ] Demo Application built remotely
@@ -457,6 +428,15 @@ mvn clean verify [-DskipTests]
 cd target/test-classes # cat mappings/legacyAccountingSystemResponse.json
 java -jar wiremock-jre8-standalone-2.27.1.jar --port 8888 [--verbose] & # curl localhost:8888/api/account
 ``` 
+In case of using pre-built application just download Wiremock binary and its config
+```shell script
+cd target/test-classes
+wget https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-jre8-standalone/2.28.1/wiremock-jre8-standalone-2.28.1.jar
+
+mkdir mappings
+cd mappings 
+wget https://raw.githubusercontent.com/eugene-krivosheyev/agile-practices-application/master/src/test/resources/mappings/legacyAccountingSystemResponse.json
+```
 
 - [ ] Application ran at {{ prod }}
 ```shell script
