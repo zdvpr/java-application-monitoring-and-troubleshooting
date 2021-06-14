@@ -428,6 +428,7 @@ mvn clean verify [-DskipTests]
 cd target/test-classes # cat mappings/legacyAccountingSystemResponse.json
 java -jar wiremock-jre8-standalone-2.28.1.jar --port 8888 [--verbose] & # curl localhost:8888/api/account
 ``` 
+
 In case of using pre-built application just download Wiremock binary and its config
 ```shell script
 mkdir target/test-classes
@@ -437,7 +438,22 @@ wget https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-jre8-standal
 mkdir mappings
 cd mappings 
 wget https://raw.githubusercontent.com/eugene-krivosheyev/agile-practices-application/master/src/test/resources/mappings/legacyAccountingSystemResponse.json
+```
 
+So the file layout should be like this:
+```
+[root@localhost agile-practices-application]# tree
+.
+`-- target
+    |-- dbo-1.0-SNAPSHOT.jar
+    `-- test-classes
+        |-- mappings
+        |   `-- legacyAccountingSystemResponse.json
+        `-- wiremock-jre8-standalone-2.28.1.jar
+```
+
+Run the service stub:
+```
 cd .. # cat mappings/legacyAccountingSystemResponse.json
 java -jar wiremock-jre8-standalone-2.28.1.jar --port 8888 [--verbose] & # curl localhost:8888/api/account
 ```
@@ -455,7 +471,7 @@ nohup \
     -XX:NativeMemoryTracking=detail \
     -Dderby.stream.error.file=log/derby.log \
     -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false \
-    -Djava.rmi.server.hostname={{ prod }} -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999 \
+    -Djava.rmi.server.hostname=$(hostname -I) -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999 \
     -jar target/dbo-1.0-SNAPSHOT.jar \
       --spring.profiles.active=qa \
       --server.port=8080 \
