@@ -72,6 +72,14 @@
           - java-1.8.0-openjdk-devel
           - maven
         state: present
+        
+    - name: Install adm software
+      tags: admsoft
+      ansible.builtin.package:
+        name:
+          - net-tools
+          - sysstat
+        state: present
 
     - name: Copy Application
       tags: app
