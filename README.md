@@ -426,16 +426,20 @@ mvn clean verify [-DskipTests]
 - [ ] External Legacy System REST stub started
 ```shell script
 cd target/test-classes # cat mappings/legacyAccountingSystemResponse.json
-java -jar wiremock-jre8-standalone-2.27.1.jar --port 8888 [--verbose] & # curl localhost:8888/api/account
+java -jar wiremock-jre8-standalone-2.28.1.jar --port 8888 [--verbose] & # curl localhost:8888/api/account
 ``` 
 In case of using pre-built application just download Wiremock binary and its config
 ```shell script
+mkdir target/test-classes
 cd target/test-classes
 wget https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-jre8-standalone/2.28.1/wiremock-jre8-standalone-2.28.1.jar
 
 mkdir mappings
 cd mappings 
 wget https://raw.githubusercontent.com/eugene-krivosheyev/agile-practices-application/master/src/test/resources/mappings/legacyAccountingSystemResponse.json
+
+cd .. # cat mappings/legacyAccountingSystemResponse.json
+java -jar wiremock-jre8-standalone-2.28.1.jar --port 8888 [--verbose] & # curl localhost:8888/api/account
 ```
 
 - [ ] Application ran at {{ prod }}
