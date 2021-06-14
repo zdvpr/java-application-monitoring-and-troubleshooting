@@ -18,29 +18,16 @@ _4. Java Application as a Runtime White Box: App running, JVM and application mo
 - [ ] Wi-Fi with Internet access
 
 ## Software at student's developer desktop
-- [ ] [Git](https://git-scm.com)
-Installation at Windows:
-1. Download distribution: [Git for Windows Setup](https://git-scm.com/download/win)
+- [ ] [VirtualBox](https://www.virtualbox.org) latest
+1. Download distribution
 1. Run distribution
-1. All installation questions and options leave as default 
-
-- [ ] [AdoptOpenJDK](https://adoptopenjdk.net) OpenJDK 8 HotSpot Latest Release
-Installation at Windows:
-1. Download distribution 
-1. Run distribution
-1. All installation questions and options leave as default 
+1. All installation questions and options leave as default
 
 - [ ] [VisualVM](https://visualvm.github.io) latest
 Installation at Windows:
 1. Download any distribution
 1. Run distribution
 1. All installation questions and options leave as default
-
-- [ ] [IntelliJ IDEA CE](https://www.jetbrains.com/idea/download) latest Community Edition
-Installation at Windows:
-1. Download distribution
-1. Run distribution
-1. All installation questions and options leave as default 
 
 - [ ] SSH terminal (for Windows only)
 1. Check if you already have SSH client: 
@@ -58,6 +45,12 @@ Installation at Windows:
 1. Unpack distribution to folder by your choice (e.g. "C:\Program Files\")
 1. Remember this path, later we'll refer it as JMETER_HOME. Or add Windows system variable JMETER_HOME with value of path to unpacked distribution folder.   
 1. Add full path to "bin" subfolder to Windows system PATH variable
+
+- [x] [IntelliJ IDEA CE](https://www.jetbrains.com/idea/download) latest Community Edition
+  Installation at Windows:
+1. Download distribution
+1. Run distribution
+1. All installation questions and options leave as default
 
 # Agenda (20 a.hr.)
 ## Training introducing and focusing (15m)
@@ -147,15 +140,16 @@ Installation at Windows:
 ## Hands-on quest: Simple application _local_ building, running and monitoring (50m)
 ### Given
 - [ ] Satisfied [prerequisites](#Prerequisites) 
-- [ ] Cloned locally training repo
+- [ ] Set up VirtualBox virtual machine with [prepared image](https://www.dropbox.com/s/wtvux1fb0t38xov/jvm-monitoring-rhel8.vdi.zip?dl=0) 
+- [ ] Cloned training repo remotely
 ```shell script
 git clone --depth 1 --branch master https://github.com/eugene-krivosheyev/java-application-monitoring-and-troubleshooting
 cd java-application-monitoring-and-troubleshooting
 ```
 
 ### When
-- [ ] Project application built locally with IDEA's built-in maven `mvn clean verify [-DskipTests]`
-- [ ] Project application ran locally with CLI
+- [ ] Project application built remotely `mvn clean verify [-DskipTests]`
+- [ ] Project application ran remotely with CLI
 ```shell script
 java \
   -Xms128m -Xmx256m \

@@ -3,9 +3,9 @@ Playbook for production hosts
 
 Run Virtual Machine with VirtualBox
 -------------------
-- Installed CentOS 8
+- Installed RHEL 8
 - VM Network type: bridged adapter
-- VM RAM ≥ 4Gb
+- VM RAM ≥ 2Gb
 
 Setup provisioning admin account
 --------------------------------
@@ -14,6 +14,7 @@ Fix target hostname/address in `iaac/inventories/production/hosts.yml`
 Install Ansible dependencies and roles dependencies
 ---------------------------------------------------
 ```shell
+cd iaac
 ansible-galaxy install -r requirements.yml
 ```
 ```shell
