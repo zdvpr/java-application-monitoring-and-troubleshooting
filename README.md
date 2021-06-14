@@ -501,6 +501,8 @@ uname --all
 cat /etc/os-release
 uptime
 
+ulimit -a [user]
+
 df -ah
 free -m
 
