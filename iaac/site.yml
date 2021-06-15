@@ -37,7 +37,7 @@
       grafana_datasources:
         - name: Prometheus
           type: prometheus
-          url: "http://{{ inventory_hostname }}:9090"
+          url: "http://localhost:9090"
           basicAuth: false
           access: proxy
           isDefault: true
