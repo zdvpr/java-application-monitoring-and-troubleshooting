@@ -497,18 +497,20 @@ jmeter -n -t load.jmx -j log/jmeter/jmeter.log -l log/jmeter/jmeter.jtl -e -o lo
 ### When
 - [ ] CLI tools used at {{ prod }}
 ```shell script
-uname --all
+uname [--all]
 cat /etc/os-release
 uptime
-
-ulimit -a [user]
 
 df -ah
 free -m
 
+ulimit -a [user]
+
 ps -ef
 ps -eaux --forest
 ps -eT | grep <pid>
+
+pstree [-aug]
 
 top + 'q'
 top + 'f'
