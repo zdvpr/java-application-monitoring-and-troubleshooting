@@ -47,6 +47,10 @@
       tags: node_exporter
       ansible.builtin.command: firewall-cmd --zone=public --permanent --add-port 9100/tcp
 
+    - name: Open port for node_exporter
+      tags: prometheus
+      ansible.builtin.command: firewall-cmd --zone=public --permanent --add-port 9090/tcp
+
     - name: Open port for Grafana
       tags: grafana
       ansible.builtin.command: firewall-cmd --zone=public --permanent --add-port 3000/tcp
@@ -60,7 +64,7 @@
       ansible.builtin.command: firewall-cmd --zone=public --permanent --add-port 9999/tcp
 
     - name: Reload firewall
-      tags: node_exporter,grafana,app
+      tags: node_exporter,prometheus,grafana,app
       ansible.builtin.command: firewall-cmd --reload
 
     - name: Install dev software
