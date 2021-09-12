@@ -1,17 +1,20 @@
 Building and starting Docker container(s) as emulated production host
 =====================================================================
 
-[If you want ready-to-go Docker image WITHOUT Ansible provisioning]
--------------------------------------------------------------------
-Within `test-env-docker-compose.yml` 
-1. remove line `build: .`
-1. replace tag `clear` to `provisioned`
+```bash
+cd iaac
+```
 
+Build Docker image
+------------------
+```bash
+docker build --tag java-monitoring-centos:8 inventories/test
+```
 
-Build and start docker container(s)
+Start docker container
 -----------------------------------
 ```bash
-docker-compose --file inventories/test/test-env-docker-compose.yml up --detach
+docker-compose --file inventories/test/java-monitoring-prod-compose.yml up --detach
 ```
 
 Useful Docker commands
@@ -23,23 +26,22 @@ docker ps -a
 
 - Log in to running container `prod`
 ```bash
-ssh -p 2222 root@localhost #pwd:root
-docker exec -it prod /bin/bash
+docker exec -it java-monitoring-prod /bin/bash
 ```
 
 - Stop docker container(s) saving image
 ```bash
-docker-compose --file inventories/test/test-env-docker-compose.yml stop
+docker-compose --file inventories/test/java-monitoring-prod-compose.yml stop
 ```
 
-- Start docker container(s) after stop 
+- Start docker container(s) after stop
 ```bash
-docker-compose --file inventories/test/test-env-docker-compose.yml start
+docker-compose --file inventories/test/java-monitoring-prod-compose.yml start
 ```
 
 - Stop and remove image
 ```bash
-docker-compose --file inventories/test/test-env-docker-compose.yml down
+docker-compose --file inventories/test/java-monitoring-prod-compose.yml down
 ```
 
 
@@ -50,13 +52,6 @@ Install host dependencies [for MacOS host only]
 -----------------------------------------------
 ```bash
 brew install gnu-tar
-```
-
-Reset ssh keys [if container have changed]
-------------------------------------------
-```bash
-ssh-keygen -R '[localhost]:2222'
-ssh-keygen -R '[127.0.0.1]:2222'
 ```
 
 Smoke test Ansible connections
@@ -76,20 +71,4 @@ Run playbook against docker host(s)
 -----------------------------------
 ```bash
 ansible-playbook site.yml -i inventories/test
-```
-
-
-The whole script
-================
-```startup
-docker-compose --file inventories/test/test-env-docker-compose.yml up --detach && \
-ssh-keygen -R '[localhost]:2222' && \
-ssh-keygen -R '[127.0.0.1]:2222' && \
-ansible -i inventories/test -m shell -a 'uname -a' all && \
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES && \
-ansible-playbook site.yml -i inventories/test
-```
-
-```shutdown
-docker-compose --file inventories/test/test-env-docker-compose.yml down -t 3
 ```

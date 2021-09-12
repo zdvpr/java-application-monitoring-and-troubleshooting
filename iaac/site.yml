@@ -60,3 +60,10 @@
 
     - role: curl
       tags: curl
+
+    - role: target_app
+      tags: target_app
+
+    - role: wiremock_stub
+      tags: wiremock_stub
+

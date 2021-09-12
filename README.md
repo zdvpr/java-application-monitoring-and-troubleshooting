@@ -60,7 +60,7 @@ Installation at Windows:
 
 ## Network access from student stations _to_ emulation of **prod** host
 - [ ] [prod host](/iaac/inventories/production/hosts.yml) accessible
-- [ ] Ports at {{ prod }}[:ports_needed](/iaac/inventories/test/test-env-docker-compose.yml) accessible
+- [ ] Ports at {{ prod }}[:ports_needed](/iaac/inventories/test/README.md) accessible
 
 # Agenda (20 a.hr.)
 ## Training introducing and focusing (15m)
@@ -455,24 +455,27 @@ mvn clean verify [-DskipTests]
 - [ ] External Legacy System REST stub started
 ```shell script
 cd target/test-classes # cat mappings/legacyAccountingSystemResponse.json
-java -jar wiremock-jre8-standalone-2.27.1.jar --port 8888 [--verbose] & # curl localhost:8888/api/account
+java -jar wiremock-jre8-standalone-2.31.0.jar --port 8888 [--verbose] & # curl localhost:8888/api/account
 ``` 
 
 - [ ] Application ran at {{ prod }}
 ```shell script
 cd /opt/agile-practices-application
 rm -rf dbo-db
+
 nohup \
   java \
     -Xms128m -Xmx128m \
+    -XX:+IgnoreUnrecognizedVMOptions \
     -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=heapdump.hprof \
     -XX:+TraceClassLoading -XX:+TraceClassUnloading \
     -Xloggc:gc.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=8 -XX:GCLogFileSize=8m \
+    -Xlog:gc*,safepoint:gc.log:time,uptime:filecount=10,filesize=128K \
     -XX:NativeMemoryTracking=detail \
     -Dderby.stream.error.file=log/derby.log \
     -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false \
-    -Djava.rmi.server.hostname={{ prod }} -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999 \
-    -jar target/dbo-1.0-SNAPSHOT.jar \
+    -Djava.rmi.server.hostname="$(hostname -i)" -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999 \
+    -jar dbo-1.0-SNAPSHOT.jar \
       --spring.profiles.active=qa \
       --server.port=8080 \
 > /dev/null 2>&1 &

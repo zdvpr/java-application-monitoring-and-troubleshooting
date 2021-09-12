@@ -1,0 +1,25 @@
+version: "3.6"
+
+services:
+  prod:
+    image: java-monitoring-centos:8
+    container_name: java-monitoring-prod
+    ports:
+      - "3000:3000"
+      - "8080:8080"
+      - "9090:9090"
+      - "9100:9100"
+      - "1099:1099"
+      - "9999:9999"
+      - "42129:42129"
+
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
+    tmpfs:
+      - /run
+      - /run/lock
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
