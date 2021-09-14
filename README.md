@@ -467,6 +467,7 @@ nohup \
   java \
     -Xms128m -Xmx128m \
     -XX:+IgnoreUnrecognizedVMOptions \
+    -XX:+PrintCompilation \
     -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=heapdump.hprof \
     -XX:+TraceClassLoading -XX:+TraceClassUnloading \
     -Xloggc:gc.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=8 -XX:GCLogFileSize=8m \
@@ -532,6 +533,12 @@ jcmd <pid> help
 jcmd <pid> VM.uptime
 jcmd <pid> VM.system_properties
 jcmd <pid> VM.flags
+jcmd <pid> PerfCounter.print
+jcmd <pid> GC.heap_info
+jcmd <pid> GC.finalizer_info
+jcmd <pid> GC.class_stats
+jcmd <pid> GC.class_histogram
+jcmd <pid> Thread.print
 
 java -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -XX:+PrintFlagsFinal -version
 jinfo <pid>
@@ -596,7 +603,7 @@ http://{{ prod }}:3000
 | JVM: threads, IO | JVM scheduler, JNI | [jstack](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstack.html)
 | JVM: memory, GC | Built-in Garbage Collectors | [jstat](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstat.html), [jstatd](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstatd.html), [jmap](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jmap.html), [jhat](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jinfo.html) removed at jdk9
 | JVM: universal monitoring API | [JMX](https://docs.oracle.com/javase/tutorial/jmx/index.html) | [jvisualvm](https://docs.oracle.com/javase/8/docs/technotes/guides/visualvm/index.html) 
-| JVM: process | Oracle/OpenJDK JRE | [jps](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jps.html), [jcmd](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr006.html), [jinfo](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jinfo.html)
+| JVM: process | Oracle/OpenJDK JRE | [jps](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jps.html), [jcmd](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr006.html) (_non-experimental status_), [jinfo](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jinfo.html)
 | Containers | Docker | [docker cli](https://docs.docker.com/config/containers/runmetrics/), [docker api for Prometheus](https://docs.docker.com/config/daemon/prometheus/), [Prometheus cAdvisor](https://prometheus.io/docs/guides/cadvisor/)
 | Message queues | n/u | vendor tools, prometheus exporters
 | DBMS | Apache Derby / Postgresql | vendor tools, [Prometheus pg_exporter](https://github.com/wrouesnel/postgres_exporter), [pg explain](https://postgrespro.ru/docs/postgresql/9.6/sql-explain), [pg analyse](https://postgrespro.ru/docs/postgresql/9.6/sql-analyze)
@@ -615,16 +622,17 @@ http://{{ prod }}:3000
 - [ ] Compilation threads: C1(1/3) + C2(2/3)
 - [ ] On-stack replacement (OSR) and _background compilation_ queue
 - [ ] C1 & C2 compiler queues dynamically resizes depending on available %CPU
-- [ ] Tiers:
+- [ ] Tiers/Levels:
 ```
 0: interpreted mode
-1: simple C1 compiled code 
-2: limited C1 compiled code 
-3: full C1 compiled code 
+1: simple C1 compiled code: w/o profiling 
+2: limited C1 compiled code: basic profiling
+3: full C1 compiled code: full profiling
 4: C2 compiled code
 ```
-- [ ] Performance-happy path: 0 -> 3 -> 4
-- [ ] Deoptimization -> level 0 (_not entrant_ or _zombie_ code)
+- Performance-happy path: 0 -> 3 -> 4
+- Trivial Method: 0 -> {2,3} -> 1 
+- Deoptimization -> level 0 (_not entrant_ or _zombie_ code)
 ### Optimization examples
 - [ ] Dead code elimination
 - [ ] Inlining
@@ -644,6 +652,8 @@ http://{{ prod }}:3000
 ### When
 - [ ] CLI tools used at {{ prod }}
 ```shell script
+# java -XX:+PrintCompilation -XX:+PrintInlining -XX:+PrintAssembly -XX:+PrintOptoAssembly (C2 only)
+
 java -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -XX:+PrintFlagsFinal -version | grep CodeCache
 jinfo -flag UseCodeCacheFlushing <pid>
 jinfo -flag ReservedCodeCacheSize <pid>
@@ -658,6 +668,9 @@ jinfo -flag Tier4InvocationThreshold <pid> # applies when tiered compilation: -X
 
 jstat -compiler <pid>
 jstat -printcompilation <pid> [1000]
+
+jcmd <pid> Compiler.codecache
+jcmd <pid> Compiler.codelist | more
 ```
 
 - [ ] Web applications used
