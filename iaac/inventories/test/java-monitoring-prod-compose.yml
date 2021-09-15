@@ -2,7 +2,7 @@ version: "3.6"
 
 services:
   prod:
-    image: java-monitoring-centos:8
+    image: java-monitoring-centos8
     container_name: java-monitoring-prod
     ports:
       - "3000:3000"
