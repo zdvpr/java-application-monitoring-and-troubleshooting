@@ -466,8 +466,8 @@ rm -rf dbo-db
 nohup \
   java \
     -Xms128m -Xmx128m \
-    -XX:+IgnoreUnrecognizedVMOptions \
-    -XX:+PrintCompilation \
+    -XX:+IgnoreUnrecognizedVMOptions -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions \
+    -XX:+PrintCompilation -XX:+LogCompilation -XX:LogFile=jit.log \
     -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=heapdump.hprof \
     -XX:+TraceClassLoading -XX:+TraceClassUnloading \
     -Xloggc:gc.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=8 -XX:GCLogFileSize=8m \
@@ -603,7 +603,7 @@ http://{{ prod }}:3000
 | JVM: threads, IO | JVM scheduler, JNI | [jstack](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstack.html)
 | JVM: memory, GC | Built-in Garbage Collectors | [jstat](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstat.html), [jstatd](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstatd.html), [jmap](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jmap.html), [jhat](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jinfo.html) removed at jdk9
 | JVM: universal monitoring API | [JMX](https://docs.oracle.com/javase/tutorial/jmx/index.html) | [jvisualvm](https://docs.oracle.com/javase/8/docs/technotes/guides/visualvm/index.html) 
-| JVM: process | Oracle/OpenJDK JRE | [jps](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jps.html), [jcmd](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr006.html) (_non-experimental status_), [jinfo](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jinfo.html)
+| JVM: process | Oracle/OpenJDK JRE | [jps](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jps.html), [jcmd 9](https://docs.oracle.com/javase/9/tools/jcmd.htm) + [jcmd 8](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr006.html) (_non-experimental status_), [jinfo](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jinfo.html)
 | Containers | Docker | [docker cli](https://docs.docker.com/config/containers/runmetrics/), [docker api for Prometheus](https://docs.docker.com/config/daemon/prometheus/), [Prometheus cAdvisor](https://prometheus.io/docs/guides/cadvisor/)
 | Message queues | n/u | vendor tools, prometheus exporters
 | DBMS | Apache Derby / Postgresql | vendor tools, [Prometheus pg_exporter](https://github.com/wrouesnel/postgres_exporter), [pg explain](https://postgrespro.ru/docs/postgresql/9.6/sql-explain), [pg analyse](https://postgrespro.ru/docs/postgresql/9.6/sql-analyze)
@@ -639,38 +639,41 @@ http://{{ prod }}:3000
 - [ ] C2 Escape analysis for var caching, synchronization, skipping object creation
 - [ ] Intel SSE and AVX instruction set 
 ### Tiered compilation trade-offs
-- [ ] Classes compiled, commited code cache
+- [ ] Classes compiled -> commited code cache size
 - [ ] Startup time
 - [ ] Application throughput as f(warmup time)
 
 ## Hands-on quest: JIT compilation monitoring (50m)
 ### Given
 - [ ] Application ran at {{ prod }}
-- [ ] External Legacy System REST stub started
+- [x] External Legacy System REST stub started
 - [ ] Load emulation ran
 
 ### When
 - [ ] CLI tools used at {{ prod }}
 ```shell script
 # java -XX:+PrintCompilation -XX:+PrintInlining -XX:+PrintAssembly -XX:+PrintOptoAssembly (C2 only)
+# java -XX:+LogCompilation -XX:LogFile=jit.log
 
 java -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -XX:+PrintFlagsFinal -version | grep CodeCache
 jinfo -flag UseCodeCacheFlushing <pid>
+jinfo -flag InitialCodeCacheSize <pid>
 jinfo -flag ReservedCodeCacheSize <pid>
 
 jinfo -flag CICompilerCount <pid>
 jinfo -flag BackgroundCompilation <pid>
 
 jinfo -flag TieredCompilation <pid>
-jinfo -flag CompileThreshold <pid> # applies only when standard compilation: -XX:-TieredCompilation
-jinfo -flag Tier3InvocationThreshold <pid> # applies when tiered compilation: -XX:+TieredCompilation
-jinfo -flag Tier4InvocationThreshold <pid> # applies when tiered compilation: -XX:+TieredCompilation
+jinfo -flag CompileThreshold <pid> # _compile_ threshold applies only when standard compilation: -XX:-TieredCompilation
+jinfo -flag Tier3InvocationThreshold <pid> # _invocation_ threshold applies when tiered compilation: -XX:+TieredCompilation
+jinfo -flag Tier4InvocationThreshold <pid> # _invocation_ threshold applies when tiered compilation: -XX:+TieredCompilation
 
 jstat -compiler <pid>
 jstat -printcompilation <pid> [1000]
+jstat -snap <pid> -J-Djstat.showUnsupported=true | grep .ci.
 
 jcmd <pid> Compiler.codecache
-jcmd <pid> Compiler.codelist | more
+jcmd <pid> Compiler.codelist | more 
 ```
 
 - [ ] Web applications used
