@@ -682,7 +682,7 @@ http://{{ prod }}:8080/dbo/actuator/metrics
 http://{{ prod }}:9090/graph
 ```
 
-- [ ] Profiler used
+- [ ] JConsole Profiler used
 ```shell script
 jconsole://{{ prod }}:9999/Memory/Code cache
 jconsole://{{ prod }}:9999/MBeans
@@ -701,6 +701,13 @@ jconsole://{{ prod }}:9999/MBeans
 
 ### After debrief
 - [ ] Updated your custom Grafana dashboard with metrics you think is important
+
+---
+
+## Profilers
+- [ ] JConsole, (J)VisualVM
+- [ ] async profiler
+- [ ] JMC
 
 ---
 
