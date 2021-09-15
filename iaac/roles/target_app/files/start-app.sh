@@ -3,8 +3,8 @@
 nohup \
   java \
     -Xms128m -Xmx128m \
-    -XX:+IgnoreUnrecognizedVMOptions \
-    -XX:+PrintCompilation \
+    -XX:+IgnoreUnrecognizedVMOptions -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions \
+    -XX:+PrintCompilation -XX:+LogCompilation -XX:LogFile=jit.log \
     -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=heapdump.hprof \
     -XX:+TraceClassLoading -XX:+TraceClassUnloading \
     -Xloggc:gc.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=8 -XX:GCLogFileSize=8m \
