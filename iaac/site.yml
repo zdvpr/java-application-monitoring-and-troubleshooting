@@ -67,3 +67,5 @@
     - role: wiremock_stub
       tags: wiremock_stub
 
+    - role: jmeter
+      tags: jmeter

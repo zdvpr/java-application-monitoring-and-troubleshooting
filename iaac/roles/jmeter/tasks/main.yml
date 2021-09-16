@@ -1,0 +1,8 @@
+- name: Copy demo application for monitoring
+  copy:
+    src: "{{ item }}"
+    dest: /opt/agile-practices-application/
+    mode: u=rwx,g=rwx,o=rwx
+  with_items:
+    - jmeter-gui.sh
+    - jmeter-cli.sh
