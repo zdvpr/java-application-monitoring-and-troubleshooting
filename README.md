@@ -705,9 +705,185 @@ jconsole://{{ prod }}:9999/MBeans
 ---
 
 ## Profilers
-- [ ] JConsole, (J)VisualVM
-- [ ] async profiler
-- [ ] JMC
+### Profiling
+- [ ] CPU (threads)
+- [ ] Memory (f.o.a. heap)
+- [ ] Events (allocations, synchronizations, io, etc.)
+### JConsole, (J)VisualVM
+- [ ] JMX Console
+- [ ] Instrumenting profiler (-)
+- [ ] Sampling profiler (+/-)
+### [async profiler](https://github.com/jvm-profiling-tools/async-profiler)
+- [ ] Sampling profiler (+)
+- [ ] `perf` events
+- [ ] Flame graphs
+### [JDK Mission Control](https://docs.oracle.com/en/java/java-components/jdk-mission-control/)
+- [ ] JMX Console
+- [ ] Sampling profiler
+- [ ] "OS events"
+- [ ] JVM _embeds_ Flight Recorder events dump
+
+---
+
+## JVM threading management (2h)
+![JVM threads overview](visuals/jvm-threads-overview.png)
+### JVM threading architecture
+- [ ] Thread definition and duality
+- [ ] Scheduler and preemptive concurrency
+- [ ] Scheduling overhead
+- [ ] Green and native threads
+- [ ] Thread resources consumption: heap, stack, CPU, OS limits for threads and native stack memory
+### Thread states
+- [ ] Main states and transitions
+- [ ] Types of blocking/waiting
+### Stack
+- [ ] What does thread do?
+- [ ] Stack trace
+- [ ] Thread dump
+### Thread pools
+- [ ] Why thread pools?
+- [ ] Pool metrics
+
+### Teamwork: Where and when threads start in the application code? (15m)
+- [ ] For given application codebase spot all the timepoints and places of starting thread.
+
+### Typical concurrency issues and solutions
+| Issue | WTF | Solutions
+|-------|-----|----------
+| Data Race | Concurrent non-atomic operation execution | Blocking: synchronized/monitor, non-blocking: atomics/CAS
+| Visibility and Reordering | JVM aggressive optimizations | JMM: synchronized + volatile
+| Deadlock | Threads blocked by each other | oops (
+
+### Teamwork: Is there correlation between sync code presence and application throughput (15m)
+- [ ] Performance = f(% sync code) ?
+
+### Concurrent memory-intensive applications design patterns
+- [ ] async operations + thread synchronization: wait/notify
+- [ ] threading patterns for logic processing: sync/async with multiple pools
+- [ ] MMO game/DBMS cases: entry point synchronization, coarse-grained data objects locking, fine-grained data objects subsequent locking
+- [ ] concurrent data structures
+
+### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
+- [ ] Adding metrics to Custom Grafana dashboard
+
+## Hands-on quest: Threads monitoring (50m)
+### Given
+- [ ] Application ran at {{ prod }}
+- [ ] External Legacy System REST stub started
+- [ ] Load emulation ran
+
+### When
+- [ ] CLI tools used at {{ prod }}
+```shell script
+top + 'f' -> nTH -> space -> Esc
+jstack <pid> > thread-dump.tdump
+scp -P 22 {{ account }}@{{ prod }}:/tmp/thread-dump.txt .
+```
+
+- [ ] Profiler used
+```shell script
+jvisualvm://File/Load (thread-dump.tdump)
+jvisualvm://Threads (plugin Threads inspector required)
+```
+
+- [ ] Thread dump analysed
+
+- [ ] Web applications used
+```
+http://{{ prod }}:8080/dbo/actuator/metrics
+http://{{ prod }}:9090/graph
+```
+
+### Finally
+- [ ] JMeter load emulation stopped
+- [ ] Application gracefully stopped
+- [ ] Database filled up with tests data removed
+
+### Then answered and reviewed at debrief
+- [ ] How many threads are in system?
+- [ ] Native or Green threads implemented by JVM?
+- [ ] How many threads working on requests processing?
+- [ ] Common thread state at normal load?
+- [ ] Is it enough of threads?
+- [ ] Where threads count can be adjusted?
+- [ ] Is there contended in-memory resource?
+- [ ] Hypothesis on what business logic is most CPU consuming
+- [ ] Hypothesis on application threading patterns: (a) connection handling, (b) logic processing, (c) data access?
+
+### After debrief
+- [ ] Updated your custom Grafana dashboard with metrics you think is important
+
+---
+
+## JVM IO management (1.5h)
+### Blocking IO architecture
+- [ ] Synchronous IO concept
+- [ ] What sources do we use to get/store data?
+### Typical issues
+- [ ] Excessive IO wrapper classes objects allocation
+- [ ] Encoding
+- [ ] Buffering as extra-resource allocation, non-reusability with OS
+- [ ] Buffering as CAP case
+- [ ] Blocking expensive server thread for user data IO
+- [ ] Excessive resource allocation: closing resources
+### Outgoing connections pooling
+- [ ] Resource pools main metrics
+
+### HTTP protocol
+- [ ] HTTP overview
+- [ ] Commands and response codes
+- [ ] HTTP session concept
+- [ ] *Keep-alive*
+- [ ] Content zipping
+
+### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
+- [ ] Adding metrics to Custom Grafana dashboard
+
+### Non-blocking IO architecture
+- [ ] Asynchronous IO concept
+- [ ] NIO overview
+- [ ] Threading patterns for connection data processing: sync/async (supported by sync/async Servlets, Spring MVC/WebFlux)
+### IO data processing architecture patterns
+- [ ] Threading scope patterns: thread-per-request, thread-per-connection, thread-per-session
+- [x] Threading patterns for logic processing: sync/async with multiple pools
+- [ ] Data access: sync/async ([files](https://www.baeldung.com/java-nio2-async-file-channel), [DB](https://spring.io/projects/spring-data-r2dbc), [HTTP REST calls](https://dzone.com/articles/high-concurrency-http-clients-on-the-jvm))
+
+## Hands-on quest: IO monitoring (50m)
+### Given
+- [ ] Application ran at {{ prod }}
+- [ ] External Legacy System REST stub started
+- [ ] Load emulation ran
+
+### When
+- [ ] Profiler used
+```shell script
+jvisualvm://Threads (plugin Threads inspector required)
+```
+- [ ] Thread dump analysed
+- [ ] Heap dump analysed
+- [ ] Web applications used
+```
+http://{{ prod }}:8080/dbo/actuator/metrics
+http://{{ prod }}:9090/graph
+```
+
+### Finally
+- [ ] JMeter load emulation stopped
+- [ ] Application gracefully stopped
+- [ ] Database filled up with tests data removed
+
+### Then answered and reviewed at debrief
+- [ ] Did test clients get http errors?
+- [ ] Incoming http connections long-liveness
+- [ ] What is the system default IO encoding?
+- [ ] Is there excessive IO wrapper objects allocation?
+- [ ] Is outgoing HTTP connections pooled?
+- [ ] Is it enough HTTP connections in pool?
+- [ ] What threading pattern for connection data processing used in application design?
+- [ ] What threading scope pattern used in application design?
+
+### After debrief
+- [ ] Updated your custom Grafana dashboard with metrics you think is important
 
 ---
 
@@ -769,7 +945,6 @@ jconsole://{{ prod }}:9999/MBeans
 - [ ] Symbols as interned constants
 - [ ] Native Byte Buffers: JNI allocations
 - [ ] Native Byte Buffers: NIO direct buffers
-      
 
 ## Hands-on quest: Memory monitoring (50m)
 ### Given
@@ -838,168 +1013,6 @@ jvisualvm://Buffer Pools (plugin required)
 - [ ] Top memory consuming application classes
 - [ ] What are the memory dominators?
 - [ ] What is the native memory footprint?
-
-### After debrief
-- [ ] Updated your custom Grafana dashboard with metrics you think is important
-
----
-
-## JVM threading management (2h)
-![JVM threads overview](visuals/jvm-threads-overview.png)
-### JVM threading architecture
-- [ ] Thread definition and duality
-- [ ] Scheduler and preemptive concurrency
-- [ ] Scheduling overhead
-- [ ] Green and native threads
-- [ ] Thread resources consumption: heap, stack, CPU, OS limits for threads and native stack memory 
-### Thread states
-- [ ] Main states and transitions
-- [ ] Types of blocking/waiting
-### Stack
-- [ ] What does thread do? 
-- [ ] Stack trace
-- [ ] Thread dump
-### Thread pools
-- [ ] Why thread pools?
-- [ ] Pool metrics
-
-### Teamwork: Where and when threads start in the application code? (15m)
-- [ ] For given application codebase spot all the timepoints and places of starting thread.
-
-### Typical concurrency issues and solutions
-| Issue | WTF | Solutions
-|-------|-----|----------
-| Data Race | Concurrent non-atomic operation execution | Blocking: synchronized/monitor, non-blocking: atomics/CAS  
-| Visibility and Reordering | JVM aggressive optimizations | JMM: synchronized + volatile
-| Deadlock | Threads blocked by each other | oops ( 
-
-### Teamwork: Is there correlation between sync code presence and application throughput (15m)
-- [ ] Performance = f(% sync code) ?
-
-### Concurrent memory-intensive applications design patterns
-- [ ] async operations + thread synchronization: wait/notify
-- [ ] threading patterns for logic processing: sync/async with multiple pools
-- [ ] MMO game/DBMS cases: entry point synchronization, coarse-grained data objects locking, fine-grained data objects subsequent locking 
-- [ ] concurrent data structures
-
-### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Adding metrics to Custom Grafana dashboard
-
-## Hands-on quest: Threads monitoring (50m)
-### Given
-- [ ] Application ran at {{ prod }}
-- [ ] External Legacy System REST stub started
-- [ ] Load emulation ran
-
-### When
-- [ ] CLI tools used at {{ prod }}
-```shell script
-top + 'f' -> nTH -> space -> Esc
-jstack <pid> > thread-dump.tdump
-scp -P 22 {{ account }}@{{ prod }}:/tmp/thread-dump.txt .
-```
-
-- [ ] Profiler used
-```shell script
-jvisualvm://File/Load (thread-dump.tdump)
-jvisualvm://Threads (plugin Threads inspector required)
-```
-
-- [ ] Thread dump analysed
-
-- [ ] Web applications used
-```
-http://{{ prod }}:8080/dbo/actuator/metrics
-http://{{ prod }}:9090/graph
-```
-
-### Finally
-- [ ] JMeter load emulation stopped
-- [ ] Application gracefully stopped
-- [ ] Database filled up with tests data removed
-
-### Then answered and reviewed at debrief
-- [ ] How many threads are in system?
-- [ ] Native or Green threads implemented by JVM?
-- [ ] How many threads working on requests processing?
-- [ ] Common thread state at normal load?
-- [ ] Is it enough of threads?
-- [ ] Where threads count can be adjusted?
-- [ ] Is there contended in-memory resource?
-- [ ] Hypothesis on what business logic is most CPU consuming
-- [ ] Hypothesis on application threading patterns: (a) connection handling, (b) logic processing, (c) data access?
-
-### After debrief
-- [ ] Updated your custom Grafana dashboard with metrics you think is important
-
----
-
-## JVM IO management (1.5h)
-### Blocking IO architecture
-- [ ] Synchronous IO concept
-- [ ] What sources do we use to get/store data?
-### Typical issues
-- [ ] Excessive IO wrapper classes objects allocation
-- [ ] Encoding
-- [ ] Buffering as extra-resource allocation, non-reusability with OS
-- [ ] Buffering as CAP case
-- [ ] Blocking expensive server thread for user data IO 
-- [ ] Excessive resource allocation: closing resources
-### Outgoing connections pooling
-- [ ] Resource pools main metrics
-
-### HTTP protocol
-- [ ] HTTP overview
-- [ ] Commands and response codes
-- [ ] HTTP session concept
-- [ ] *Keep-alive*
-- [ ] Content zipping 
-
-### Teamwork: What metrics do we consider for dev, test, qa and production environments? (15m)
-- [ ] Adding metrics to Custom Grafana dashboard
-
-### Non-blocking IO architecture
-- [ ] Asynchronous IO concept
-- [ ] NIO overview
-- [ ] Threading patterns for connection data processing: sync/async (supported by sync/async Servlets, Spring MVC/WebFlux)
-### IO data processing architecture patterns 
-- [ ] Threading scope patterns: thread-per-request, thread-per-connection, thread-per-session
-- [x] Threading patterns for logic processing: sync/async with multiple pools
-- [ ] Data access: sync/async ([files](https://www.baeldung.com/java-nio2-async-file-channel), [DB](https://spring.io/projects/spring-data-r2dbc), [HTTP REST calls](https://dzone.com/articles/high-concurrency-http-clients-on-the-jvm))
-
-## Hands-on quest: IO monitoring (50m)
-### Given
-- [ ] Application ran at {{ prod }}
-- [ ] External Legacy System REST stub started
-- [ ] Load emulation ran
-
-### When
-- [ ] Profiler used
-```shell script
-jvisualvm://Threads (plugin Threads inspector required)
-```
-- [ ] Thread dump analysed
-- [ ] Heap dump analysed
-- [ ] Web applications used
-```
-http://{{ prod }}:8080/dbo/actuator/metrics
-http://{{ prod }}:9090/graph
-```
-
-### Finally
-- [ ] JMeter load emulation stopped
-- [ ] Application gracefully stopped
-- [ ] Database filled up with tests data removed
-
-### Then answered and reviewed at debrief
-- [ ] Did test clients get http errors? 
-- [ ] Incoming http connections long-liveness
-- [ ] What is the system default IO encoding?
-- [ ] Is there excessive IO wrapper objects allocation?
-- [ ] Is outgoing HTTP connections pooled?
-- [ ] Is it enough HTTP connections in pool?
-- [ ] What threading pattern for connection data processing used in application design?
-- [ ] What threading scope pattern used in application design?
 
 ### After debrief
 - [ ] Updated your custom Grafana dashboard with metrics you think is important
