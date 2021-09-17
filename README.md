@@ -894,43 +894,87 @@ http://{{ prod }}:9090/graph
 - [ ] [Non-heap] Allocated native memory: direct allocation, NIO buffers 
 - [ ] [Non-heap] Compressed Class space
 - [ ] [Non-heap] Perm/Meta space
-- [ ] [Heap/Object space] New/Young generation (for some GCs also Eden and Survivor spaces)
+- [ ] [Heap/Object space] New/Young generation (including Eden and Survivor spaces)
 - [ ] [Heap/Object space] Old/Tenured generation
 ![JVM memory overview](visuals/jvm-memory-overview.png)
-- [ ] Allocated vs Reserved vs Available memory 
+<!-- 
+- [ ] Used/Allocated vs Capacity vs Committed vs Reserved vs Available memory 
+```
+[0,296s][info][gc,heap,exit] Heap
+[0,296s][info][gc,heap,exit] garbage-first heap total 514048K, used 0K [0x00000005ca600000, 0x00000005ca8007d8, 0x00000007c0000000)
+[0,296s][info][gc,heap,exit] region size 2048K, 1 young (2048K), 0 survivors (0K)
+[0,296s][info][gc,heap,exit] Metaspace used 2575K, capacity 4480K, committed 4480K, reserved 1056768K
+[0,296s][info][gc,heap,exit] class space used 238K, capacity 384K, committed 384K, reserved 1048576K
+```
+--> 
 
 ### Teamwork: Where and when is memory allocated in the application code? (15m)
 - [ ] For given application codebase spot all the timepoints and places of memory allocation.
 
-### Garbage
+### Garbage dealing
 - [ ] What is garbage: objects ready for gc?
-- [ ] Stack trace
+- [ ] GC Roots: Stack trace, static fields, etc.
 ### Generational GC algorithms
 - [ ] Minor VS Full GC and theirs ratio
-- [ ] Copying collector for young generation
-- [ ] Mark-sweep-compact (MSC) collector for old generation
-### Concurrent GC algorithms
-- [ ] _Stop-the-world_ pauses
+- [ ] _Copying_ collector
+- [ ] _Mark-sweep-compact_ (MSC) collector 
+### GC itself threads
+- [ ] _Single-threaded_ GC
+- [ ] _Parallel_ GC
+### Concurrency
+- [ ] _Stop-the-world_ pauses issue
 - [ ] _Concurrent_/low-pause collectors: without stopping _application threads_ when it possible (e.g. Mark phase)
-- [ ] Trade-off: low-pauses vs CPU utilization taken out from application
+- [ ] Trade-off: low-pauses (latency) vs CPU utilization taken out from application (throughput) vs Memory overhead (footprint)
+
+### Internal Compiler API names and GC framework names
+|         | Serial | Parallel | Parallel + Concurrent
+|---------|--------|----------|----------------------
+| New Gen | `DefNew` | `ParNew`/`PScavenge` |
+| Old Gen | `Tenured`/`PSOld`  | `PSParOld` | `CMS`
+| Whole heap | | | `G1`
+
 ### [HotSpot collectors](https://docs.oracle.com/en/java/javase/12/gctuning/)
-| Collector name | Main idea | Full support /deprecation /experimental in JDK8 | JDK 11 | JDK 12 | Settings
-|----------------|-----------|-------------------------------------------------|--------|--------|----------
-| Serial | *Single-threaded* for new and old gen. *S-t-w* for full and minor gc. *MSC* for new and old gen. Suitable for containerized apps.| + | + | + | `-XX:+UseSerialGC`
-| Concurrent Mark-Sweep (CMS) | *Multi-threaded* for new and old gen. *S-t-w* for full and minor gc. *Copying* for new gen, *MSC* for old gen. | + | - | - | `-XX:+UseConcMarkSweepGC` 
-| Throughput / Parallel | *Multi-threaded* for new and old gen. *S-t-w* for full and minor gc. *Copying* for new gen, *MSC* for old gen. |  + | + | + | `-XX:+UseParallelGC` `-XX:+UseParallelOldGC`
-| G1 | Multi-regional. *Multi-threaded* for new and old gen. *S-t-w* for new gen, *concurrent* for old gen. *Copying* for new and old gen. | +/- | + | + | `-XX:+UseG1GC`
-| ZGC | | n/a | ? | ? |
-| Shenandoah | | ?? | ?? | ?? |
-| Epsilon | | n/a | ? | ? |
+| Collector name | Main idea | Outcome | Full support /deprecation /experimental in JDK8 | JDK 11 | JDK 12 | Settings
+|----------------|-----------|---------|------------------------------------------------|--------|--------|----------
+| Serial | *Single-threaded* for new and old gen. *S-t-w* for new and old gen. *Copying* for new gen, *MSC* for old gen. | Suitable for containerized apps.| + | + | + | `-XX:+UseSerialGC`
+| Throughput / Parallel | *Parallel* for new and old gen. *S-t-w* for new and old gen. *Copying* for new gen, *MSC* for old gen. | Maximum throughput. |  + | + | + | `-XX:+UseParallelGC` `-XX:+UseParallelOldGC`
+| Concurrent Mark-Sweep (CMS) | *Parallel* for new and old gen. *S-t-w* for new gen, mostly *concurrent* for old gen. *Copying* for new gen, *MS* for old gen, *Compact* for full GC only. | Latency oriented.| + | - | - | `-XX:+UseConcMarkSweepGC` 
+| [G1](https://docs.oracle.com/en/java/javase/12/gctuning/garbage-first-garbage-collector.html) | Multi-regional. *Parallel* for new and old gen. *S-t-w* for new gen, partly *concurrent* (for old gen Mark phase). *Copying* for new and old gen. | Latency oriented.| +/- | + | + | `-XX:+UseG1GC`
+| [Epsilon](http://openjdk.java.net/jeps/318) | No-Op Garbage Collector| Test and research oriented. | n/a | + | + | `-XX:+UnlockExperimentalVMOptions -XX:+UseEpsilonGC` |
+| ZGC | Scalable low latency *concurrent* garbage collector. | Latency oriented. Pauses no more 10ms. | n/a | ? | ? |
+| Shenandoah | Scalable low latency *concurrent* garbage collector.| Latency oriented. | ?? | ?? | ?? |
+
+### [G1 tuning](https://www.oracle.com/technical-resources/articles/java/g1gc.html)
+- [ ] Multi-regional: `-XX:G1HeapRegionSize=n`, value will be a power of two and can range from 1MB to 32MB. The goal is to have around 2048 regions based on the minimum Java heap size
+- [ ] _Dynamic_ multi-regional: regions made E,S,O dynamically at run-time 
+- [ ] Pause time oriented ergonomics: 
+- `-XX:MaxGCPauseMillis=200`
+- `-XX:GCPauseIntervalMillis`
+- `-XX:G1HeapWastePercent=10` (garbage allowed to left, Karl!)
+- Loves large heaps (> 5G) and non-full heaps 
+- in case of heaps < 2G maybe CMS?
+- [ ] G1 tracks gc times to autotune
+- [ ] Footprint overhead ~5-10% (Remember sets, Collection Sets)
+- [ ] Allowed heap size autotune
+- `-XX:AdaptiveSizePolicy`
+- `-XX:MinHeapFreeRatio=40` (расширение)
+- `-XX:MinHeapFreeRatio=70` (сжатие)
+- [ ] G1 schedules Old (mixed) GC based on heap usage: `-XX:InitiatingHeapOccupancyPercent=45`
+- [ ] Young and _mixed_ GCs
+- young regions
+- 1/8 of old regions 
+- [ ] _Humongous_ objects corner case
+- > 50% of region
+- The only owner of region(s)
+- Old gen from the beginning
 
 ### Heap dumps
 - [ ] Creating heap dump
 - [ ] Analysing heap dump
 - [ ] GC roots
-- [ ] _Shallow_, _deep_ (aggregation) and _retained_ (composition) sizes
-- [ ] _Dominators_ of the heap
-- [ ] Objects size and alignment (%8bytes), [jol](https://openjdk.java.net/projects/code-tools/jol) tool
+- [ ] Sizes: _Shallow_, _deep_ (aggregation) and _retained_ (composition)
+- [ ] Heap _Dominators_
+- [ ] Objects size and alignment (e.g. %8bytes), [jol](https://openjdk.java.net/projects/code-tools/jol) tool
 - [ ] Object [reference types](https://dzone.com/articles/weak-soft-and-phantom-references-in-java-and-why-they-matter): hard, soft, weak, phantom
 - [ ] _Compressed Oops_ as 35-bit reference (up to 32Gb) stored as 32-bit reference
 
