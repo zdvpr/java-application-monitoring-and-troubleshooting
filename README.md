@@ -937,7 +937,7 @@ http://{{ prod }}:9090/graph
 | Collector name | Main idea | Outcome | Full support /deprecation /experimental in JDK8 | JDK 11 | JDK 12 | Settings
 |----------------|-----------|---------|------------------------------------------------|--------|--------|----------
 | Serial | *Single-threaded* for new and old gen. *S-t-w* for new and old gen. *Copying* for new gen, *MSC* for old gen. | Suitable for containerized apps.| + | + | + | `-XX:+UseSerialGC`
-| Throughput / Parallel | *Parallel* for new and old gen. *S-t-w* for new and old gen. *Copying* for new gen, *MSC* for old gen. | Maximum throughput. |  + | + | + | `-XX:+UseParallelGC` `-XX:+UseParallelOldGC`
+| Throughput / Parallel | *Parallel* for new and old gen. *S-t-w* for new and old gen. *Copying* for new gen, *MSC* for old gen. | Maximum throughput ценой latency. |  + | + | + | `-XX:+UseParallelGC` `-XX:+UseParallelOldGC`
 | Concurrent Mark-Sweep (CMS) | *Parallel* for new and old gen. *S-t-w* for new gen, mostly *concurrent* for old gen. *Copying* for new gen, *MS* for old gen, *Compact* for full GC only. | Latency oriented.| + | - | - | `-XX:+UseConcMarkSweepGC` 
 | [G1](https://docs.oracle.com/en/java/javase/12/gctuning/garbage-first-garbage-collector.html) | Multi-regional. *Parallel* for new and old gen. *S-t-w* for new gen, partly *concurrent* (for old gen Mark phase). *Copying* for new and old gen. | Latency oriented.| +/- | + | + | `-XX:+UseG1GC`
 | [Epsilon](http://openjdk.java.net/jeps/318) | No-Op Garbage Collector| Test and research oriented. | n/a | + | + | `-XX:+UnlockExperimentalVMOptions -XX:+UseEpsilonGC` |
@@ -951,6 +951,7 @@ http://{{ prod }}:9090/graph
 - `-XX:MaxGCPauseMillis=200`
 - `-XX:GCPauseIntervalMillis`
 - `-XX:G1HeapWastePercent=10` (garbage allowed to left, Karl!)
+- _нет гарантий_ по паузам
 - Loves large heaps (> 5G) and non-full heaps 
 - in case of heaps < 2G maybe CMS?
 - [ ] G1 tracks gc times to autotune
@@ -960,9 +961,10 @@ http://{{ prod }}:9090/graph
 - `-XX:MinHeapFreeRatio=40` (расширение)
 - `-XX:MinHeapFreeRatio=70` (сжатие)
 - [ ] G1 schedules Old (mixed) GC based on heap usage: `-XX:InitiatingHeapOccupancyPercent=45`
-- [ ] Young and _mixed_ GCs
+- [ ] Young, _mixed_ and full GCs
 - young regions
-- 1/8 of old regions 
+- mixed: young + 1/8 of old regions
+- full
 - [ ] _Humongous_ objects corner case
 - > 50% of region
 - The only owner of region(s)
