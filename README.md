@@ -124,7 +124,8 @@ Installation at Windows:
 | Working with _class_: dynamic classloading | Instructions what to do workers get just in time not ahead but worker remember it till die | But we have run-time latency costs
 | Working with _instance_: create and GC | We ask our vice to hire and retire workers | Objects state costs us RAM memory. When object's no longer needed it purged from RAM
 
-## Teamwork: What metrics do we consider for dev, test, qa and production environments? (30m)
+## Teamwork: Why we do monitoring? What metrics do we consider for dev, test, qa and production environments? (30m)
+- [ ] Why we do monitoring?
 - [ ] What Quality Attributes/NFRs does JVM provide for application?
 - [ ] What Quality Attributes/NFRs do we satisfy with application monitoring?
 
@@ -171,6 +172,7 @@ vi ~/.m2/settings-security.xml
 
 ### When
 - [ ] Project application built locally with IDEA's built-in maven `mvn clean verify [-DskipTests]`
+- [ ] _OR_ downloaded from `iaac/roles/target_app/files`
 - [ ] Project application ran locally with CLI
 ```shell script
 java \
