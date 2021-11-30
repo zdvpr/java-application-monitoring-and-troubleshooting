@@ -151,13 +151,13 @@ Installation at Windows:
 ## Hands-on quest: Simple application _local_ building, running and monitoring (50m)
 ### Given
 - [ ] Satisfied [prerequisites](#Prerequisites) 
-- [ ] Cloned locally [training content](https://bitbucket.raiffeisen.ru/projects/JVMTRAIN/repos/java-application-monitoring-and-troubleshooting/browse)
+- [x] Cloned locally training content
 ```shell script
-git clone --depth 1 --branch master https://bitbucket.raiffeisen.ru/scm/jvmtrain/java-application-monitoring-and-troubleshooting.git
+git clone --depth 1 --branch master https://github.com/eugene-krivosheyev/java-application-monitoring-and-troubleshooting
 cd java-application-monitoring-and-troubleshooting
 ```
 
-- [ ] Credentials for corporate Maven Artifactory repo set up
+- [x] Credentials for corporate Maven Artifactory repo set up
 ```shell script
 cp iaac/roles/maven/files/settings.xml $M2_HOME/conf/
 cp iaac/roles/maven/files/settings-security.xml ~/.m2/
@@ -171,8 +171,8 @@ vi ~/.m2/settings-security.xml
 ```
 
 ### When
-- [ ] Project application built locally with IDEA's built-in maven `mvn clean verify [-DskipTests]`
-- [ ] _OR_ downloaded from `iaac/roles/target_app/files`
+- [x] Project application built locally with IDEA's built-in maven `mvn clean verify [-DskipTests]`
+- [ ] _OR_ found in `iaac/roles/target_app/files`
 - [ ] Project application ran locally with CLI
 ```shell script
 java \
@@ -427,10 +427,10 @@ profiler --> application
 ### Given
 - [ ] SSH user session with domain account to [{{ prod host }}](iaac/inventories/production/hosts.yml) `ssh account@s-msk-t-jvm-XXX`
 
-- [ ] [Demo Application](https://bitbucket.raiffeisen.ru/projects/JVMTRAIN/repos/agile-practices-application/browse) codebase cloned remotely
+- [ ] Demo Application codebase cloned remotely
 ```shell script
 cd /opt
-sudo git clone --depth 1 --branch master https://bitbucket.raiffeisen.ru/scm/jvmtrain/agile-practices-application.git
+sudo git clone --depth 1 --branch master https://github.com/eugene-krivosheyev/agile-practices-application
 sudo chown {{ account }}:users -R agile-practices-application
 cd agile-practices-application
 ```
