@@ -1,7 +1,9 @@
 https://rbru.slack.com/archives/C02MSHMQQ30
+https://confluence.raiffeisen.ru/pages/viewpage.action?pageId=245709030
 
 Dima's repositories:
 https://github.com/zdvpr/java-application-monitoring-and-troubleshooting.git
+https://github.com/zdvpr/agile-practices-application
 
 Krivosheev:
 https://github.com/eugene-krivosheyev/agile-practices-application
